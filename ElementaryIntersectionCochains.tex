@@ -3,9 +3,9 @@
 
 %\usepackage{amsmath,amsthm}     % Handy math stuff, theorem environments.
 \usepackage{amssymb, amscd}            % Fancy math symbols.
-\usepackage{pstricks,pstricks-add}	% Pretty pictures
+\usepackage{pstricks,pstricks-add}	% Make pretty pictures with PostScript
 \usepackage{float}	% Allows finer control over placement of figures than the default automatic placement style
-
+\usepackage{imakeidx} % Index
 \newcommand{\Z}{{\mathbb{Z}}}
 
 \textwidth = 6.5 in
@@ -38,7 +38,9 @@
 \newcommand{\injext}{{\rm InjExt}}
 \newcommand{\Hom}{{\rm Hom}}
 \newcommand{\RP}{\mathbb{R}\mathrm{P}}
+\newcommand{\codim}{{\rm codim}}
 
+\makeindex
 \begin{document}
 
 \title{Elementary Intersection Theory}
@@ -66,15 +68,15 @@ etc.
 Before developing the background in differential topology needed, we illustrate the technique by using simplified definitions.
 
 \begin{definition}
-Manifold, submanifold.
+Manifold\index{manifold}, submanifold\index{manifold!submanifold}.
 \end{definition}
 
 \begin{definition}
-Tangent bundle and tangent vector of a submanifold.
+Tangent bundle\index{tangent bundle} and tangent vector\index{tangent bundle!tangent vector} of a submanifold.
 \end{definition}
 
 \begin{definition}
-Transversal intersection of submanifolds.
+Transversal intersection of submanifolds\index{transversality!of submanifolds}.
 \end{definition}
 \begin{figure}[H]
 	\begin{center}
@@ -104,14 +106,14 @@ Transversal intersection of submanifolds.
 \end{figure}
 
 \begin{definition}
-Codimension.
+If $M$ is a smooth manifold of dimension $m$ and $W\subseteq M$ is a smooth submanifold of dimension $k$, then the codimension\index{codimension} of $W$ in $M$ is the number $\codim W=m-k$.
 \end{definition}
 
 \begin{theorem}
 If submanifolds intersect transversally, then the intersection is a submanifold.  The codimension is the sum of their codimensions.
 \end{theorem}
 
-We can now state a simplified version of the fundamental theorem of intersection theory.
+We can now state a simplified version of the fundamental theorem of intersection theory\index{intersection theory!fundamental theorem of}.
 
 \begin{theorem}
 Let $M$ be a manifold and $W$ be a submanifold of codimension $d$ without boundary.  
@@ -157,7 +159,7 @@ Let $\R^+$ be the subset of non-negative real numbers, and let $\R^{k,\ell} = \R
  the derivative exists and we can define diffeomorphism as usual.
 
 \begin{definition}
-A manifold with corners is a paracompact Hausdorff space $M$ with (a maximal collection of) charts $\phi_\alpha : U_\alpha \to M$
+A manifold with corners\index{manifold!with corners} is a paracompact Hausdorff space $M$ with (a maximal collection of) charts $\phi_\alpha : U_\alpha \to M$
 with $U_\alpha$ open in  $\R^{0,n}$
 such that the transition maps $\phi_\beta^{-1} \circ \phi_\alpha$ are diffeomorphisms between $\phi_\alpha^{-1} ({\rm Im} \phi_\beta)$
 and $\phi_\beta^{-1} ({\rm Im} \phi_\alpha)$.  
@@ -173,17 +175,17 @@ The tangent bundle can be defined in any of the ways in which one defines it for
 Every point $x$ in a manifold with corners $M$ 
 has a neighborhood diffeomorphic to (a neighborhood of $0$ in) 
 $\R^{k,\ell}$ for some unique $k + \ell = n$.  The number $\ell$
-is called the depth of $x$.
+is called the depth\index{depth of a point} of $x$.
 \end{lemma}
 
 For example, the depth $0$ points are also known as the interior of $M$.
  
 A key structure to consider for a manifold with corners is its partition into connected subspaces with fixed depth, which is sometimes
-called a stratification.  In the case of polytopes such as the cube this is essentially the facet structure.   A delicate issue is how to take a
-``closure'' of such facets or strata for general manifolds with corners, for which we rely on the tangent bundle.
+called a stratification\index{stratification}.  In the case of polytopes such as the cube this is essentially the facet structure.   A delicate issue is how to take a
+``closure'' of such facets\index{stratification!facets} or strata\index{stratification!strata|see {facets}} for general manifolds with corners, for which we rely on the tangent bundle.
 
 \begin{definition}
-A codimension-$i$ facet subspace of $T_0 \R^{k,\ell} \cong \R^{k+\ell}$ is a linear subspace in which a fixed nonempty 
+A codimension-$i$ facet subspace\index{stratification!facet subspace} of $T_0 \R^{k,\ell} \cong \R^{k+\ell}$ is a linear subspace in which a fixed nonempty 
 subset of cardinality $i$ of the 
 coordinates which correspond to coordinates in $(\R^+)^\ell$  are zero.
 \end{definition}
@@ -200,7 +202,7 @@ subspaces.
  
 
 \begin{definition}
-A boundary facet of a manifold with corners $M$ is a maximal manifold with corners $F$ with an immersion 
+A boundary facet\index{stratification!boundary facet} of a manifold with corners $M$ is a maximal manifold with corners $F$ with an immersion 
 $\iota_F : F \to M$, injective on the interior of $F$, such that $D\iota_F$ maps $TF$ injectively to a subbundle of facet 
 subspaces of $TM$.  
 \end{definition}
@@ -208,7 +210,7 @@ subspaces of $TM$.
 Example: $\Delta^n$
 
 The only examples we need to consider are $M$ for which the facet immersions $\iota_F$ are embeddings, as happens for polytopes.
-Such $M$ are called manifolds with embedded corners.  
+Such $M$ are called manifolds with embedded corners\index{manifold!with embedded corners}.  
 The ``teardrop'' subspace of $\R^2$ (homeomorphic to a disk, with a single corner) is  a typical example of a manifold with corners
 which does not have embedded corners.
 
@@ -222,7 +224,7 @@ zero or one, and thus have at most boundaries.
 Transversality more generally.
 
 \begin{definition}
-Let $M$ be a manifold and $f : W \to M$ an immersion. Then $C^{\pitchfork W}_{*}(M)$ is the subset of $C_{*}(M)$ generated by the chains whose image is transversal to $f$. More generally, if $S$ is a  finite set of immersed submanifolds of $M$ then $C^{\pitchfork S}_{*}$ is generated by the chains whose image is transversal to each $W \in S$.
+Let $M$ be a manifold and $f : W \to M$ an immersion. Then $C^{\pitchfork W}_{*}(M)$ is the subset of $C_{*}(M)$ generated by the chains whose image is transversal to $f$. More generally, if $S$ is a  finite set of immersed submanifolds of $M$ then $C^{\pitchfork S}_{*}$\index{$C_{\pitchfork S}^*$} is generated by the chains whose image is transversal to each $W \in S$.
 \end{definition}
 
 \begin{theorem}\label{T:qi}
@@ -259,10 +261,10 @@ P @>>> W\\
 \Delta^n @>\sigma>> M.
 \end{CD}
 $$
-The cardinality $\# P$ is to be taken as mod-two unless $M$ and $W$ are oriented, in which case $\Delta^n$ is given the  orientation with say the differences between vertices labelled by $1, \cdots, n$ and vertex $0$ (or the barycenter) serving as basis vectors, and $P$ is then oriented accordingly.
+The cardinality $\# P$ is to be taken as mod-two unless $M$ and $W$ are oriented, in which case $\Delta^n$ is given the  orientation with say the differences between vertices labeled by $1, \cdots, n$ and vertex $0$ (or the barycenter) serving as basis vectors, and $P$ is then oriented accordingly.
 \end{definition}
 
-We call these Thom classes, because in the standard development they are (the pushforwards of)  Thom classes of the normal bundles.  But we will use 
+We call these Thom classes\index{Thom class}, because in the standard development they are (the pushforwards of)  Thom classes of the normal bundles.  But we will use 
 them to understand both pushforward and Thom classes, rather than the other way around.
 
 \begin{theorem}
@@ -355,18 +357,22 @@ The value of a Thom class on  a fundamental class given by triangulating a subma
 \end{proposition}
 
 
-\subsection{Projective spaces}
+\subsection{Projective spaces}\index{projective space}
 
-\subsection{Grassmannians}
+\subsection{Grassmannians}\index{Grassmanian}
 
 \subsection{Complements of submanifolds which are boundaries}
 
-\subsection{Configuration spaces}
+\subsection{Configuration spaces}\index{configuration space}
 
-\section{Applications: wrong-way maps, duality, suspensions and Thom isomorphism}
+\section{Applications: wrong-way maps\index{wrong-way map}, duality\index{duality}, suspensions\index{suspension} and Thom isomorphism\index{Thom isomorphism}}
 
-\section{Looking forward: characteristic classes, loop spaces, and cobordism.}
+\section{Looking forward: characteristic classes\index{characteristic class}, loop spaces\index{loop space}, and cobordism\index{cobordism}.}
 
+\nocite{*}
+\bibliographystyle{plain}
+\bibliography{bib}
+\printindex
 \end{document}
 
  
