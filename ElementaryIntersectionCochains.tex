@@ -3,7 +3,8 @@
 
 %\usepackage{amsmath,amsthm}     % Handy math stuff, theorem environments.
 \usepackage{amssymb, amscd}            % Fancy math symbols.
-
+\usepackage{pstricks,pstricks-add}	% Pretty pictures
+\usepackage{float}	% Allows finer control over placement of figures than the default automatic placement style
 
 \newcommand{\Z}{{\mathbb{Z}}}
 
@@ -36,6 +37,7 @@
 \newcommand{\ext}{{\rm Ext}}
 \newcommand{\injext}{{\rm InjExt}}
 \newcommand{\Hom}{{\rm Hom}}
+\newcommand{\RP}{\mathbb{R}\mathrm{P}}
 
 \begin{document}
 
@@ -74,6 +76,32 @@ Tangent bundle and tangent vector of a submanifold.
 \begin{definition}
 Transversal intersection of submanifolds.
 \end{definition}
+\begin{figure}[H]
+	\begin{center}
+		\begin{pspicture}(0.5,-0.5)(3.5,3.5)			
+		\pspolygon(-2,1)(0,1)(1,2)(-1,2)
+		\psline(-.5,0)(-.5,1)
+		\psline[linestyle=dashed,dash=1.3pt](-.5,1)(-.5,1.5)
+		\pscircle*(-.5,1.5){1pt}
+		\psline[linecolor=white,linewidth=1.2pt](-.47,2)(-.53,2)
+		\psline(-.5,1.5)(-.5,3)	
+		\rput(-3,1.5){\textup{a)}}
+		
+		
+		\pspolygon(4,1)(4,-.25)(5.2,.75)(5.2,2)
+		\psline[linecolor=white,linewidth=1.2pt](5.2,1.2)(5.2,2)
+		\psline[linestyle=dashed,dash=1.3pt](5.2,1.2)(5.2,2)
+		\pspolygon(3,1)(5,1)(6.2,2)(4.2,2)
+		\psline[linecolor=white,linewidth=1.2pt](4.2,2)(5.2,2)
+		\psline[linecolor=white,linewidth=1.2pt](4,1.83)(4.2,2)
+		\psline[linestyle=dashed,dash=1.3pt](4,1.83)(4.2,2)
+		\psline[linestyle=dashed,dash=1.3pt](4.2,2)(5.2,2)
+		\pspolygon(4,1)(4,2.25)(5.2,3.25)(5.2,2)
+		\rput(2,1.5){\textup{b)}}
+		\end{pspicture}
+	\end{center}
+	\caption{Examples of transversally intersecting submanifolds of $\R^3$: \textup{a)} the plane $z=0$ and the line $x=y=0$ and \textup{b)} the planes $z=0$ and $y=0$.}
+\end{figure}
 
 \begin{definition}
 Codimension.
@@ -89,7 +117,7 @@ We can now state a simplified version of the fundamental theorem of intersection
 Let $M$ be a manifold and $W$ be a submanifold of codimension $d$ without boundary.  
 \begin{enumerate}
 \item There is a cohomology class $[\tau_{W}] \in H^{d}(M; \Z/2)$ represented by a cochain whose value on an embedded chain $\Delta^{d} \subset M$ which intersects $W$ transversally is the mod-two count of $\Delta^{d} \cap W$.
-\item If $S$ is a submanifold whose boundary is $V \bigsqcup W$ then $[\tau_{V}] = [\tau_{W}]$.
+\item If $S$ is a submanifold whose boundary is $V \sqcup W$ then $[\tau_{V}] = [\tau_{W}]$.
 \item If $V$ and $W$ intersect transversally then $[\tau_{V}] \cup [\tau_{W}] = [\tau_{V \cap W}]$.
 \end{enumerate}
 \end{theorem}
@@ -108,7 +136,7 @@ $\R^{3}$ with the z-axis removed along with either a linked or unlinked $S^{1}$.
 A two-holed torus
 \end{example}
 \begin{example}
-$\R P^{n}$ and application to no retraction.
+$\RP^{n}$ and application to no retraction.
 \end{example}
 
 \subsection{Comparison with other approaches to cochains}
@@ -248,6 +276,25 @@ counting those gives
  $\delta \tau_V (\sigma)  = \tau_V (\partial \sigma)$.  Other boundary points are in the interior, which come from the preimage of 
 $\partial V = W$, and thus correspond to $\tau_{W} (\sigma)$.
 \end{proof}
+
+\begin{figure}[H]
+	\begin{center}
+		\begin{pspicture}(0.5,-0.5)(3.5,3.5)			
+		\pspolygon[linewidth=1.2pt](0,0)(4,0)(2,3.46410161514)
+		\psarc[linecolor=orange!90,linewidth=1.2pt](0.66666,1.15470053838){1.5em}{-120}{60}
+		\pscurve[linecolor=orange!90,linewidth=1.2pt](1.33333,2.3094017676)(1.7,2)(1.9,2.1)(2.45,1.7)
+		\psdot[linecolor=red!90,fillcolor=red!90](0.41,0.7)
+		\psdot[linecolor=red!90,fillcolor=red!90](0.93,1.6)
+		\psdot[linecolor=red!90,fillcolor=red!90](1.3333,2.3094)
+		\psdot[linecolor=blue!70!violet!60,fillcolor=red!50](2.44,1.7)
+		\psline[linecolor=orange!90,linewidth=1.2pt](2,1.5)(3,1)
+		\psdot[linecolor=blue!80!violet!60,fillcolor=red!50](2,1.5)
+		\psdot[linecolor=blue!80!violet!60,fillcolor=red!50](3,1)
+		\psccurve[linecolor=orange!90,fillcolor=red!90](1.5,0.5)(1.8,0.35)(2,0.5)(2.2,0.35)(2.5,0.5)(2,1)
+		\end{pspicture}
+	\end{center}
+\caption{Example in the case $n=1$ with $\sigma^{-1}(V)$ in orange, points in $\left(\left.\sigma\right|_{\partial\Delta^2}\right)^{-1}(V)$ marked in red, and those in $\sigma^{-1}(\partial V)$ marked in blue.}
+\end{figure}
 
 By abuse, we denote by $[\tau_{W}]$ the corresponding singular cohomology class under the isomorphism established in Theorem~\ref{T:qi}.
 
