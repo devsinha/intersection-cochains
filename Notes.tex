@@ -24,9 +24,12 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{remark}[theorem]{Remark}
-\newtheorem{example}{Example}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+
 
 \newcommand{\R}{\mathbb R}
+\newcommand{\I}{\mathbb I}
 \newcommand{\Q}{\mathbb Q}
 \newcommand{\colim}{{\rm colim}}
 \newcommand{\C}{\mathbb C}
@@ -59,8 +62,33 @@ Moreover, the ``fundamental theorem''  is that the cup product of the associated
  We would like to put the representation of cohomology by submanifolds at the front and center of our treatment and from that deduce, 
  or at least interpret, these related isomorphisms.
 
-Unlike chains, singular cochains tend to be more transcendental objects.  From a pedagogical  viewpoint, one can often express cycles as in terms of explicit chains, which is basically never the case for singular cocyles.  Our work remedies this discrepancy, and  allows for geometric cochain-level understanding of a number of topics in algebraic topology including duality, Thom isomorphisms, cohomology of mapping spaces
-etc. 
+We can view our aims both pedagogical and mathematical perspectives.
+Unlike chains, singular cochains tend to be more transcendental objects.  
+From a pedagogical  viewpoint, one can often express cycles as in terms of explicit chains, which is basically never the case 
+for singular cocyles.  Our work remedies this discrepancy, and  allows for geometric cochain-level understanding of a 
+number of topics in algebraic topology including duality, Thom isomorphisms, cohomology of mapping spaces etc.   
+Mathematically, we aim for the following.
+
+\begin{definition}
+A complete presentation of a free module $V$ is a choice of spanning sets for $V$ and a collection of ${\rm Hom}(V, M_\alpha)$
+which distinguish elements of $V$, along with a calculation of the pairings between these spanning sets.
+\end{definition}
+
+\begin{exercise}
+Find a minimal collection of $M_\alpha$ when $V$ is the $n$th homology of  a space, which is finitely generated.
+\end{exercise}
+
+Our mathematical goal is to find complete presentations for homology, going beyond the calculation of isomorphism class.  
+Such can be helpful in for example calculating homomorphisms between homology groups induced by maps of spaces,
+as well as in calculating cohomology rings, a primary application.  
+
+Complete presentations are possible through $\Delta$-complex
+presentations of spaces, but such can get too large to manage (by hand or even computer), and we find them  to be less compelling
+than finding (sub)manifolds when the latter are available.  
+Any finite CW-complex is homotopy equivalent to a manifold with boundary, by  embedding the complex in Euclidean space
+and taking the closure of a nice neighborhood which retracts onto the complex, so while seemingly specialized these techniques
+can shed light on homotopy theory for limits and colimits of finite CW-complexes and in particular all CW complexes themselves.
+
 
 
 \section{Basic definitions, and a simplified version of the fundamental theorem}
@@ -119,7 +147,7 @@ We can now state a simplified version of the fundamental theorem of intersection
 Let $M$ be a manifold and $W$ be a submanifold of codimension $d$ without boundary.  
 \begin{enumerate}
 \item There is a cohomology class $[\tau_{W}] \in H^{d}(M; \Z/2)$ represented by a cochain whose value on an embedded chain $\Delta^{d} \subset M$ which intersects $W$ transversally is the mod-two count of $\Delta^{d} \cap W$.
-\item If $S$ is a submanifold whose boundary is $V \sqcup W$ then $[\tau_{V}] = [\tau_{W}]$.
+%\item If $S$ is a submanifold whose boundary is $V \sqcup W$ then $[\tau_{V}] = [\tau_{W}]$.
 \item If $V$ and $W$ intersect transversally then $[\tau_{V}] \cup [\tau_{W}] = [\tau_{V \cap W}]$.
 \end{enumerate}
 \end{theorem}
@@ -240,11 +268,11 @@ Sard's Theorem we may choose a path $\gamma_k$ in $U_k$ from $e^0_k$ to a point 
 constant map. Using the consistent cover of $\sigma$, we may extend this to a map $\bar{\sigma}:\Delta^d \rightarrow M$ such that $\bar{\sigma}$ 
 on the 0-cells is defined by the endpoints of the $\gamma_k$'s. This gives a map 
 $\left(\Delta^d \times \{0,1\} \right)\cup \left(\{e^0_k\} \times I \right)\rightarrow M$, and simplicial complexes have the homotopy extension property, 
-so can extend this to a homotopy $F: \Delta^d \times I \rightarrow M$. Then by Theorem~\ref{T:qr}, there exists a smooth homotopy $F'$ which 
+so can extend this to a homotopy $F: \Delta^d \times I \rightarrow M$. Then by Theorem ??, there exists a smooth homotopy $F'$ which 
 agrees with $F$ on the 0-cells and $\sigma'=\left.F'\right|_{\Delta^d \times \{1\}}$ is transversal to $S$.\\
 Now assume that we have a homotopy $\partial$G on the cells of dimension $<q$. If $e^q_k $ is not transversal to $S$, then we........  
 [[Use relative transversality
-extension, which is in Guillemin & Pollack (in hopefully enough generality).]]
+extension.]]
 
 
 We define $j(\sigma) = \sigma'$ and since $\left.j\right|_{C^{\pitchfork S}_{*}(M)}=id$ and the two chains are always homotopic, $C^{\pitchfork S}_{*}(M) \hookrightarrow C_{*}(M)$ is a chain deformation retraction and their homology groups are isomorphic.
@@ -261,44 +289,21 @@ P @>>> W\\
 \Delta^n @>\sigma>> M.
 \end{CD}
 $$
-The cardinality $\# P$ is to be taken as mod-two unless $M$ and $W$ are oriented, in which case $\Delta^n$ is given the  orientation with say the differences between vertices labeled by $1, \cdots, n$ and vertex $0$ (or the barycenter) serving as basis vectors, and $P$ is then oriented accordingly.
+The cardinality $\# P$ is to be taken as mod-two unless $W$  is co-oriented, that is, its normal bundle is oriented.  This occurs
+for example when it and $M$ are both oriented.  Signs are then given by the question of agreement of the co-orientation of $P$, 
+which could be a local orientation in $\Delta^n$ at each point, with the standard orientation of $\Delta^n$ given by say the differences between vertices labeled by $1, \cdots, n$ and vertex $0$ (or the barycenter) serving as a basis.
 \end{definition}
 
 We call these Thom classes\index{Thom class}, because in the standard development they are (the pushforwards of)  Thom classes of the normal bundles.  But we will use 
 them to understand both pushforward and Thom classes, rather than the other way around.
-
-In de Rham theory, Stokes' theorem shows that the exterior differential agrees with coboundary.  We have a similar result in this setting, which 
-immediately implies that preimage cochains of manifolds without boundary are cocycles.  First we recall some basic facts about preimage
-submanifolds.  The following is the Theorem on page 60 of \cite{guillemin2010differential}.
-
-\begin{lemma}
-Let $M$ be a manifold with boundary and $P$ a submanifold without boundary of $N$.  If both $f : M \to N$ and its restriction
-to $\partial M$ are transverse l to $P$ 
-then $f^{-1} (P)$ is a submanifold whose boundary is its intersection with $\partial M$.
-\end{lemma}
-
-Similarly we have the following.
-
-\begin{lemma}
-Let $M$ be a manifold without boundary and $P$ a submanifold with boundary of $N$.  If $f: M \to N$ is transverse to $P$ and $\partial P$
-then $f^{-1}(P)$ is a submanifold with boundary given by $f^{-1} (\partial P)$.
-\end{lemma}
-
-\begin{proof}[Sketch]
-Standard transversality takes care of preimage of the interior of $P$.  On the boundary, in local coordinates $P$ is given as a subspace of the
-form $(x_1, \ldots, x_\ell, 0, \ldots, 0)$ with $x_\ell > 0$.  Thus the preimage of $P$ extends and on this extension one can apply
-the Lemma on page 62 of \cite{guillemin2010differential} to get that the preimage of $P$ is a manifold with boundary.
-\end{proof}
-
 
 \begin{theorem}
 If $\partial V = W$ then $\delta \tau_{V} = \tau_{W} \in C^{*}_{\pitchfork \{V, W\}}$.  In particular, if $V$ has no boundary than $\tau_{V}$ is a cocycle.
 \end{theorem}
 
 \begin{proof}[Sketch, for now]
-Like the proof that degree is homotopy invariant, this follows from the classification of one-manifolds.  Consider $\sigma : \Delta^{n+1} \to M$.  
-Look at pull back of $W$ through $\sigma$ to get a one-manifold with boundary, by lemmas above.  
-Some boundary points are on $\partial \Delta^{n+1}$ - 
+This comes down to the classification of one-manifolds.  Consider $\sigma : \Delta^{n+1} \to M$.  
+Look at pull back of $W$ through $\sigma$ to get a one-manifold with boundary.  Some boundary points are on $\partial \Delta^{n+1}$ - 
 counting those gives 
  $\delta \tau_V (\sigma)  = \tau_V (\partial \sigma)$.  Other boundary points are in the interior, which come from the preimage of 
 $\partial V = W$, and thus correspond to $\tau_{W} (\sigma)$.
@@ -330,17 +335,34 @@ If $\partial V = W \sqcup W'$ then $[\tau_W] = [\tau_{W'}]$.
 \end{corollary}
 
 This theorem and its
-corollary recovers a classical view of cohomology, as represented by submanifolds with the relation defined by submanifolds with boundary.  But in fact
-not all cocycles are represented in this way, which was a famous question of Steenrod addressed by Renee Thom.  Our theory allows for linear combinations
-of submanifolds, and even manifolds with corners below, in which case all cohomology is representable.  The submanifold point of view led Thom
+corollary recovers a classical view of cohomology, as represented by 
+submanifolds with the relation defined by submanifolds with boundary.  But in fact
+not all cocycles are represented in this way, which was a famous question of Steenrod addressed by Renee Thom.  
+Our theory allows for linear combinations
+of submanifolds, and even manifolds with corners below, in which case all cohomology is representable.  
+The submanifold point of view led Thom
 to initiate cobordism theory, which gives generalized cohomology theories.
 
-Induced maps are a basic ingredient of cohomology theory.  In the case of Thom classes, they are geometrically defined on the cochain level.  The
+
+
+Induced maps are a basic ingredient of cohomology theory.  
+In the case of Thom classes, they are geometrically defined on the cochain level.  The
 proof of the following is immediate.
 
 \begin{proposition}\label{pullback}
 If $f : M \to N$ is transverse to $W \subset N$ then $f^{\#}(\tau_{W}) = \tau_{f^{-1} W}$.
 \end{proposition}
+
+We summarize a yoga to find complete presentations of homology of manifolds.
+First, one calculates the homology up to isomorphism, using cellular structures, exact sequences or other tools
+(such as spectral sequences, eventually).  Then one finds  cycles to produce homology, either through singular chains
+or implicitly through compact submanifolds without boundary.  [** Need to discuss this further somewhere **]   One
+also finds submanifolds, not necessarily compact, of complimentary dimension to define cohomology.  Then one
+calculates the pairing, and checks whether the homology calculated is accounted for, and goes back to produce more homology
+and cohomology until it is.
+
+
+More examples
 
 
 
@@ -349,13 +371,15 @@ If $f : M \to N$ is transverse to $W \subset N$ then $f^{\#}(\tau_{W}) = \tau_{f
 In this section we prove the following.
 
 \begin{theorem}
-If $V$ and $W$ intersect transversally, and the intersection is given the orientation... then $[\tau_{V}] \smile [\tau_W] = [\tau_{V \cap W}]$.
+If $V$ and $W$ intersect transversally, and the intersection is given the co-orientation... then $[\tau_{V}] \smile [\tau_W] = [\tau_{V \cap W}]$.
 \end{theorem}
 
-Recall that the cup product is essentially induced by the diagonal map $X \overset{\Delta}{\to} X \times X$.  Under the standard
-formulaic approach, the cohomology of a product $X \times Y$ is developed through the external cup product, namely $C^*(X) \otimes C^*(Y)$
+Recall that the cup product is essentially induced by the diagonal map $X \overset{\Delta}{\to} X \times X$.  One standard
+approach to the cohomology of a product $X \times Y$ is developed through the external cup product, namely $C^*(X) \otimes C^*(Y)$
 maps to $C^*(X \times Y)$ by sending $\alpha  \otimes \beta$ to $p^* \alpha \cup q^*\beta$, where $p$ is the projection from 
-$X \times Y$ to $X$ and $q$ is the projection to $Y$.
+$X \times Y$ to $X$ and $q$ is the projection to $Y$.  This map is an isomorphism with field coefficients or when 
+one of $X$ and $Y$ has torsion-free cohomology -- see Theorem~3.16 of Hatcher's book **, which establishes this when $X$ and
+$Y$ are CW-complexes.
 
 \begin{proposition}\label{externalcup}
 The external cup product sends $[\tau_V] \otimes [\tau_W]$ to $[\tau_{V \times W}]$
@@ -365,21 +389,74 @@ The external cup product sends $[\tau_V] \otimes [\tau_W]$ to $[\tau_{V \times W
 If $V \pitchfork W$ then $\Delta \pitchfork V \times W \subset X \times X$.  Apply Proposition~\ref{pullback}.
 \end{proof}
 
+
+In order to prove Proposition~\ref{externalcup} we need some chain-level analysis of the K\"unneth theorem, starting with 
+a subdivision of simplices which we approach through the language of partially ordered sets.
+
+\begin{definition}
+Let ${\rm Ord}(I,J)$ be the set of order preserving maps between partially ordered sets $I$ and $J$.  Let $\I$ denote the unit interval,
+with partial ordering $\leq$.  An order preserving map from $\I$ to some $J$ will be a point in  $\I^J$.  When $J$ is finite, we topologize
+${\rm Ord}(\I, J)$ as a subspace of $\I^J$.
+\end{definition}
+
+\begin{example}
+Let $[n] = \{0, \ldots, n\}$, with the standard ordering.  Then ${\rm Ord}(\I, [n]) \cong \Delta^n$.  Thus  ${\rm Ord}(I,J)$ for any $J$
+is (the realization of) a simplicial complex, called the order complex of $J$, with $n$-simplices which correspond to flags(?)
+of length $n + 1$ in $J$.
+\end{example}
+
+Because ${\rm Ord}(I,J \times K) \cong {\rm Ord}(I,J) \times {\rm Ord}(I,K)$ we can use ${\rm Ord}(\I,[n] \times [m])$
+as a model for $\Delta^n \times \Delta^m$.   
+
+\begin{exercise}
+Show that the number of maximal flags(?) in $[n] \times [m]$, which gives the number of
+$n + m$ simplices in the order complex ${\rm Ord}(\I, [n] \times [m])$ is equal to the number of shuffles of $[n]$ and $[m]$.
+\end{exercise}
+
+\begin{definition}
+Let $k_{n,m} \in C_*(\Delta^n \times \Delta^m)$ be the sum of the $n + m$ simplices in the order complex ${\rm Ord}(\I, [n] \times [m])$
+with signs given by...  
+
+Let 
+\end{definition}
+
+
 \begin{proof}[Proof of Proposition~\ref{externalcup}]
 Recall K\"unneth theorem that  $C_*(X) \otimes C_*(Y) \to C_*(X \times Y)$ given by (subdividing) products of simplices in $X$ and $Y$ is an
-isomorphism on homology.  Then show that $p^* \tau_V \cup q^* \tau_W$ and $\tau_{V \times W}$ agree on this subcomplex, which is has an immediate
+isomorphism on homology.  
+
+Then show that $p^* \tau_V \cup q^* \tau_W$ and $\tau_{V \times W}$ agree on this subcomplex, which is has an immediate
 geometric proof.
 \end{proof}
 
 \section{Examples}
 
-We make some calculations 
-It is more standard to establish fundamental classes in homology, rather than Thom classes.  But we see that Thom classes are just as natural if not moreso.
-The following is immediate from the definitions.
+Recall from Theorem~3.26 of Hatcher** the notion of fundamental class of of manifold, which  is much more common to 
+develop than Thom classes.  
+But we see that Thom classes are just as natural if not more so.
+
+
+\begin{proposition}\label{top_cohomology}
+The value of a Thom cocycle associated to a zero-dimensional submanifold on the fundamental class of a compact manifold without
+boundary  is given by 
+the signed count of the submanifold.
+\end{proposition}
+
+\begin{proof}
+Use characterization of fundamental class as restricting to generators of local homology to reduce to the pair $(\R^n, \R^n - 0)$,
+which is easy to analyze.
+\end{proof}
+
+Remark that this is immediate if the manifold is triangulated.
 
 \begin{proposition}
-The value of a Thom class on  a fundamental class given by triangulating a submanifold is given by intersection.
+The value of a Thom class $[\tau_W]$ on  a fundamental class of a submanifold is given by signed intersection with 
+(or more generally preimage of) $W$
 \end{proposition}
+
+\begin{proof}
+Use naturality of evaluating cohomology on homology, and then apply Proposition~\ref{top_cohomology}
+\end{proof}
 
 
 \subsection{Projective spaces}\index{projective space}
