@@ -3,8 +3,7 @@
 
 %\usepackage{amsmath,amsthm}     % Handy math stuff, theorem environments.
 \usepackage{amssymb, amscd}            % Fancy math symbols.
-\usepackage{pstricks,pstricks-add}	% Pretty pictures
-\usepackage{float}	% Allows finer control over placement of figures than the default automatic placement style
+
 
 \newcommand{\Z}{{\mathbb{Z}}}
 
@@ -37,7 +36,6 @@
 \newcommand{\ext}{{\rm Ext}}
 \newcommand{\injext}{{\rm InjExt}}
 \newcommand{\Hom}{{\rm Hom}}
-\newcommand{\RP}{\mathbb{R}\mathrm{P}}
 
 \begin{document}
 
@@ -49,8 +47,8 @@
 
 We present a treatment of elementary intersection theory in algebraic topology.  
 That is, we aim to show how one can  
-define cochains through counting intersection with submanifolds.  
-Moreover, the ``fundamental theorem''  is that the cup product of the associated
+define cochains through counting intersection with or more generally preimages of
+submanifolds.  Moreover, the ``fundamental theorem''  is that the cup product of the associated
  cohomology classes is represented by the (transversal) intersection of submanifolds.  
  Students are often told that cup product is named so because of this 
  fact, but we feel it is given relatively short shrift.  It is usually proved after development of duality or a Thom isomorphism theorem.  
@@ -66,42 +64,118 @@ etc.
 Before developing the background in differential topology needed, we illustrate the technique by using simplified definitions.
 
 \begin{definition}
-Manifold, submanifold.
+	A subset $M$ of Euclidean space $\R^n$ is called a (smooth) $k$-dimensional manifold if it is locally diffeomorphic to $\R^k$; that is, for every point in $M$ there is a neighborhood of that point which is diffeomorphic to $\R^k$.  
 \end{definition}
+
+We often omit the word ``smooth," and that qualifier will be assumed throughout these notes unless otherwise stated. There are a number of different ways to describe manifolds, and in particular we will find it useful to describe them via ``parametrizations" and via solution sets to various equations. The latter definition takes more machinery to justify, but we will illustrate an early example for motivation.
+
+Establishing local diffeomorphisms which make a set $M\subset \R^n$ into a manifold does more than simply establishing that $M$ is a manifold, but provides machinery allowing us to establish other properties of $M$. We call a map $\phi: \R^k \rightarrow M$ which is a diffeomorphism onto its image $U$ a \textit{parametrization} of its image. We could equivalently replace $\R^k$ with an open subset of $\R^k$ if we desired. The inverse map $\phi^{-1}:U\rightarrow \R^k$ is called a \textit{coordinate system} on $U$, and the pairing $(U, \phi)$ is called a \textit{chart}. The existence of a collection of charts $\{ (U_\alpha, \varphi_\alpha) | \alpha \in A\}$ such that $\bigcup_{\alpha\in A}U_\alpha = M$ is equivalent to the condition that $M$ is a manifold. Such a collection is called an \textit{atlas}. In the case where $M$ is compact, every atlas can be reduced to finitely many charts. We can use parametrizations and charts to prove that a space is a manifold by covering it with a collection of diffeomorphisms from $\R^k$.
+
+\begin{example}
+	$S^1 = \{(x,y)\in \R^2 | x^2 + y^2=1\}$ is a manifold with dimension $1$. \\
+	
+	We can exhibit four parametrizing maps from $(-1,1)$ into $S^1$. Given $x \in (-1,1)$, the map onto the upper open semicircle given by $x\mapsto(x, \sqrt{1-x^2})$ is smooth. We can define a similar map on to the lower open semicircle given by $x \mapsto (x, 1-\sqrt{1-x^2})$. These two maps alone \textit{do not} show that $S^1$ is a manifold: The points at $(1,0)$ and $(-1,0)$ are not in the image of either map. Two similar maps sending $(-1,1)$ smoothly onto the left and right open semicircles completes a parametrization of $S^1$.  
+	
+	[image here]
+	
+	Since $(-1,1)$ is diffeomorphic to $\R$ this proves that $S^1$ is a manifold and establishes that the dimension of $S^1$ is 1. \\
+\end{example} 
+
+\begin{example}
+	$\R P^n$ can be covered by precisely $n+1$ charts. Consider $\R P^n$ as $\R^{n+1} \backslash \{0\}$ under the equivalence relation $(x_1,..., x_{n+1})\sim (ax_1,...,ax_{n+1})$ for $a \in \R$. Define $U_i$ as the subset of $\R P^n$ given by all elements whose $i$th coordinate is nonzero. In $U_i$, each element has a unique representative such that $x_i=1$, written as $[x_0,...,x_{i-1},1,x_{i+1},...x_{n+1}]$. This gives us a way to embed the charts $U_i$ as copies of $\R^n$ into $\R^{n+1}$ by setting the $i$th component equal to 1. This establishes that $\R P^n$ is an $n$-manifold. A visualization of the subspaces of $\R P^2$  which result from this process, depicted on the well-known cellular structure, is shown below.
+	
+	[image here]  
+	
+\end{example}
+
+\begin{example}
+	The set $S$ of all points in $\R^2$ given by ${(x,y)|xy=\epsilon, \epsilon\neq 0}$ is a $1$-manifold parametrized by the two maps $x \mapsto \frac{\epsilon}{x}$ for $x\in (0,\infty)$ and $x \in (-\infty,0)$. The solution set when $\epsilon = 0$ is not a manifold, however, because no neighborhood containing $(0,0)$ is locally diffeomorphic to $\R$: Removing the point $(0,0)$ from any such neighborhood results in four connected components, not two.  
+	
+	[image here]
+\end{example}
 
 \begin{definition}
-Tangent bundle and tangent vector of a submanifold.
+	A subset $N\subseteq M\subseteq \R^n$ is called a submanifold of $M$ if $N$ is also a manifold.
 \end{definition}
 
+Note, in particular, that if $N$ is a submanifold of $M$ that $N$ and $M$ do not need to have the same dimension, and it is generally more interesting when they do not: it is a fact that if $N$ is a compact submanifold of a connected manifold $M$ with the same dimension, then $N=M$. 
+
+We next present an initial discussion of tangent spaces, for manifolds embedded in Euclidean space. Tangent spaces are fundamental to many of the definitions related to intersection theory that we will see later.
+
+Let $M$ be a smooth submanifold of $\R^n$. 
+\begin{definition}
+Let $x\in M$ be a point. Fix a local parametrization $\phi:U\to X$ mapping an open subset $U\subseteq\R^k$ to a neighbourhood of $x$. We take $\phi(0)=x$ without loss of generality. A \emph{tangent vector at $x$} is an element of the vector space $T_x M$, which is defined to be the image of the map $d\phi_0:U\to X$.
+\end{definition}
+We note that this definition of $T_xM$ makes sense, since $U$ and $X$ are subsets of the vector spaces $\R^k$ and $\R^n$ respectively, and $d\phi$ is a linear map.
+\begin{definition}
+Our first definition of \emph{the tangent bundle of $M$} is given as the following subset of $M\times\R^n$:
+\[
+TM:=
+\{
+(x,v)~|~x\in M,~v\in T_x M
+\}.
+\]
+\end{definition}
+One of the first things we can ask about a tangent bundle $TM$ is whether or not it is trivial. To answer this question, we have to determine if $TM$ is isomorphic as a vector bundle to the trivial bundle $M\times \R^n$. To develop some familiarity with tangent bundles, we investigate the triviality of the bundles $TS^1$ and $TS^2$.
+\begin{example} We argue that $TS^1$ is isomorphic to the trivial bundle $S^1\times\R$.
+	We think of $S^1$ as being the unit circle in $\C$ and note that for each $x\in S^1$, the vector $ix$ is a rotation of $x$ by $\pi/2$. Defining $v_x$ to be the vector $ix$ with tail starting at $x$ gives us a continuous nonzero vector field on $S^1.$ Using this vector field, we can define a map
+	\begin{align*}
+	S^1\times\R&\to TS^1,\\
+	(x,t)&\mapsto (x,tv_x),
+ 	\end{align*}
+ 	which is clearly a homeomorphism. Furthermore, the map sending $\{x\}\times\R$ to the tangent line at $x$ is a linear isomorphism. This tells us that our homeomorphism defines an isomorphism of $S^1$-bundles, and so $TS^1$ is trivial.
+\end{example}
+\begin{example}[cf. Hatcher vector bundles book]
+	The tangent bundle $TS^2$ is nontrivial, which we show by constructing $TS^2$ via a clutching map $f$. Denote the closed upper hemisphere of $S^2$ by $D_+^2$, and the closed lower hemisphere by $D_-^2$. For nonzero $v_+\in T_{(0,1,0)}S^2$ in the tangent space of the north pole of $S^2$, we can define a vector field on $D_+^2$ by sliding $v_+$ down each great circle through $(0,1,0)$ to the equator, keeping the angle between $v_+$ and the great circle constant. Let $w_+$ be the rotation in $T_{(0,1,0)}S^2$ of $v_+$ by $\pi/2$, and define a similar vector field on $D^2_+$ using this $w_+$. Then $v_+,w_+$ both give trivializations of $TS^2$ on $D_+$. For nonzero $v_-\in T_{(0,-1,0)}S^2$ in the tangent space of the south pole of $S^2$ we can define a vector field on $D_-^2$ by sliding $v_-$ up along each great circle through $(0,-1,0)$ to the equator. Rotating $v_-$ by $\pi/2$ in the tangent plane, we obtain a vector field $w_-$ on $D^2_-$, and now have trivializations of $TS^2$ on $D_-^2$ given by $v_-,w_-$. 
+	
+	Now, extending $D_+^2,D_-^2$ and the corresponding vector fields $v_-,v_+,w_-,w_+$ by $\epsilon$-neighborhoods past the equator lets us consider these vector fields along the equatorial $S^1$. The tangent space $TS^2$ can then be recovered as a quotient of $D_+^2\times\R^2\sqcup D_-^2\times\R^2$ if we can figure out a way to identify the vector field points along the equator. The function that does this is the map $f:S^1\to\text{GL}_2(\R)$ defining the rotation needed to send the vectors $v_+,w_+$ to $v_-,w_-$. So in fact this map actually goes to $S^1$, since any rotation matrix gives a point on $S^1$. This $f$ is by definition a ``clutching function". Now, as we traverse $S^1$ and track the angle by which the pairs of vectors differ, we can see that the angle goes from 0 to $4\pi$. This tells us that the map $f$ as a map $S^1\to S^1$ has degree 2. From this we conclude that the tangent bundle $TS^2$ is nontrivial, since looking at the restriction of the transition map of the trivial bundle $S^2\times\R^2$ to the equatorial $S^1$ should be the identity map.
+\end{example}
+Our definition of tangent space used the well-known derivative defined on Euclidean space. It is also useful to have a notion of derivative for smooth maps between abstract manifolds, which we define now.
+\begin{definition}
+For  a smooth map $f\colon M\rightarrow N$ between manifolds (of dimensions $m$ and $n$, respectively, not necessarily embedded in some ambient Euclidean space), the \emph{derivative of $f$ at $x$} is a linear map $df_x\colon T_xM\rightarrow T_{f(x)}M$ which serves as the ``best linear approximation'' of $f$ in a neighborhood of $x$. This map is defined as follows: Suppose $f(x)=y$, and let $\phi\colon U\rightarrow M$ and $\psi\colon V\rightarrow N$ be local parameterizations of $x$ and $y$, respectively (where $U\subseteq \R^m$ and $V\subseteq \R^n$). We may assume without loss of generality $\phi(0)=x$ and $\psi(0)=y$. For sufficiently small $U$, we get the following commutative diagram
+$$
+\begin{CD}
+M @>f>> N\\
+@A\phi AA  @AA\psi A\\
+U @>>h=\psi^{-1}\circ f\circ \phi> V
+\end{CD}
+$$
+We now apply the derivative to the above diagram. The chain rule guarantees that commutativity is preserved.
+$$
+\begin{CD}
+T_xM @>df_x>> T_{f(x)}N\\
+@Ad\phi_0 AA  @AAd\psi_0 A\\
+\R^m @>>dh_0> \R^n
+\end{CD}
+$$
+Observe that $dh_0$ is the usual derivative between subsets of Euclidean space. Since $d\phi_0$ is a diffeomorphism, we write
+\[df_x=d\psi_0\circ dh_0\circ d\phi_0^{-1}\]
+\end{definition}
+\begin{definition}
+For a smooth map of manifolds $f\colon M\rightarrow N$, we say that $f$ is an \emph{immersion} if for every $x\in M$ we have that $df_x\colon T_xM\rightarrow T_{f(x)}N$ is an injective map.
+\end{definition}
+For maps between manifolds where $\dim M\leq \dim N$, being an immersion is the strongest condition we can put on the derivative. It is important to note that an immersion $f:M\to N$ may not actually be injective. When an immersion is injective and proper (proper means that the preimage of any compact set is compact), we have the following theorem, which helps us construct submanifolds.
+\begin{theorem}
+Let $f\colon M\rightarrow N$ be a proper injective immersion. Then $f$ maps $M$ diffeomorphically onto a submanifold of $N$.
+\end{theorem}
+\begin{proof}
+	See Guillemin and Pollack p. 17.
+\end{proof}	
+If $\dim M\geq \dim N$, then we can instead ask for the derivative of a smooth map $f:M\to N$ to be surjective. In this case, we have the following theorem.
+\begin{theorem}
+Let $f\colon M\rightarrow N$ be a smooth map between manifolds, and let $y\in N$. Suppose that for all $x\in f^{-1}(y)$ we have $df_x$ is surjective. Then $f^{-1}(y)$ is a submanifold of $M$.
+\end{theorem}
+\begin{proof}
+	See Guillemin and Pollack p. 21.
+\end{proof}	
+In the above theorem, if the condition put on $f^{-1}(y)$ holds, we call $y$ a \emph{regular value} of $f$. 
+
+\begin{example}
+Consider the smooth map $f\colon\R^{n+1}\rightarrow \R$ given by $(x_1,\dots ,x_{n+1})\mapsto x_1^2+\cdots +x_{n+1}^2$. Every nonzero element in $f^{-1}(1)$ has nonzero (ie. surjective) derivative. This is because if $a=(a_0,\dots ,a_n)$, then $df_{a}$ has Jacobian matrix $(2a_0,\dots ,2a_n)$. This linear map is surjective unless $f(a)=0$. So the preimage $f^{-1}(1)=S^n$ is a submanifold of $\R^n$.
+\end{example}
 \begin{definition}
 Transversal intersection of submanifolds.
 \end{definition}
-\begin{figure}[H]
-	\begin{center}
-		\begin{pspicture}(0.5,-0.5)(3.5,3.5)			
-		\pspolygon(-2,1)(0,1)(1,2)(-1,2)
-		\psline(-.5,0)(-.5,1)
-		\psline[linestyle=dashed,dash=1.3pt](-.5,1)(-.5,1.5)
-		\pscircle*(-.5,1.5){1pt}
-		\psline[linecolor=white,linewidth=1.2pt](-.47,2)(-.53,2)
-		\psline(-.5,1.5)(-.5,3)	
-		\rput(-3,1.5){\textup{a)}}
-		
-		
-		\pspolygon(4,1)(4,-.25)(5.2,.75)(5.2,2)
-		\psline[linecolor=white,linewidth=1.2pt](5.2,1.2)(5.2,2)
-		\psline[linestyle=dashed,dash=1.3pt](5.2,1.2)(5.2,2)
-		\pspolygon(3,1)(5,1)(6.2,2)(4.2,2)
-		\psline[linecolor=white,linewidth=1.2pt](4.2,2)(5.2,2)
-		\psline[linecolor=white,linewidth=1.2pt](4,1.83)(4.2,2)
-		\psline[linestyle=dashed,dash=1.3pt](4,1.83)(4.2,2)
-		\psline[linestyle=dashed,dash=1.3pt](4.2,2)(5.2,2)
-		\pspolygon(4,1)(4,2.25)(5.2,3.25)(5.2,2)
-		\rput(2,1.5){\textup{b)}}
-		\end{pspicture}
-	\end{center}
-	\caption{Examples of transversally intersecting submanifolds of $\R^3$: \textup{a)} the plane $z=0$ and the line $x=y=0$ and \textup{b)} the planes $z=0$ and $y=0$.}
-\end{figure}
 
 \begin{definition}
 Codimension.
@@ -117,7 +191,7 @@ We can now state a simplified version of the fundamental theorem of intersection
 Let $M$ be a manifold and $W$ be a submanifold of codimension $d$ without boundary.  
 \begin{enumerate}
 \item There is a cohomology class $[\tau_{W}] \in H^{d}(M; \Z/2)$ represented by a cochain whose value on an embedded chain $\Delta^{d} \subset M$ which intersects $W$ transversally is the mod-two count of $\Delta^{d} \cap W$.
-\item If $S$ is a submanifold whose boundary is $V \sqcup W$ then $[\tau_{V}] = [\tau_{W}]$.
+\item If $S$ is a submanifold whose boundary is $V \bigsqcup W$ then $[\tau_{V}] = [\tau_{W}]$.
 \item If $V$ and $W$ intersect transversally then $[\tau_{V}] \cup [\tau_{W}] = [\tau_{V \cap W}]$.
 \end{enumerate}
 \end{theorem}
@@ -136,7 +210,7 @@ $\R^{3}$ with the z-axis removed along with either a linked or unlinked $S^{1}$.
 A two-holed torus
 \end{example}
 \begin{example}
-$\RP^{n}$ and application to no retraction.
+$\R P^{n}$ and application to no retraction.
 \end{example}
 
 \subsection{Comparison with other approaches to cochains}
@@ -147,79 +221,11 @@ Focus on torus example.  Both simplicial and de Rham  generally assess ``tolls''
 crosses a submanifold.  
 
 
-\section{Transversality and preimage cochains}
-
-(Adapted from treatment by Dominic Joyce in ``On manifolds with corners.'')
-
-We operate at the interface of smooth and simplicial topology, which requires considering simplices as manifolds with corners.
-Let $\R^+$ be the subset of non-negative real numbers, and let $\R^{k,\ell} = \R^k \times (\R^+)^\ell$.  A smooth map between
- subspaces of Euclidean spaces is the restriction of such between some neighborhoods of those subspaces, in which case
- the derivative exists and we can define diffeomorphism as usual.
+\section{Transversality and intersection cochains}
 
 \begin{definition}
-A manifold with corners is a paracompact Hausdorff space $M$ with (a maximal collection of) charts $\phi_\alpha : U_\alpha \to M$
-with $U_\alpha$ open in  $\R^{0,n}$
-such that the transition maps $\phi_\beta^{-1} \circ \phi_\alpha$ are diffeomorphisms between $\phi_\alpha^{-1} ({\rm Im} \phi_\beta)$
-and $\phi_\beta^{-1} ({\rm Im} \phi_\alpha)$.  
-\end{definition}
-
-An important non-example for the theory of manifolds with corners is the map $\R^{0,2} \to \R^{1,1}$ 
-which in polar coordinates multiplies the angle
-with the $x$-axis by two, which while being smooth is not a diffeomorphism at the origin.
-
-The tangent bundle can be defined in any of the ways in which one defines it for manifolds. 
-
-\begin{lemma}
-Every point $x$ in a manifold with corners $M$ 
-has a neighborhood diffeomorphic to (a neighborhood of $0$ in) 
-$\R^{k,\ell}$ for some unique $k + \ell = n$.  The number $\ell$
-is called the depth of $x$.
-\end{lemma}
-
-For example, the depth $0$ points are also known as the interior of $M$.
- 
-A key structure to consider for a manifold with corners is its partition into connected subspaces with fixed depth, which is sometimes
-called a stratification.  In the case of polytopes such as the cube this is essentially the facet structure.   A delicate issue is how to take a
-``closure'' of such facets or strata for general manifolds with corners, for which we rely on the tangent bundle.
-
-\begin{definition}
-A codimension-$i$ facet subspace of $T_0 \R^{k,\ell} \cong \R^{k+\ell}$ is a linear subspace in which a fixed nonempty 
-subset of cardinality $i$ of the 
-coordinates which correspond to coordinates in $(\R^+)^\ell$  are zero.
-\end{definition}
-
-Thus $T_0 R^{k,\ell}$ has $2^\ell - 1$ facet subspaces total, over all codimensions.
-
-\begin{definition}
-A facet subspace of $T_x M$ is the image of some facet subspace of $T_0 R^{k,\ell}$ under the derivative $D \phi$ of a chart $\phi$ about $x$.
-\end{definition}
-
-A facet subspace thus consists of vectors which are tangent to a stratum containing $x$ in its closure.  
-While there is a unique minimal one, given by the image of the stratum containing $x$ itself, we need to consider the full poset of such
-subspaces.
- 
-
-\begin{definition}
-A boundary facet of a manifold with corners $M$ is a maximal manifold with corners $F$ with an immersion 
-$\iota_F : F \to M$, injective on the interior of $F$, such that $D\iota_F$ maps $TF$ injectively to a subbundle of facet 
-subspaces of $TM$.  
-\end{definition}
-
-Example: $\Delta^n$
-
-The only examples we need to consider are $M$ for which the facet immersions $\iota_F$ are embeddings, as happens for polytopes.
-Such $M$ are called manifolds with embedded corners.  
-The ``teardrop'' subspace of $\R^2$ (homeomorphic to a disk, with a single corner) is  a typical example of a manifold with corners
-which does not have embedded corners.
-
-Constructions such as products and (good) intersections of manifolds with corners are rich because of the interplay of the stratifications in 
-a manifold-with-corners structure on the result.  Consider, for example, a generic linear intersection between a solid cube and the 
-boundary of a tetrahedron.
-We will not take the opportunity to enjoy working through this, because the submanifolds-with-corners we need have dimension
-zero or one, and thus have at most boundaries.
-
-
 Transversality more generally.
+\end{definition}
 
 \begin{definition}
 Let $M$ be a manifold and $f : W \to M$ an immersion. Then $C^{\pitchfork W}_{*}(M)$ is the subset of $C_{*}(M)$ generated by the chains whose image is transversal to $f$. More generally, if $S$ is a  finite set of immersed submanifolds of $M$ then $C^{\pitchfork S}_{*}$ is generated by the chains whose image is transversal to each $W \in S$.
@@ -276,25 +282,6 @@ counting those gives
  $\delta \tau_V (\sigma)  = \tau_V (\partial \sigma)$.  Other boundary points are in the interior, which come from the preimage of 
 $\partial V = W$, and thus correspond to $\tau_{W} (\sigma)$.
 \end{proof}
-
-\begin{figure}[H]
-	\begin{center}
-		\begin{pspicture}(0.5,-0.5)(3.5,3.5)			
-		\pspolygon[linewidth=1.2pt](0,0)(4,0)(2,3.46410161514)
-		\psarc[linecolor=orange!90,linewidth=1.2pt](0.66666,1.15470053838){1.5em}{-120}{60}
-		\pscurve[linecolor=orange!90,linewidth=1.2pt](1.33333,2.3094017676)(1.7,2)(1.9,2.1)(2.45,1.7)
-		\psdot[linecolor=red!90,fillcolor=red!90](0.41,0.7)
-		\psdot[linecolor=red!90,fillcolor=red!90](0.93,1.6)
-		\psdot[linecolor=red!90,fillcolor=red!90](1.3333,2.3094)
-		\psdot[linecolor=blue!70!violet!60,fillcolor=red!50](2.44,1.7)
-		\psline[linecolor=orange!90,linewidth=1.2pt](2,1.5)(3,1)
-		\psdot[linecolor=blue!80!violet!60,fillcolor=red!50](2,1.5)
-		\psdot[linecolor=blue!80!violet!60,fillcolor=red!50](3,1)
-		\psccurve[linecolor=orange!90,fillcolor=red!90](1.5,0.5)(1.8,0.35)(2,0.5)(2.2,0.35)(2.5,0.5)(2,1)
-		\end{pspicture}
-	\end{center}
-\caption{Example in the case $n=1$ with $\sigma^{-1}(V)$ in orange, points in $\left(\left.\sigma\right|_{\partial\Delta^2}\right)^{-1}(V)$ marked in red, and those in $\sigma^{-1}(\partial V)$ marked in blue.}
-\end{figure}
 
 By abuse, we denote by $[\tau_{W}]$ the corresponding singular cohomology class under the isomorphism established in Theorem~\ref{T:qi}.
 
@@ -359,7 +346,7 @@ The value of a Thom class on  a fundamental class given by triangulating a subma
 
 \subsection{Grassmannians}
 
-\subsection{Complements of submanifolds which are boundaries}
+\subsection{Compliments of submanifolds which are boundaries}
 
 \subsection{Configuration spaces}
 
@@ -370,3 +357,16 @@ The value of a Thom class on  a fundamental class given by triangulating a subma
 \end{document}
 
  
+© 2018 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+API
+Training
+Shop
+Blog
+About
+Press h to open a hovercard with more details.
