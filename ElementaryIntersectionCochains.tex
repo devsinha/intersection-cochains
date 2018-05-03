@@ -44,6 +44,8 @@
 \newcommand{\CP}{\mathbb{C}\mathrm{P}}
 \newcommand{\codim}{{\rm codim}}
 \newcommand{\Gr}{\mathrm{Gr}}
+\newcommand{\pdiff}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\diff}[2]{\frac{d #1}{d #2}}
 
 \makeindex
 \begin{document}
@@ -116,7 +118,7 @@ Establishing local diffeomorphisms which make a set $M\subset \R^n$ into a manif
 \end{example} 
 
 \begin{example}
-	$\R P^n$ can be covered by precisely $n+1$ charts. Consider $\R P^n$ as $\R^{n+1} \backslash \{0\}$ under the equivalence relation $(x_1,..., x_{n+1})\sim (ax_1,...,ax_{n+1})$ for $a \in \R$. Define $U_i$ as the subset of $\R P^n$ given by all elements whose $i$th coordinate is nonzero. In $U_i$, each element has a unique representative such that $x_i=1$, written as $[x_0,...,x_{i-1},1,x_{i+1},...x_{n+1}]$. This gives us a way to embed the charts $U_i$ as copies of $\R^n$ into $\R^{n+1}$ by setting the $i$th component equal to 1. This establishes that $\R P^n$ is an $n$-manifold. A visualization of the subspaces of $\R P^2$  which result from this process, depicted on the well-known cellular structure, is shown below.
+	$\RP^n$ can be covered by precisely $n+1$ charts. Consider $\RP^n$ as $\R^{n+1} \backslash \{0\}$ under the equivalence relation $(x_1,..., x_{n+1})\sim (ax_1,...,ax_{n+1})$ for $a \in \R$. Define $U_i$ as the subset of $\RP^n$ given by all elements whose $i$th coordinate is nonzero. In $U_i$, each element has a unique representative such that $x_i=1$, written as $[x_0,...,x_{i-1},1,x_{i+1},...x_{n+1}]$. This gives us a way to embed the charts $U_i$ as copies of $\R^n$ into $\R^{n+1}$ by setting the $i$th component equal to 1. This establishes that $\RP^n$ is an $n$-manifold. A visualization of the subspaces of $\RP^2$  which result from this process, depicted on the well-known cellular structure, is shown below.
 	
 	[image here]  
 	
@@ -150,7 +152,20 @@ TM:=
 \}.
 \]
 \end{definition}
-One of the first things we can ask about a tangent bundle $TM$ is whether or not it is trivial. To answer this question, we have to determine if $TM$ is isomorphic as a vector bundle to the trivial bundle $M\times \R^n$. To develop some familiarity with tangent bundles, we investigate the triviality of the bundles $TS^1$ and $TS^2$.
+\begin{proposition}
+	If $M$ is a smooth $n$-manifold, the tangent bundle $TM$ admits the structure of a smooth $2n$-manifold with respect to which the canonical projection map $\pi:TM\to M$ is smooth.
+\end{proposition}
+\begin{proof}[Sketch]
+	Choose an atlas of charts $\{(U_\alpha,\varphi_\alpha)\}$ for $M$. Fixing a chart $(U_\alpha,\varphi_\alpha)$, say with co\"{o}rdinate functions $x^1,\dots,x^n$, we have that $\pi^{-1}(U_\alpha)=\{(x,v):x\in U_\alpha,v\in T_xM\}$. Define a map $\widetilde{\varphi}_\alpha:\pi^{-1}(U_\alpha)\to\R^{2n}$ by\begin{align*}
+	\widetilde{\varphi}_\alpha\left(\sum_{i}v^i\left.\pdiff{}{x^i}\right|_p\right)=\left(x^1(p),\dots,x^n(p),v^1,\dots,v^n\right).
+	\end{align*}Note that $\widetilde{\varphi}_\alpha$ is a bijection onto its image with inverse\begin{align*}
+	\widetilde{\varphi}^{-1}_\alpha\left(x^1,\dots,x^n,v^1,\dots,v^n\right)=\sum_{i}v^i\left.\pdiff{}{x^i}\right|_{\varphi^{-1}(x^1,\dots,x^n)}
+	\end{align*} and $\widetilde{\varphi}_\alpha(\pi^{-1}(U_\alpha))=\varphi_\alpha(U_\alpha)\times\R^n$ which is open since $(U_\alpha,\varphi_\alpha)$ is a chart. One may then show that if we are given two charts $(U_\alpha,\varphi_\alpha)$ and $(U_\beta,\varphi_\beta)$ with co\"{o}rdinate functions $\{x^i\}$ and $\{y^j\}$, respectively, then the transition function $\widetilde{\varphi}_{\alpha\beta}=\widetilde{\varphi}_\beta\circ\widetilde{\varphi}_\alpha:\varphi_\alpha(U\cap V)\times\R^n\to\varphi_\beta(U\cap V)\times\R^n$ is given by\begin{align*}
+	\widetilde{\varphi}_{\alpha\beta}\left(x^1,\dots,x^n,v^1,\dots,v^n\right)=\left(y^1(x),\dots,y^n(x),\sum_{i}v^i\pdiff{y^1}{x^i}(x),\dots,\sum_{i}v^i\pdiff{y^n}{x^i}(x)\right),
+	\end{align*}which is smooth. The collection $\{(\pi^{-1}(U_\alpha),\widetilde{\varphi}_\alpha)\}$ then gives a smooth atlas of charts for $TM$. Moreover, in a given chart $(\pi^{-1}(U_\alpha),\widetilde{\varphi}_\alpha)$ with co\"{o}rdinates $x=(x^1,\dots,x^n)$, the projection map $\pi$ is given by $\pi(x,v)=x$ which is clearly smooth.
+\end{proof}
+
+One of the first questions one can ask about a tangent bundle $TM$ is whether or not it is trivial. To answer this question, we have to determine if $TM$ is isomorphic as a vector bundle to the trivial bundle $M\times \R^n$. To develop some familiarity with tangent bundles, we investigate the triviality of the bundles $TS^1$ and $TS^2$.
 \begin{example} We argue that $TS^1$ is isomorphic to the trivial bundle $S^1\times\R$.
 	We think of $S^1$ as being the unit circle in $\C$ and note that for each $x\in S^1$, the vector $ix$ is a rotation of $x$ by $\pi/2$. Defining $v_x$ to be the vector $ix$ with tail starting at $x$ gives us a continuous nonzero vector field on $S^1.$ Using this vector field, we can define a map
 	\begin{align*}
