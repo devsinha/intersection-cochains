@@ -152,6 +152,30 @@ TM:=
 \}.
 \]
 \end{definition}
+\begin{definition}
+	If a manifold $M$ is presented abstractly, rather than as a subset of $\R^n$, then a more natural --- though far less intuitive --- definition of the tangent space $T_xM$ is that it is the \textit{space of derivations at $x$}, which is to say the space of all linear maps $v:C^\infty(M)\to\R$ which satisfy\begin{align*}
+	v(fg)=f(x)v(g)+g(x)v(f)
+	\end{align*}for all $f,g\in C^\infty(M)$.
+\end{definition}
+\begin{example}
+	Suppose that $v\in\R^n$ and define $D_v:C^\infty(\R^n)\to C^\infty(\R^n)$ by $(D_vf)(x)=\left.\diff{}{t}f(x+tv)\right|_{t=0}$, then, given $x\in\R^n$, the map $\left.D_v\vphantom{\diff{}{x}}\right|_x:f\mapsto (D_vf)(x)$ is a derivation at $x$.
+\end{example}
+\begin{exercise}
+	Verify that $\left.D_v\vphantom{\diff{}{x}}\right|_x$ is a derivation at $x$ for all $x,v\in\R^n$.
+\end{exercise}
+\begin{exercise}
+	Show, using this definition, that $T_xM$ is a vector space.
+\end{exercise}
+\begin{proposition}
+	If $M$ is a smooth $n$-manifold and $(U,\varphi)$ is a co\"{o}rdinate chart on $M$, then, for any $x\in U$, the derivations\begin{align*}
+	\left.\pdiff{}{x^i}\right|_x=\left(d\varphi_x\right)^{-1}\left(\left.\pdiff{}{x^i}\right|_{\varphi(x)}\right)
+	\end{align*}form a basis for $T_xM$, where $\left.\pdiff{}{x^i}\right|_{\varphi(x)}=\left.D_{e_i}\right|_{\varphi(x)}$ and $e_i=(0,\dots,1,\dots,0)$ is the $i^\text{th}$ standard unit basis vector for $\R^n$. Moreover, given $f\in C^\infty(U)$,\begin{align*}
+	\left.\pdiff{}{x^i}\right|_xf=\pdiff{\widehat{f}}{x^i}(\varphi(x)),
+	\end{align*}where $\widehat{f}=f\circ\varphi^{-1}$ is the co\"{o}rdinate representation of $f$ in $(U,\varphi)$.
+\end{proposition}
+\begin{proof}
+	Exercise.
+\end{proof}
 \begin{proposition}
 	If $M$ is a smooth $n$-manifold, the tangent bundle $TM$ admits the structure of a smooth $2n$-manifold with respect to which the canonical projection map $\pi:TM\to M$ is smooth.
 \end{proposition}
