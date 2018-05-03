@@ -6,6 +6,9 @@
 \usepackage{pstricks,pstricks-add}	% Make pretty pictures with PostScript
 \usepackage{float}	% Allows finer control over placement of figures than the default automatic placement style
 \usepackage{imakeidx} % Index
+\usepackage{todonotes} % Allows one to add both in-line and marginal notes as well as a list of 'to-dos' Example syntax: \todo[color=blue!25,inline]{Edit.}
+%this example produces an in-line to-do which says "Edit." and which is colored blue with 25% color saturation. Omitting 'inline' from the syntax produces a to-do in the margin. Warning: the default color is an awful shade of violently bright orange!
+
 \newcommand{\Z}{{\mathbb{Z}}}
 
 \textwidth = 6.5 in
@@ -91,9 +94,10 @@ presentations of spaces, but such can get too large to manage (by hand or even c
 than finding (sub)manifolds when the latter are available.  
 Any finite CW-complex is homotopy equivalent to a manifold with boundary, by  embedding the complex in Euclidean space
 and taking the closure of a nice neighborhood which retracts onto the complex, so while seemingly specialized these techniques
-can shed light on homotopy theory for limits and colimits of finite CW-complexes and in particular all CW complexes themselves.
+can shed light on homotopy theory for limits and colimits of finite CW-complexes and in particular all CW complexes themselves.\newpage
 
-
+\tableofcontents
+\newpage
 
 \section{Basic definitions, and a simplified version of the fundamental theorem}
 
@@ -164,7 +168,7 @@ TM:=
 	Verify that $\left.D_v\vphantom{\diff{}{x}}\right|_x$ is a derivation at $x$ for all $x,v\in\R^n$.
 \end{exercise}
 \begin{exercise}
-	Show, using this definition, that $T_xM$ is a vector space.
+	Show that any linear combination of derivations at $x$ is again a derivation at $x$.
 \end{exercise}
 \begin{proposition}
 	If $M$ is a smooth $n$-manifold and $(U,\varphi)$ is a co\"{o}rdinate chart on $M$, then, for any $x\in U$, the derivations\begin{align*}
@@ -188,6 +192,25 @@ TM:=
 	\widetilde{\varphi}_{\alpha\beta}\left(x^1,\dots,x^n,v^1,\dots,v^n\right)=\left(y^1(x),\dots,y^n(x),\sum_{i}v^i\pdiff{y^1}{x^i}(x),\dots,\sum_{i}v^i\pdiff{y^n}{x^i}(x)\right),
 	\end{align*}which is smooth. The collection $\{(\pi^{-1}(U_\alpha),\widetilde{\varphi}_\alpha)\}$ then gives a smooth atlas of charts for $TM$. Moreover, in a given chart $(\pi^{-1}(U_\alpha),\widetilde{\varphi}_\alpha)$ with co\"{o}rdinates $x=(x^1,\dots,x^n)$, the projection map $\pi$ is given by $\pi(x,v)=x$ which is clearly smooth.
 \end{proof}
+The tangent bundle of a manifold is an example of a more general class of smooth objects: (smooth) vector bundles.
+\begin{definition}
+	Let $B$ be a smooth manifold, then a \textit{rank $k$ (real) vector bundle over $B$} is a smooth manifold $E$ together with a smooth surjective map $\pi:E\to B$ such that\begin{flushleft}
+		\textup{(a)} For every $b\in B$, the \textup{fiber} $E_b=\pi^{-1}(\{b\})$ has the structure of a real $k$-dimensional vector space.\\
+		\textup{(b)} For every $b\in B$, there exists a neighborhood $U$ of $b$ together with a diffeomorphism $\phi:\pi^{-1}(U)\stackrel{\sim}{\to}U\times\R^k$, called a \textit{local trivialization of $E$ over $U$}, such that $p\circ\phi=\pi$, where $p:U\times\R^k\to U$ is the canonical projection map, and for each $u\in U$, the map $\left.\phi\right|_{E_u}:E_u\to\{u\}\times\R^k$ is a vector space isomorphism.
+	\end{flushleft}
+The space $E$ is called the \textit{total space} of the vector bundle, $B$ is called the \textit{base}, and $\pi$ is called the \textit{projection map}.
+\end{definition}
+\begin{definition}
+	Given smooth vector bundles $\pi:E\to B$ and $\rho:F\to C$, a bundle homomorphism between them is a pair $(f,\bar{f})$ consisting of smooth maps $f:B\to C$ and $\bar{f}:E\to F$ such that the diagram
+	$$
+	\begin{CD}
+	E @>\bar{f}>> F\\
+	@V\pi VV  @VV\rho V\\
+	B @>>f> C
+	\end{CD}
+	$$
+	commutes. If $f$ and $\bar{f}$ are diffeomorphisms, we say that $(f,\bar{f})$ is a bundle isomorphism.
+\end{definition}
 
 One of the first questions one can ask about a tangent bundle $TM$ is whether or not it is trivial. To answer this question, we have to determine if $TM$ is isomorphic as a vector bundle to the trivial bundle $M\times \R^n$. To develop some familiarity with tangent bundles, we investigate the triviality of the bundles $TS^1$ and $TS^2$.
 \begin{example} We argue that $TS^1$ is isomorphic to the trivial bundle $S^1\times\R$.
