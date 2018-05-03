@@ -41,7 +41,9 @@
 \newcommand{\injext}{{\rm InjExt}}
 \newcommand{\Hom}{{\rm Hom}}
 \newcommand{\RP}{\mathbb{R}\mathrm{P}}
+\newcommand{\CP}{\mathbb{C}\mathrm{P}}
 \newcommand{\codim}{{\rm codim}}
+\newcommand{\Gr}{\mathrm{Gr}}
 
 \makeindex
 \begin{document}
@@ -104,7 +106,7 @@ We often omit the word ``smooth," and that qualifier will be assumed throughout 
 Establishing local diffeomorphisms which make a set $M\subset \R^n$ into a manifold does more than simply establishing that $M$ is a manifold, but provides machinery allowing us to establish other properties of $M$. We call a map $\phi: \R^k \rightarrow M$ which is a diffeomorphism onto its image $U$ a \textit{parametrization} of its image. We could equivalently replace $\R^k$ with an open subset of $\R^k$ if we desired. The inverse map $\phi^{-1}:U\rightarrow \R^k$ is called a \textit{coordinate system} on $U$, and the pairing $(U, \phi)$ is called a \textit{chart}. The existence of a collection of charts $\{ (U_\alpha, \varphi_\alpha) | \alpha \in A\}$ such that $\bigcup_{\alpha\in A}U_\alpha = M$ is equivalent to the condition that $M$ is a manifold. Such a collection is called an \textit{atlas}. In the case where $M$ is compact, every atlas can be reduced to finitely many charts. We can use parametrizations and charts to prove that a space is a manifold by covering it with a collection of diffeomorphisms from $\R^k$.
 
 \begin{example}
-	$S^1 = \{(x,y)\in \R^2 | x^2 + y^2=1\}$ is a manifold with dimension $1$. \\
+	$S^1 = \{(x,y)\in \R^2 | x^2 + y^2=1\}$ is a manifold of dimension $1$. \\
 	
 	We can exhibit four parametrizing maps from $(-1,1)$ into $S^1$. Given $x \in (-1,1)$, the map onto the upper open semicircle given by $x\mapsto(x, \sqrt{1-x^2})$ is smooth. We can define a similar map on to the lower open semicircle given by $x \mapsto (x, 1-\sqrt{1-x^2})$. These two maps alone \textit{do not} show that $S^1$ is a manifold: The points at $(1,0)$ and $(-1,0)$ are not in the image of either map. Two similar maps sending $(-1,1)$ smoothly onto the left and right open semicircles completes a parametrization of $S^1$.  
 	
@@ -479,7 +481,7 @@ If $V$ and $W$ intersect transversally, and the intersection is given the co-ori
 
 Recall that the cup product is essentially induced by the diagonal map $X \overset{\Delta}{\to} X \times X$.  One standard
 approach to the cohomology of a product $X \times Y$ is developed through the external cup product, namely $C^*(X) \otimes C^*(Y)$
-maps to $C^*(X \times Y)$ by sending $\alpha  \otimes \beta$ to $p^* \alpha \cup q^*\beta$, where $p$ is the projection from 
+maps to $C^*(X \times Y)$ by sending $\alpha  \otimes \beta$ to $p^* \alpha \smile q^*\beta$, where $p$ is the projection from 
 $X \times Y$ to $X$ and $q$ is the projection to $Y$.  This map is an isomorphism with field coefficients or when 
 one of $X$ and $Y$ has torsion-free cohomology -- see Theorem~3.16 of Hatcher's book **, which establishes this when $X$ and
 $Y$ are CW-complexes.
@@ -565,6 +567,21 @@ Use naturality of evaluating cohomology on homology, and then apply Proposition~
 \subsection{Projective spaces}\index{projective space}
 
 \subsection{Grassmannians}\index{Grassmanian}
+\begin{definition}
+	Let $V$ be a real vector space and $k\geq 1$ an integer. The \textit{Grassmannian of real $k$-planes in $V$} is the set\begin{align*}
+	\Gr(k,V)=\{W\subseteq V:\text{$W$ is a linear subspace of $V$ and $\dim W=k$}\}.
+	\end{align*}
+	In the special case that $V=\R^n$, we define $\Gr(k,n)=\Gr(k,\R^n)$.
+\end{definition}
+\begin{definition}
+	If, instead, $V$ is a \textit{complex} vector space, we may define the \textit{Grassmannian of complex $k$-planes in $V$} by\begin{align*}
+	\Gr^\C(k,V)=\{W\subseteq V:\text{$W$ is a $\C$-linear subspace of $V$ and $\dim W=k$}\}.
+	\end{align*}
+	By way of analogy with the real case, we define $\Gr^\C(k,n)=\Gr^\C(k,\C^n)$.
+\end{definition}
+\begin{example}
+	In the particular case that $k=1$, we have $\Gr(1,n)=\RP^n$ and $\Gr^\C(1,n)=\CP^n$.
+\end{example}
 
 \subsection{Complements of submanifolds which are boundaries}
 
