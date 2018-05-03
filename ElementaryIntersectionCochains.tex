@@ -625,6 +625,44 @@ The value of a Thom class $[\tau_W]$ on  a fundamental class of a submanifold is
 Use naturality of evaluating cohomology on homology, and then apply Proposition~\ref{top_cohomology}
 \end{proof}
 
+\begin{example}
+	$\R^{3}$ with the z-axis removed along with either \textup{(a)} a linked or \textup{(b)} an unlinked $S^{1}$.
+	
+	\begin{proof}[Case \textup{(a)}]
+		Note that $M=\R^3-\{x=y=0\}-\{x^2+y^2=1,z=0\}$ deformation retracts onto a 2-torus in $\R^3$ so $H_*(M)=\Z[\mathrm{pt}_0]\oplus\Z[\mu_1]\oplus\Z[\lambda_1]\oplus\Z[T_2]$, where subscripts denote degrees, so we should expect to find two nontrivial chains in degree 1 and one nontrivial chain in degree 2.
+		\begin{proof}[Chains]\renewcommand{\qedsymbol}{}
+			In degree 1, the two chains are\begin{figure}[H]
+				\begin{pspicture*}(-4,-0.5)(3.5,3.5)
+				\psellipse(-3,1)(1,0.5)
+				\psellipse[linecolor=red!40!violet!90](-3,2)(0.5,0.25)
+				\psline[linecolor=white,linewidth=2pt](-3,3)(-3,1.9)
+				\psline(-3,3)(-3,1.8)
+				\psline[linecolor=white,linewidth=2pt](-3,1.7)(-3,0.55)
+				\psline(-3,1.7)(-3,0.55)
+				\psline(-3,0.45)(-3,-3)
+				\rput(-2.25,2){$\lambda_1$}
+
+				\psellipse[linecolor=blue!40](0.65,0.75)(0.25,0.5)
+
+				\pspolygon*[linecolor=white,fillcolor=white](0.65,0)(1,0)(1,1.5)(0.65,1.5)
+				\psellipse[linecolor=white,linewidth=3pt](0,1)(1,0.55)
+				\psellipse(0,1)(1,0.5)
+				\psline[linecolor=white,linewidth=2pt](0,3)(0,0.55)
+				\psline(0,3)(0,0.55)
+				\psline(0,0.45)(0,-3)
+				\psellipse[linecolor=white,linewidth=3pt](0.65,0.75)(0.275,0.5)
+				\psellipse[linecolor=blue!40](0.65,0.75)(0.25,0.5)
+				\psline[linecolor=white,linewidth=3pt](0.5,0.579)(0.36,0.546)
+				\psline(0.5,0.579)(0.36,0.546)
+				\rput(0.75,0){$\mu_1$}
+				\end{pspicture*}
+			\end{figure}
+		\end{proof}
+		\begin{proof}[Cochains]\renewcommand{\qedsymbol}{}
+			
+		\end{proof}
+	\end{proof}
+\end{example}
 
 \subsection{Projective spaces}\index{projective space}
 
