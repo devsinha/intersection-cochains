@@ -686,7 +686,22 @@ Use naturality of evaluating cohomology on homology, and then apply Proposition~
 	For all $k\geq 1$ and all $n\geq 0$, $\Gr(k,n)$ and $\Gr^\C(k,n)$ are smooth manifolds.
 \end{proposition}
 \begin{proof}
-	Fill this in.
+	Let $W$ be a $k$ plane in $\mathbb{R}^n$, and denote the corresponding point in $\Gr(k, n)$ by $\langle W\rangle$. Choose a complimentary $n-k$ plane to $W$ in $\mathbb{R}^n$, say $X$. Then the collection of $k$-planes in $\mathbb{R}^n$ which intersect $X$ exactly at the origin is an open subset of $\Gr(k, n)$ containing $\langle W\rangle$. We denote this open set $U_X$. Let $(w_1, ..., w_k)$ be a basis for $W$ and let $(x_{k+1}, ..., x_n)$ be a basis for $X$, it follows that $(w_1, ..., w_k, x_{k+1}, ..., x_n)$ is a basis for $\mathbb{R}^n = W\oplus X$. 
+	
+	If $U$ is another $k$-plane transverse to $X$, then the affine subspace $w_i + U$ is also transverse to $X$ for $i= 1, ..., k$, so the two affine subspaces $V$ and $w_i + X$ intersect in exactly one point. This determines a linear map $\varphi_V: W\rightarrow X$ via $\varphi_V(w_i) = \pi_X(V\cap (w_i+ X))$ (in coordinates, if $w_i + X$ intersects $V$ in $w_i + \sum_{i=k+1}^na_ix_i$, then $\varphi_V(w_i) = \sum_{i=k+1}^na_iw_i$). Furthermore, we have that 
+	\[
+	V = \lbrace(w, \varphi_V(w)) : w\in W\rbrace = \text{graph}(\varphi_V)\subset W\oplus X.
+	\]
+It is easily seen that this determines a bijection, and in fact a homeomorphism 
+\[
+U_X\cong \text{Hom}_{\mathbb{R}}(W, X).
+\]	
+
+Furthermore, if $Y$ is another $n-k$ plane complementary to $W$ in $\mathbb{R}^n$, then we can choose a basis $(y_{k+1}, ..., y_n)$ of $Y$ so $(w_1, ..., w_k, y_{k+1}, ..., y_n)$ is a basis for $\mathbb{R}^n= W\oplus Y$.  Let $g$ be the invertible linear transformation from $X$ to $Y$, carrying the chosen bases to each other. If $V$ is a $k$ plane in $U_X\cap U_Y$, then $V$ is the graph of some linear transformation $\varphi: W\rightarrow X$,  and it is also the graph of $g\circ \varphi : W\rightarrow Y$. Thus, the transition function 
+\[
+\text{Hom}_{\mathbb{R}}(W, X)\rightarrow \text{Hom}_{\mathbb{R}}(W, Y)
+\]
+is $\varphi\mapsto g\circ \varphi$, which is a linear map and therefore is $C^{\infty}$. 
 \end{proof}
 \begin{remark}
 	In fact, $\Gr^\C(k,n)$ is a complex manifold of (complex) dimension $(n-k)k$, which is to say that $\Gr^\C(k,n)$ admits a smooth atlas of charts $(U_\alpha,\varphi_\alpha)$ such that the transition functions $\varphi_{\alpha\beta}=\left.\varphi_\beta\circ\varphi_{\alpha}^{-1}\right|_{\Omega_{\alpha\beta}}$, where $\Omega_{\alpha\beta}=\varphi_\alpha(U_\alpha\cap U_\beta)$, are holomorphic in each variable as maps $\Omega_{\alpha\beta}\to\C^{(n-k)k}$.
