@@ -707,6 +707,101 @@ is $\varphi\mapsto g\circ \varphi$, which is a linear map and therefore is $C^{\
 	In fact, $\Gr^\C(k,n)$ is a complex manifold of (complex) dimension $(n-k)k$, which is to say that $\Gr^\C(k,n)$ admits a smooth atlas of charts $(U_\alpha,\varphi_\alpha)$ such that the transition functions $\varphi_{\alpha\beta}=\left.\varphi_\beta\circ\varphi_{\alpha}^{-1}\right|_{\Omega_{\alpha\beta}}$, where $\Omega_{\alpha\beta}=\varphi_\alpha(U_\alpha\cap U_\beta)$, are holomorphic in each variable as maps $\Omega_{\alpha\beta}\to\C^{(n-k)k}$.
 \end{remark}
 
+To determine the homology of $\Gr(2, 4)$ we will begin by putting a $CW$ structure on the space. The method we use will generalize widely, to not just other Grassmannians, but to many different homogeneous spaces of the general linear group. 
+
+Fix complete flag $V_{\ast}$ in $\mathbb{R}^4$, that is choose subspaces $V_i$ of $\mathbb{R}^4$ so that 
+\[
+0 \subset V_1\subset V_2\subset V_3\subset V_4.
+\]
+and $\dim V_i = i$. For an arbitrary $2$-plane $W\subset \mathbb{R}^4$ we can consider the vector of non-negative integers $(\dim W\cap V_i)$. From linear algebra, we know that the $0$-th component of the vector must be zero, the $4$-th component must be $2$, and the difference between the $i+1$-st and $i$-th components is $0$ or $1$. Thus, in our case there are $6$ possible vectors describing the intersection of $W$ with the flag $V_{\ast}$ (for notational simplicity, we replace the vector in $\mathbb{Z}^5$ with a vector in $\mathbb{Z}^3$ by removing the $0$-th and $4-th$ component whcih as we noted above are always $0$ and $2$ respectively):
+\[
+(1, 2, 2), (1, 1, 2), (1, 1, 1), (0, 1, 2), (0, 1, 1), \text{and} \ (0, 0, 1).
+\]
+
+To one of these vectors $\sigma$, we associate a subspace of $\Gr(2, 4)$ 
+\[
+\Omega_{\sigma}(V_{\ast}) = \lbrace W\in \Gr(2, 4) \ | \ (\dim W\cap V_i) = \sigma\rbrace.
+\]
+It is clear that different dimension vectors $\sigma$ give rise to disjoint sets $\Omega_{\sigma}$, and that each $2$-plane in $\mathbb{R}^4$ is contained in some $\Omega_{\sigma}$. Furthermore, we claim that $\Omega_{\sigma}$ is an open subset of $\Gr(2, 4)$ homeomorphic to $\mathbb{R}^{d(\sigma)}$, where $d(\sigma) = 7- \sum_{i=0}^4\sigma_i = 5- (\sigma_1+ \sigma_2+ \sigma_3)$. We verify this in an example, which should easily be seen to generalize. 
+
+Fix a basis $(v_1, v_2, v_3, v_4)$ which "respects" the flag $(V_{\ast})$, i.e. $\mathbb{R}(v_1) = V_1$, $\mathbb{R}(v_1) \oplus \mathbb{R}(v_2) = V_2$ etc. If $W$ is a $2$-plane satisfying the interesection condition $(1, 1, 1)$ with $(V_{\ast})$, then upon choosing a basis for $W$, we can represent the inclusion map $W\rightarrow \mathbb{R}^4$ by a $4\times 2$ matrix of the form
+\[
+\begin{bmatrix}
+    1 & \ast \\
+    0 & \ast \\
+    0 & \ast \\
+    0 & 1 
+\end{bmatrix}.
+\]
+Since we can choose any basis in $W$, this matrix only represents $W$ up to elementary row operations. So we can use the $1$ in the first column to cancel any term which may appear to the right of it. Thus, there are $a, b\in \mathbb{R}^2$ so that $W$ is the column space of the matrix
+\[
+\begin{bmatrix}
+    1 & 0 \\
+    0 & a \\
+    0 & b \\
+    0 & 1 
+\end{bmatrix}.
+\]
+Thus, for any $\langle W\rangle \in \Omega_{(1, 1, 1)}(V_{\ast})$ there is a point $(a, b)\in \mathbb{R}^2$, and since the only element of $GL_2(\mathbb{R})$ which (acting on the right) stabilizes the matrix above is the identity, this means that the assignment $\langle W\rangle\mapsto (a,b)$ is a bijection $\Omega_{(1,1,1)}\cong \mathbb{R}^2$. In fact, this gives a diffeomorphism
+\[
+\Omega_{(1,1,1)}(V_{\ast})\cong \mathbb{R}^2. 
+\] 
+
+This description will also aid us in verifying our next claim, which is that 
+\[
+\overline{\Omega_{\sigma}(V_{\ast})} =\lbrace \langle W\rangle \ | \ \dim W\cap V_i \ge \sigma_i\rbrace = \bigcup_{\tau \ge \sigma}\Omega_{\tau}(V_{\ast})
+\] 
+(here $\tau \ge \sigma$ if and only if $\tau_i \ge \sigma_i$ for all $i$). 
+
+Again, we feel that an example will illustrate well enough what to do in general. We parameterize $\Omega_{(1, 1, 2)}(V_{\ast})$ by $\mathbb{R}$ via
+\[
+a\mapsto \text{span}\begin{bmatrix}
+    1 & 0 \\
+    0 & a \\
+    0 & 1 \\
+    0 & 0
+\end{bmatrix}.
+\]
+For all $t\in \mathbb{R}^{\times}$, we have
+\[
+\text{span}\begin{bmatrix}
+    1 & 0 \\
+    0 & t \\
+    0 & 1 \\
+    0 & 0
+\end{bmatrix} = \text{span}\begin{bmatrix}
+    1 & 0 \\
+    0 & t/t \\
+    0 & 1/t \\
+    0 & 0
+\end{bmatrix} = \text{span}\begin{bmatrix}
+    1 & 0 \\
+    0 & 1 \\
+    0 & 1/t \\
+    0 & 0
+\end{bmatrix}.
+\]
+and as $t\to \infty$ we see that the planes parameterized by $\mathbb{R}^{\times}$ (all of which are in $\Omega_{(1, 2, 2)}(V_{\ast}))$ converge to the point $\langle V_2\rangle$, as
+\[
+\text{span}\begin{bmatrix}
+    1 & 0 \\
+    0 & 1 \\
+    0 & 1/t \\
+    0 & 0
+\end{bmatrix} \to \text{span}\begin{bmatrix}
+    1 & 0 \\
+    0 & 1 \\
+    0 & 0 \\
+    0 & 0
+\end{bmatrix} \in \Omega_{(1, 2, 2)}(V_{\ast}) = \lbrace \langle V_2 \rangle \rbrace. 
+\]
+
+...Need to find a quick and easy argument that the attaching maps are all even degree, to get that these classes freely generate $H_{\ast}(\Gr(2, \mathbb{R}^4)$. That this is true for $H_{\ast}(\Gr(2, \mathbb{C}^4)$ is trivial. 
+
+...In general $\overline{\Omega_{\sigma}}$ is singular, but I think that the singularities occur away from where they intersect $\overline{\Omega_{\tau}^{\ast}}$. Can we use this to get around doing something hard?
+
+...Getting a little tired of typing today, the actual computations of at least the poincare pairing are coming. 
+
 \subsection{Complements of submanifolds which are boundaries}
 
 \subsection{Configuration spaces}\index{configuration space}
