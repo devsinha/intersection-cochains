@@ -541,6 +541,65 @@ In this section we prove the following.
 If $V$ and $W$ intersect transversally, and the intersection is given the co-orientation... then $[\tau_{V}] \smile [\tau_W] = [\tau_{V \cap W}]$.
 \end{theorem}
 
+In this section we prove the following.
+
+\begin{theorem}
+If $V$ and $W$ intersect transversally, and the intersection is given the co-orientation... then $[\tau_{V}] \smile [\tau_W] = [\tau_{V \cap W}]$.
+\end{theorem}
+
+We must ponder some oriented intersection theory in order to get this right. The basic result we will be bootstrapping is that if $V$ and $W$ are complimentary vector subspaces of a vector space $M$ and we fix a decomposition
+\[
+V\oplus W = M
+\]
+(as opposed to $W\oplus V= M$), then an orientation of any two of the spaces in question will determine an orientation of the other. 
+
+Suppose that $M$ is an oriented manifold and that $W\subset M$ is an orientable submanifold (we assume that $W$ and $M$ do not have boundary). For $w\in W$, we define the normal space to $W$ in $M$ at $x$ to be 
+\[
+N_x(W; M) : = T_xM/T_xW.
+\]
+We have an isomorphism $N_x(W; M)\oplus T_xW\cong T_xM$ (note the order!), and can repace this isomorphism with an equality by choosing a compliment to $T_xW$ in $T_xM$ and identifying it with $N_x(W; M)$. By the linear algebra discussed above we see that a choice of orientation of $N_x(W; M)$ for all $x$ in $W$, which we refer to as a co-orientation of $W$ in $M$, determines an orientation of $W$ (and vice-versa). 
+
+Let $V$ be an oriented manifold (potentially with boundary) and 
+\[
+f: V\rightarrow M
+\]
+be a smooth map transverse to $W$ (including on the boundary). We know that $f^{-1}(W)$ is a submanifold and for $x\in f^{-1}(W)$
+\[
+T_xf^{-1}(W) = df_x^{-1}T_{f(x)}W.
+\]
+We claim there are decompositions
+\[
+N_x(f^{-1}(W); V)\oplus T_xf^{-1}(W)= T_xV
+\]
+and
+\[
+df_xN_x(f^{-1}(W); V) \oplus T_{f(x)}W = T_{f(x)}M,
+\]
+and that $df_x: N_x(f^{-1}(W); V)\rightarrow df_xN_x(f^{-1}(W); V)$ is an isomorphism. Since the question is local and $T_xf^{-1}(W) = df_x^{-1}T_{f(x)}W$, the claim follows from the following linear algebra: if $D: A\rightarrow B$ is a linear map and $C\subset B$ so that $DA+ C= B$, then $D: A/D^{-1}(C)\rightarrow B/C$ is an isomorphism. 
+
+Thus, using these direct sum decompositions, along with the fact that $df_x$ identifies normal spaces, we can use a co-orientation of $W$ in $M$ to produce a co-orientation of $f^{-1}(W)$ in $V$. 
+
+This is most interesting for us in the following situation. Suppose $V$ and $W$ are submanifolds of an oriented manifold $M$ of complementary codimension, $V$ oriented and $W$ co-oriented, which intersect transversally. Let $p \in V\cap W$, and define $\text{sign}_{V,W}(p) = \pm 1$ depending on whether the co-orientation of $\iota_V^{-1}(W)$ at $p$ (induced by $\iota_V$ and the co-orientation of $W$) agrees or disagrees with the orientation of $W$ at $p$.  If we assume further that $V\cap W$ is compact, then $V\cap W$ is a finite set of points. We define 
+\[
+\#V\cap W = \#\iota_V^{-1}(W) = \sum_{p\in V\cap W}\text{sign}_{V, W}(p).
+\]
+This intersection really does depend on the order! In fact we have the following relation
+\[
+\#V\cap W = (-1)^{\dim W\cdot \dim V} \#W\cap V.
+\]
+
+In order to argue that $C^{\ast}_{\pitchfork W}(M; \mathbb{Z})$ is well defined we again will appeal to the classification of one-manifolds. Also, independent of the language of homology and cohomology in order for oriented intersection theory to have any meaning at all, it must be that $\#V\cap W$ does not change if $V$ or $W$ are smoothly deformed in $M$, this again will come down to the classification of one-manifolds. 
+
+Recall that our convention fo inducing orientation on the boundary is that if $M$ is oriented, $p\in \partial M$, and $n$ is an outward normal vector in $T_pM$, then the direct sum decomposition 
+\[
+\mathbb{R}n \oplus T_p\partial M = T_pM
+\]
+determines the orientation of $\partial M$ (in class we were calling this the "first-out" convention, and it seems most suited to discussions involving $\Delta^n$'s as well as agreeing with Guillemin and Pollack).
+
+From this convention, it follows that the boundary components of $X\times I$: $X\times \lbrace 0\rbrace$ and $X\times \lbrace 1\rbrace$ have the opposite orientations. If $M$ is a compact oriented one manifold with boundary, then $M$ is a disjoint union of $S^1$'s and $I$'s and by the previous statement we see that the sum of the orientation numbers at the boundary points of $M$ are zero. 
+
+This is enough to establish the following: If $V_t$, $t\in I$, and $W$ are submanifolds of an oriented manifold $M$ of complementary codimension, $V_t$ oriented and $W$ co-oriented, which intersect transversally (for all $t\in I$) then $\#V_t\cap W= V\cap W$ for all $t\in I$. 
+
 Recall that the cup product is essentially induced by the diagonal map $X \overset{\Delta}{\to} X \times X$.  One standard
 approach to the cohomology of a product $X \times Y$ is developed through the external cup product, namely $C^*(X) \otimes C^*(Y)$
 maps to $C^*(X \times Y)$ by sending $\alpha  \otimes \beta$ to $p^* \alpha \smile q^*\beta$, where $p$ is the projection from 
@@ -553,7 +612,35 @@ The external cup product sends $[\tau_V] \otimes [\tau_W]$ to $[\tau_{V \times W
 \end{proposition}
 
 \begin{proof}[Proof of the Fundamental Theorem, based on Proposition~\ref{externalcup}]
-If $V \pitchfork W$ then $\Delta \pitchfork V \times W \subset X \times X$.  Apply Proposition~\ref{pullback}.
+If $V \pitchfork W$ then $\Delta \pitchfork V \times W \subset X \times X$. This is local (note that $T_{(x,x)}\Delta(X) = \Delta(T_xX)$) so follows from linear algebra considerations. If $V$ and $W$ are subspaces of a vector space $X$ so that $V+ W= X$, then $\dim X = \dim V+ \dim W - \dim V\cap W$ and therefore, 
+\[
+\dim V\times W + \dim \Delta - \dim \Delta\cap (V\times W) = \dim V + \dim W + \dim X - \dim V\cap W= 2\dim X= \dim X\times X
+\]
+and it follows that $V\times W\pitchfork \Delta$. 
+
+Consider the composition 
+\[
+H^{\ast}(X)\otimes H^{\ast}(X)\xrightarrow{\times} H^{\ast}(X\times X)\xrightarrow{\Delta^*}H^{\ast}(X)
+\]
+which we are referring to as the external cup product (on homology). Under this map we have two perspectives on the image of $[\tau_V]\otimes[\tau_W]$:
+\[
+[\tau_V]\otimes[\tau_W]\mapsto \Delta^{\ast}(p^{\ast}[\tau_V]\smile q^{\ast}[\tau_W]) = \Delta^{\ast}(p^{\ast}[\tau_V])\smile\Delta^{\ast}(q^{\ast}[\tau_W]) = [\tau_V]\smile[\tau_W]
+\]
+and
+\[
+[\tau_V]\otimes[\tau_W]\mapsto \Delta^{\ast}(p^{\ast}[\tau_V]\smile q^{\ast}[\tau_W]) = \Delta^{\ast}([\tau_{p^{-1}(V)}]\smile [\tau_{q^{-1}(W)}]) = \Delta^{\ast}([\tau_{V\times X}]\smile[\tau_{X\times W}]).
+\]
+
+We will work hard in the remainder of this section to verify that 
+\[
+[\tau_{V\times X}]\smile[\tau_{X\times W}]= [\tau_{V\times W}].
+\]
+Once this is done, it will follow that
+\[
+[\tau_V]\smile [\tau_W] = \Delta^{\ast}([\tau_{V\times X}]\smile[\tau_{X\times W}])= \Delta^{\ast}(\tau_{V\times W}) = [\tau_{\Delta^{-1}(V\times W)}] =[\tau_{V\cap W}]
+\]
+(the second to last equality makes sense because $\Delta\pitchfork (V\times W)$, and the last equality follows from the set theory equation $\Delta\cap(V\times W) = V\cap W$). 
+
 \end{proof}
 
 
