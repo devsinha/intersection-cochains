@@ -887,7 +887,77 @@ and as $t\to \infty$ we see that the planes parameterized by $\mathbb{R}^{\times
 
 ...In general $\overline{\Omega_{\sigma}}$ is singular, but I think that the singularities occur away from where they intersect $\overline{\Omega_{\tau}^{\ast}}$. Can we use this to get around doing something hard?
 
-...Getting a little tired of typing today, the actual computations of at least the poincare pairing are coming. 
+
+We now have homology generators represented by the fundamental classes $[\overline{\Omega}_{\sigma}(V_{\ast})]$, and to get dual cohomology generators, realized as Thom cochains, we must find six compact submanifolds which are transverse to the $\overline{\Omega}_{\sigma}$'s. It is not difficult to have a feeling for what these ought to be. First, we will say that two complete flags of $V$: $(V_{\ast})$ and $(W_{\ast})$ are transverse if for all $i= 0, ..., n$
+\[
+V_i + V_{n- i} = V
+\]
+Then, we take a "transverse" flag $(W_{\ast})\pitchfork (V_{\ast})$ and use $\lbrace \overline{\Omega}_{\sigma}\rbrace$. It will take some effort to determine the tangent space of a particular $\overline{\Omega}_{\sigma}(V_{\ast})$ and then verify transversality in honest, but let us take this as given for now and play around with some computations.
+
+To compute the pairing, we will use the standard flag $\mathbb{R}^0\subset \mathbb{R}^1\subset...\subset\mathbb{R}^4$ and for a transverse flag we will use the standard opposite
+\[
+\mathbb{R}^1\subset \mathbb{R}\cdot e_4\subset \mathbb{R}\cdot (e_4, e_3)\subset \mathbb{R}\cdot (e_4, e_3, e_2)\subset \mathbb{R}^4.
+\]
+Then to simplify notation we will write simply $\Omega_{\sigma}$ for the cell obtained from the standard flag and $\Omega_{\sigma}^*$ to denote the cell obtained from the opposite flag. We will also compute the pairing with $\mathbb{F}_2$ coefficients (this makes things much easier, and will be essentially the same computations as for the complex Grassmannian with $\mathbb{Z}$ coefficients). 
+
+In dimension/co-dimension zero, we have $\overline{\Omega}_{(1,2,2)}= \lbrace \langle \mathbb{R}^2\rangle \rbrace$ and $\overline{\Omega}_{(0,0,1)}^{\ast} = \Gr(2, 4)$ so clearly
+\[
+\# \overline{\Omega}_{(1, 2, 2)}\cap \overline{\Omega}_{(0,0,1)}^{\ast} =\# \lbrace \langle \mathbb{R}^2\rbrace = 1. 
+\]
+In dimension/co-dimension one, we have 
+\[
+\overline{\Omega}_{(1,1,2)} = \lbrace \langle W\rangle \ | \ \mathbb{R}^1\subset W\subset \mathbb{R}^3\rbrace
+\]
+and 
+\[
+\overline{\Omega}_{(0,1,1)}^{\ast}= \lbrace \langle W\rangle \ | \ W\cap \mathbb{R}\cdot (e_4, e_3)\ne 0\rbrace, 
+\]
+so 
+\[
+\# \overline{\Omega}_{(1,1,2)} \cap \overline{\Omega}_{(0,1,1)}^{\ast}= \# \lbrace \langle \mathbb{R}\cdot (e_1, e_3)\rangle \rbrace = 1. 
+\]
+It is not hard to see that $\overline{\Omega}_{(1, 1, 1)}$ is homeomorphic to $\mathbb{P}^1$. However, as we warned sometimes these subspaces are not actually submanifolds and we have here run into this already, although it is the only singular space we encounter for $\Gr(2, 4)$, the poincare polynomial for $\overline{\Omega}_{(0,0,1)}^{\ast}$ is $1+ t+ 2t^2+ t^3$ (which fails poincare duality so this space cannot be smooth). However, we will see that there is only one singular point, at $\langle \mathbb{R}\cdot(e_4, e_3)\rangle$ which is not the point of intersection in the computation above. 
+
+In dimension/co-dimension two, there are two cycles
+\[
+\overline{\Omega}_{(0,1,2)} = \lbrace \langle W\rangle \ | \ W\subset \mathbb{R}^3\rbrace
+\]
+and
+\[
+\overline{\Omega}_{(1, 1, 1)} = \lbrace \langle W \rangle \ | \ \mathbb{R}^1\subset W\rbrace
+\]
+(these are both $\mathbb{P}^2$'s) and the co-cycles are
+\[
+\overline{\Omega}_{(0,1,2)}^{\ast} = \lbrace \langle W \rangle \ | \ W\subset \mathbb{R}\cdot (e_4, e_3, e_2)\rbrace
+\]
+and
+\[
+\overline{\Omega}_{(1, 1, 1)}^{\ast} = \lbrace \langle W\rangle \ | \ \mathbb{R}\cdot e_4\subset W\rbrace. 
+\]
+Computing the intersection pairings we find
+\[
+\#\overline{\Omega}_{(0,1,2)}\cap \overline{\Omega}_{(0,1,2)}^{\ast} =\# \lbrace\langle \mathbb{R}(e_2, e_3)\rangle \rbrace = 1,
+\]
+\[
+\# \overline{\Omega}_{(0, 1, 2)}\cap \overline{\Omega}_{(1, 1, 1)}^{\ast} = 0, 
+\]
+\[
+\#\overline{\Omega}_{(1, 1, 1)}\cap \overline{\Omega}_{(0, 1, 2)}^{\ast} = 0,
+\]
+and
+\[
+\#\overline{\Omega}_{(1, 1, 1)}\cap \overline{\Omega}_{(1, 1, 1)}^{\ast} = \#\lbrace \mathbb{R}\cdot (e_1, e_4)\rbrace = 1.
+\]
+The remaining pairing calculations come from completely symmetric arguments (or duality if you wish), and we find that our pairing matrix is:
+\[
+\bordermatrix{&\tau_{\overline{\Omega}_{(0, 0, 1)}^{\ast}}&\tau_{\overline{\Omega}_{(0, 1, 1)}^{\ast}}&\tau_{\overline{\Omega}_{(0, 1, 2)}^{\ast}} &\tau_{\overline{\Omega}_{(1, 1, 1)}^{\ast}}&\tau_{\overline{\Omega}_{(1, 2, 2)}^{\ast}}&\tau_{\overline{\Omega}_{(0, 0, 1)}^{\ast}}\cr
+                \overline{\Omega}_{(1, 2, 2)}&1 &  0  & 0 & 0 & 0 & 0 \cr
+                \overline{\Omega}_{(1, 1, 2)}&0 &  1  & 0 & 0 & 0 & 0 \cr
+               \overline{\Omega}_{(0, 1, 2)}&0 &  0  & 1 & 0 & 0 & 0 \cr
+                \overline{\Omega}_{(1, 1, 1)}&0 &  0  & 0& 1 & 0 & 0 \cr
+                \overline{\Omega}_{(0, 1, 1)}&0 &  0  & 0 & 0 & 1 & 0 \cr
+                \overline{\Omega}_{(0, 0, 1)}&0 &  0  & 0 & 0 & 0 & 1 \cr}.
+\] 
 
 \subsection{Complements of submanifolds which are boundaries}
 
