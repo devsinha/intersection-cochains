@@ -6,12 +6,12 @@
 \usepackage{pstricks,pstricks-add}	% Make pretty pictures with PostScript
 \usepackage{float}	% Allows finer control over placement of figures than the default automatic placement style
 \usepackage{imakeidx} % Index
-
-\usepackage{todonotes} % Allows one to add both in-line and marginal notes as well as a list of 'to-dos' Example syntax: \todo[color=blue!25,inline]{Edit.}
-%this example produces an in-line to-do which says "Edit." and which is colored blue with 25% color saturation. Omitting 'inline' from the syntax produces a to-do in the margin. Warning: the default color is an awful shade of violently bright orange!
-\usepackage{mathrsfs} %Fancy calligraphic letters
-
 \newcommand{\Z}{{\mathbb{Z}}}
+
+\usepackage{enumitem}
+\usepackage{color}
+\usepackage{mathtools}
+\usepackage{xcolor}
 
 \textwidth = 6.5 in
 \textheight = 8.5 in
@@ -23,7 +23,7 @@
 \parskip = 0.2in
 \parindent = 0.0in
 
-\newtheorem{theorem}{Theorem}
+\newtheorem{theorem}{Theorem}[section]
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -31,7 +31,10 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{example}[theorem]{Example}
 \newtheorem{exercise}[theorem]{Exercise}
-\newtheorem*{examples*}{Examples}
+
+
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\newcommand{\forclass}[1]{\textcolor{darkgreen}{#1 -DS}}
 
 \newcommand{\R}{\mathbb R}
 \newcommand{\I}{\mathbb I}
@@ -46,18 +49,13 @@
 \newcommand{\injext}{{\rm InjExt}}
 \newcommand{\Hom}{{\rm Hom}}
 \newcommand{\RP}{\mathbb{R}\mathrm{P}}
-
-
 \newcommand{\CP}{\mathbb{C}\mathrm{P}}
 \newcommand{\codim}{{\rm codim}}
 \newcommand{\Gr}{\mathrm{Gr}}
 \newcommand{\pdiff}[2]{\frac{\partial #1}{\partial #2}}
 \newcommand{\diff}[2]{\frac{d #1}{d #2}}
-\newcommand{\Ch}{\mathrm{Ch}_\bullet}
-\newcommand{\res}{\mathrm{res}}
-\newcommand{\id}{\mathrm{id}}
 
-\makeindex
+%\makeindex
 \begin{document}
 
 \title{Elementary Intersection Theory}
@@ -69,16 +67,16 @@
 We present a treatment of elementary intersection theory in algebraic topology.  
 That is, we aim to show how one can  
 define cochains through counting intersection with submanifolds.  
-Moreover, the ``fundamental theorem''  is that the cup product of the associated
+Moreover, a fundamental theorem is that the cup product of the associated
  cohomology classes is represented by the (transversal) intersection of submanifolds.  
- Students are often told that cup product is named so because of this 
- fact, but we feel it is given relatively short shrift.  It is usually proved after development of duality or a Thom isomorphism theorem.  
+ Students are often told that cup product is denoted as it is because of this 
+ fact, but we feel this fact is given relatively short shrift.  It is usually proved after development of duality or a Thom isomorphism theorem.  
  We would like to put the representation of cohomology by submanifolds at the front and center of our treatment and from that deduce, 
- or at least interpret, these related isomorphisms.
+ or at least interpret, these related isomorphisms as well as 
 
 We can view our aims both pedagogical and mathematical perspectives.
-Unlike chains, singular cochains tend to be more transcendental objects.  
-From a pedagogical  viewpoint, one can often express cycles as in terms of explicit chains, which is basically never the case 
+From a pedagogical  viewpoint, unlike chains, singular cochains tend to be more transcendental objects.  
+ one can often express cycles as in terms of explicit chains, which is basically never the case 
 for singular cocyles.  Our work remedies this discrepancy, and  allows for geometric cochain-level understanding of a 
 number of topics in algebraic topology including duality, Thom isomorphisms, cohomology of mapping spaces etc.   
 Mathematically, we aim for the following.
@@ -92,26 +90,111 @@ which distinguish elements of $V$, along with a calculation of the pairings betw
 Find a minimal collection of $M_\alpha$ when $V$ is the $n$th homology of  a space, which is finitely generated.
 \end{exercise}
 
-Our mathematical goal is to find complete presentations for homology, going beyond the calculation of isomorphism class.  
+One mathematical goal is to find complete presentations for homology, going beyond the calculation of isomorphism class.  
 Such can be helpful in for example calculating homomorphisms between homology groups induced by maps of spaces,
 as well as in calculating cohomology rings, a primary application.  
 
 Complete presentations are possible through $\Delta$-complex
-presentations of spaces, but such can get too large to manage (by hand or even computer), and we find them  to be less compelling
+presentations of spaces, but these can get too large to manage (by hand or even computer), and we find them  to be less compelling
 than finding (sub)manifolds when the latter are available.  
 Any finite CW-complex is homotopy equivalent to a manifold with boundary, by  embedding the complex in Euclidean space
 and taking the closure of a nice neighborhood which retracts onto the complex, so while seemingly specialized these techniques
-can shed light on homotopy theory for limits and colimits of finite CW-complexes and in particular all CW complexes themselves.\newpage
+can shed light on homotopy theory for limits and colimits of finite CW-complexes and in particular all CW complexes themselves.
+
+\forclass{Does anyone know why the table of contents is spaced like it is?  That is not how it usually works for me, and I'd prefer no
+extra spaces between lines.}
 
 \tableofcontents
-\newpage
+\section{Application (before rigorous development)}
 
-\section{Basic definitions, and a simplified version of the fundamental theorem}
+To give an intuitive flavor of what we are building towards, we include some examples before any definitions.  At the moment,
+it suffices to know that manifolds and submanifolds are locally Euclidean spaces, and transversal intersections ``cross fully'' or are empty.
+We  state a simplified version of the fundamental theorem of intersection theory\index{intersection theory!fundamental theorem of}.
 
-Before developing the background in differential topology needed, we illustrate the technique by using simplified definitions.
+\begin{theorem}
+Let $M$ be a manifold and $W$ be a submanifold of codimension $d$ without boundary.  
+\begin{enumerate}
+\item There is a cohomology class $[\tau_{W}] \in H^{d}(M; \Z/2)$ represented by a cochain whose value on an embedded 
+chain $\Delta^{d} \subset M$  which intersects $W$ transversally is the mod-two count of $\Delta^{d} \cap W$.  The value
+on the fundamental class of a $d$-dimensional 
+submanifold without boundary $S$ which intersects $W$ transversally is also the mod-two
+intersection count.
+%\item If $S$ is a submanifold whose boundary is $V \sqcup W$ then $[\tau_{V}] = [\tau_{W}]$.
+\item If $V$ and $W$ intersect transversally then $[\tau_{V}] \cup [\tau_{W}] = [\tau_{V \cap W}]$.
+\end{enumerate}
+\end{theorem}
+
+The following are some main examples.  We suggest below that a reader go through these now and then again after the machinery is set up.
+
+\subsection{Examples using the simplified version}
+
+\forclass{Exercise: fill in these examples.}
+
+\begin{example}
+$\R^{2} - 0$
+\end{example}
+%\begin{example}
+%$[\tau_M] = 1$.  $[\tau_{{\rm point}}]$.
+%\end{example}
+
+\begin{example}
+	$\R^{3}$ with the z-axis removed along with either \textup{(a)} a linked or \textup{(b)} an unlinked $S^{1}$.
+	
+	\begin{proof}[Case \textup{(a)}]
+		Note that $M=\R^3-\{x=y=0\}-\{x^2+y^2=1,z=0\}$ deformation retracts onto a 2-torus in $\R^3$ so $H_*(M)=\Z[\mathrm{pt}_0]\oplus\Z[\mu_1]\oplus\Z[\lambda_1]\oplus\Z[T_2]$, where subscripts denote degrees, so we should expect to find two nontrivial chains in degree 1 and one nontrivial chain in degree 2.
+		\begin{proof}[Chains]\renewcommand{\qedsymbol}{}
+			In degree 1, the two chains are\begin{figure}[H]
+				\begin{pspicture*}(-4,-0.5)(3.5,3.5)
+				\psellipse(-3,1)(1,0.5)
+				\psellipse[linecolor=red!40!violet!90](-3,2)(0.5,0.25)
+				\psline[linecolor=white,linewidth=2pt](-3,3)(-3,1.9)
+				\psline(-3,3)(-3,1.8)
+				\psline[linecolor=white,linewidth=2pt](-3,1.7)(-3,0.55)
+				\psline(-3,1.7)(-3,0.55)
+				\psline(-3,0.45)(-3,-3)
+				\rput(-2.25,2){$\lambda_1$}
+
+				\psellipse[linecolor=blue!40](0.65,0.75)(0.25,0.5)
+
+				\pspolygon*[linecolor=white,fillcolor=white](0.65,0)(1,0)(1,1.5)(0.65,1.5)
+				\psellipse[linecolor=white,linewidth=3pt](0,1)(1,0.55)
+				\psellipse(0,1)(1,0.5)
+				\psline[linecolor=white,linewidth=2pt](0,3)(0,0.55)
+				\psline(0,3)(0,0.55)
+				\psline(0,0.45)(0,-3)
+				\psellipse[linecolor=white,linewidth=3pt](0.65,0.75)(0.275,0.5)
+				\psellipse[linecolor=blue!40](0.65,0.75)(0.25,0.5)
+				\psline[linecolor=white,linewidth=3pt](0.5,0.579)(0.36,0.546)
+				\psline(0.5,0.579)(0.36,0.546)
+				\rput(0.75,0){$\mu_1$}
+				\end{pspicture*}
+			\end{figure}
+		\end{proof}
+		\begin{proof}[Cochains]\renewcommand{\qedsymbol}{}
+			
+		\end{proof}
+	\end{proof}
+\end{example}
+\begin{example}
+A two-holed torus
+\end{example}
+\begin{example}
+$\RP^{n}$ 
+\end{example}
+
+In these last two examples, which are compact manifolds without boundary,
+we see Poincar\'e duality in play, as the same submanifolds can be used to define homology and cohomology.  But as the first two
+examples indicate,  
+
+\section{Background on manifolds and transversality}
+
+
+\subsection{Basic manifolds}
+
+For completeness, we start with the most basic definitions.  Our brief treatment should be viewed as a guide to the more thorough treatment
+of Guillemin and Pollack.
 
 \begin{definition}
-
 	A subset $M$ of Euclidean space $\R^n$ is called a (smooth) $k$-dimensional manifold if it is locally diffeomorphic to $\R^k$; that is, for every point in $M$ there is a neighborhood of that point which is diffeomorphic to $\R^k$.  
 \end{definition}
 
@@ -120,7 +203,7 @@ We often omit the word ``smooth," and that qualifier will be assumed throughout 
 Establishing local diffeomorphisms which make a set $M\subset \R^n$ into a manifold does more than simply establishing that $M$ is a manifold, but provides machinery allowing us to establish other properties of $M$. We call a map $\phi: \R^k \rightarrow M$ which is a diffeomorphism onto its image $U$ a \textit{parametrization} of its image. We could equivalently replace $\R^k$ with an open subset of $\R^k$ if we desired. The inverse map $\phi^{-1}:U\rightarrow \R^k$ is called a \textit{coordinate system} on $U$, and the pairing $(U, \phi)$ is called a \textit{chart}. The existence of a collection of charts $\{ (U_\alpha, \varphi_\alpha) | \alpha \in A\}$ such that $\bigcup_{\alpha\in A}U_\alpha = M$ is equivalent to the condition that $M$ is a manifold. Such a collection is called an \textit{atlas}. In the case where $M$ is compact, every atlas can be reduced to finitely many charts. We can use parametrizations and charts to prove that a space is a manifold by covering it with a collection of diffeomorphisms from $\R^k$.
 
 \begin{example}
-	$S^1 = \{(x,y)\in \R^2 | x^2 + y^2=1\}$ is a manifold of dimension $1$. \\
+	$S^1 = \{(x,y)\in \R^2 | x^2 + y^2=1\}$ is a manifold with dimension $1$. \\
 	
 	We can exhibit four parametrizing maps from $(-1,1)$ into $S^1$. Given $x \in (-1,1)$, the map onto the upper open semicircle given by $x\mapsto(x, \sqrt{1-x^2})$ is smooth. We can define a similar map on to the lower open semicircle given by $x \mapsto (x, 1-\sqrt{1-x^2})$. These two maps alone \textit{do not} show that $S^1$ is a manifold: The points at $(1,0)$ and $(-1,0)$ are not in the image of either map. Two similar maps sending $(-1,1)$ smoothly onto the left and right open semicircles completes a parametrization of $S^1$.  
 	
@@ -130,7 +213,7 @@ Establishing local diffeomorphisms which make a set $M\subset \R^n$ into a manif
 \end{example} 
 
 \begin{example}
-	$\RP^n$ can be covered by precisely $n+1$ charts. Consider $\RP^n$ as $\R^{n+1} \backslash \{0\}$ under the equivalence relation $(x_1,..., x_{n+1})\sim (ax_1,...,ax_{n+1})$ for $a \in \R$. Define $U_i$ as the subset of $\RP^n$ given by all elements whose $i$th coordinate is nonzero. In $U_i$, each element has a unique representative such that $x_i=1$, written as $[x_0,...,x_{i-1},1,x_{i+1},...x_{n+1}]$. This gives us a way to embed the charts $U_i$ as copies of $\R^n$ into $\R^{n+1}$ by setting the $i$th component equal to 1. This establishes that $\RP^n$ is an $n$-manifold. A visualization of the subspaces of $\RP^2$  which result from this process, depicted on the well-known cellular structure, is shown below.
+	$\R P^n$ can be covered by precisely $n+1$ charts. Consider $\R P^n$ as $\R^{n+1} \backslash \{0\}$ under the equivalence relation $(x_1,..., x_{n+1})\sim (ax_1,...,ax_{n+1})$ for $a \in \R$. Define $U_i$ as the subset of $\R P^n$ given by all elements whose $i$th coordinate is nonzero. In $U_i$, each element has a unique representative such that $x_i=1$, written as $[x_0,...,x_{i-1},1,x_{i+1},...x_{n+1}]$. This gives us a way to embed the charts $U_i$ as copies of $\R^n$ into $\R^{n+1}$ by setting the $i$th component equal to 1. This establishes that $\R P^n$ is an $n$-manifold. A visualization of the subspaces of $\R P^2$  which result from this process, depicted on the well-known cellular structure, is shown below.
 	
 	[image here]  
 	
@@ -143,11 +226,13 @@ Establishing local diffeomorphisms which make a set $M\subset \R^n$ into a manif
 \end{example}
 
 \begin{definition}
-
-	A subset $N\subseteq M\subseteq \R^n$ is called a submanifold of $M$ if $N$ is also a manifold.
+	A subset $N\subseteq M\subseteq \R^n$ is called a submanifold of $M$ if $N$ is also a manifold and the inclusion of $N$ in $M$ is
+	proper (that is, the intersection of $N$ with a compact subset of $M$ is compact.
 \end{definition}
 
-Note, in particular, that if $N$ is a submanifold of $M$ that $N$ and $M$ do not need to have the same dimension, and it is generally more interesting when they do not: it is a fact that if $N$ is a compact submanifold of a connected manifold $M$ with the same dimension, then $N=M$. 
+%Note, in particular, that if $N$ is a submanifold of $M$ that $N$ and $M$ do not need to have the same dimension, and it is 
+%generally more  interesting when they do not: it is a fact that if $N$ is a compact submanifold of a connected manifold $M$ 
+%with the same dimension, then $N=M$. 
 
 We next present an initial discussion of tangent spaces, for manifolds embedded in Euclidean space. Tangent spaces are fundamental to many of the definitions related to intersection theory that we will see later.
 
@@ -165,80 +250,38 @@ TM:=
 \}.
 \]
 \end{definition}
-\begin{definition}
-	If a manifold $M$ is presented abstractly, rather than as a subset of $\R^n$, then a more natural --- though far less intuitive --- definition of the tangent space $T_xM$ is that it is the \textit{space of derivations at $x$}, which is to say the space of all linear maps $v:C^\infty(M)\to\R$ which satisfy\begin{align*}
-	v(fg)=f(x)v(g)+g(x)v(f)
-	\end{align*}for all $f,g\in C^\infty(M)$.
-\end{definition}
-\begin{example}
-	Suppose that $v\in\R^n$ and define $D_v:C^\infty(\R^n)\to C^\infty(\R^n)$ by $(D_vf)(x)=\left.\diff{}{t}f(x+tv)\right|_{t=0}$, then, given $x\in\R^n$, the map $\left.D_v\vphantom{\diff{}{x}}\right|_x:f\mapsto (D_vf)(x)$ is a derivation at $x$.
-\end{example}
-\begin{exercise}
-	Verify that $\left.D_v\vphantom{\diff{}{x}}\right|_x$ is a derivation at $x$ for all $x,v\in\R^n$.
-\end{exercise}
-\begin{exercise}
-	Show that any linear combination of derivations at $x$ is again a derivation at $x$.
-\end{exercise}
-\begin{proposition}
-	If $M$ is a smooth $n$-manifold and $(U,\varphi)$ is a co\"{o}rdinate chart on $M$, then, for any $x\in U$, the derivations\begin{align*}
-	\left.\pdiff{}{x^i}\right|_x=\left(d\varphi_x\right)^{-1}\left(\left.\pdiff{}{x^i}\right|_{\varphi(x)}\right)
-	\end{align*}form a basis for $T_xM$, where $\left.\pdiff{}{x^i}\right|_{\varphi(x)}=\left.D_{e_i}\right|_{\varphi(x)}$ and $e_i=(0,\dots,1,\dots,0)$ is the $i^\text{th}$ standard unit basis vector for $\R^n$. Moreover, given $f\in C^\infty(U)$,\begin{align*}
-	\left.\pdiff{}{x^i}\right|_xf=\pdiff{\widehat{f}}{x^i}(\varphi(x)),
-	\end{align*}where $\widehat{f}=f\circ\varphi^{-1}$ is the co\"{o}rdinate representation of $f$ in $(U,\varphi)$.
-\end{proposition}
-\begin{proof}
-	Exercise.
-\end{proof}
-\begin{proposition}
-	If $M$ is a smooth $n$-manifold, the tangent bundle $TM$ admits the structure of a smooth $2n$-manifold with respect to which the canonical projection map $\pi:TM\to M$ is smooth.
-\end{proposition}
-\begin{proof}[Sketch]
-	Choose an atlas of charts $\{(U_\alpha,\varphi_\alpha)\}$ for $M$. Fixing a chart $(U_\alpha,\varphi_\alpha)$, say with co\"{o}rdinate functions $x^1,\dots,x^n$, we have that $\pi^{-1}(U_\alpha)=\{(x,v):x\in U_\alpha,v\in T_xM\}$. Define a map $\widetilde{\varphi}_\alpha:\pi^{-1}(U_\alpha)\to\R^{2n}$ by\begin{align*}
-	\widetilde{\varphi}_\alpha\left(\sum_{i}v^i\left.\pdiff{}{x^i}\right|_p\right)=\left(x^1(p),\dots,x^n(p),v^1,\dots,v^n\right).
-	\end{align*}Note that $\widetilde{\varphi}_\alpha$ is a bijection onto its image with inverse\begin{align*}
-	\widetilde{\varphi}^{-1}_\alpha\left(x^1,\dots,x^n,v^1,\dots,v^n\right)=\sum_{i}v^i\left.\pdiff{}{x^i}\right|_{\varphi^{-1}(x^1,\dots,x^n)}
-	\end{align*} and $\widetilde{\varphi}_\alpha(\pi^{-1}(U_\alpha))=\varphi_\alpha(U_\alpha)\times\R^n$ which is open since $(U_\alpha,\varphi_\alpha)$ is a chart. One may then show that if we are given two charts $(U_\alpha,\varphi_\alpha)$ and $(U_\beta,\varphi_\beta)$ with co\"{o}rdinate functions $\{x^i\}$ and $\{y^j\}$, respectively, then the transition function $\widetilde{\varphi}_{\alpha\beta}=\widetilde{\varphi}_\beta\circ\widetilde{\varphi}_\alpha:\varphi_\alpha(U\cap V)\times\R^n\to\varphi_\beta(U\cap V)\times\R^n$ is given by\begin{align*}
-	\widetilde{\varphi}_{\alpha\beta}\left(x^1,\dots,x^n,v^1,\dots,v^n\right)=\left(y^1(x),\dots,y^n(x),\sum_{i}v^i\pdiff{y^1}{x^i}(x),\dots,\sum_{i}v^i\pdiff{y^n}{x^i}(x)\right),
-	\end{align*}which is smooth. The collection $\{(\pi^{-1}(U_\alpha),\widetilde{\varphi}_\alpha)\}$ then gives a smooth atlas of charts for $TM$. Moreover, in a given chart $(\pi^{-1}(U_\alpha),\widetilde{\varphi}_\alpha)$ with co\"{o}rdinates $x=(x^1,\dots,x^n)$, the projection map $\pi$ is given by $\pi(x,v)=x$ which is clearly smooth.
-\end{proof}
-The tangent bundle of a manifold is an example of a more general class of smooth objects: (smooth) vector bundles.
-\begin{definition}
 
-	Let $B$ be a smooth manifold, then a \textit{rank $k$ (real) vector bundle over $B$} is a smooth manifold $E$ together with a smooth surjective map $\pi:E\to B$ such that\begin{flushleft}
-		\textup{(a)} For every $b\in B$, the \textup{fiber} $E_b=\pi^{-1}(\{b\})$ has the structure of a real $k$-dimensional vector space.\\
-		\textup{(b)} For every $b\in B$, there exists a neighborhood $U$ of $b$ together with a diffeomorphism $\phi:\pi^{-1}(U)\stackrel{\sim}{\to}U\times\R^k$, called a \textit{local trivialization of $E$ over $U$}, such that $p\circ\phi=\pi$, where $p:U\times\R^k\to U$ is the canonical projection map, and for each $u\in U$, the map $\left.\phi\right|_{E_u}:E_u\to\{u\}\times\R^k$ is a vector space isomorphism.
-	\end{flushleft}
-The space $E$ is called the \textit{total space} of the vector bundle, $B$ is called the \textit{base}, and $\pi$ is called the \textit{projection map}.
-\end{definition}
-\begin{definition}
-	Given smooth vector bundles $\pi:E\to B$ and $\rho:F\to C$, a bundle homomorphism between them is a pair $(f,\bar{f})$ consisting of smooth maps $f:B\to C$ and $\bar{f}:E\to F$ such that the diagram
-	$$
-	\begin{CD}
-	E @>\bar{f}>> F\\
-	@V\pi VV  @VV\rho V\\
-	B @>>f> C
-	\end{CD}
-	$$
-	commutes. If $f$ and $\bar{f}$ are diffeomorphisms, we say that $(f,\bar{f})$ is a bundle isomorphism.
-\end{definition}
+In the way we use charts and tangent spaces for transversality arguments below, we consistently use the fact that for a chart
+$U$,  $TM|_U \cong U \times \R^d$.  As a taste of further study, we discuss $TS^1$, which is also a product globally, and $TS^2$,
+which while locally a product is not globally so.  Technically, we are discussing isomorphism of vector bundles, whose
+precise definition we give in an appendix.  But all one should take from these examples is the wisdom going forward that tangent
+bundles can be subtle, much more than one might guess in light of local triviality.
 
-One of the first questions one can ask about a tangent bundle $TM$ is whether or not it is trivial. To answer this question, we have to determine if $TM$ is isomorphic as a vector bundle to the trivial bundle $M\times \R^n$. To develop some familiarity with tangent bundles, we investigate the triviality of the bundles $TS^1$ and $TS^2$.
 \begin{example} We argue that $TS^1$ is isomorphic to the trivial bundle $S^1\times\R$.
-	We think of $S^1$ as being the unit circle in $\C$ and note that for each $x\in S^1$, the vector $ix$ is a rotation of $x$ by $\pi/2$. Defining $v_x$ to be the vector $ix$ with tail starting at $x$ gives us a continuous nonzero vector field on $S^1.$ Using this vector field, we can define a map
+	Take $S^1$ to be the unit circle in $\C$.  For $x\in S^1$, the vector $ix$ is the rotation of $x$ by $\pi/2$. 
+	Define $v_x$ to be the vector $ix$ with tail starting at $x$ gives us a continuous nonzero vector field on $S^1.$ Using this vector field, we can define a map
 	\begin{align*}
 	S^1\times\R&\to TS^1,\\
 	(x,t)&\mapsto (x,tv_x),
  	\end{align*}
- 	which is clearly a homeomorphism. Furthermore, the map sending $\{x\}\times\R$ to the tangent line at $x$ is a linear isomorphism. This tells us that our homeomorphism defines an isomorphism of $S^1$-bundles, and so $TS^1$ is trivial.
+ 	which is clearly a diffeomorphism. Furthermore, the map sending $\{x\}\times\R$ to the tangent line at $x$ is a linear isomorphism, so $TS^1$ is trivial.
 \end{example}
 \begin{example}[cf. Hatcher vector bundles book]
-	The tangent bundle $TS^2$ is nontrivial, which we show by constructing $TS^2$ via a clutching map $f$. Denote the closed upper hemisphere of $S^2$ by $D_+^2$, and the closed lower hemisphere by $D_-^2$. For nonzero $v_+\in T_{(0,1,0)}S^2$ in the tangent space of the north pole of $S^2$, we can define a vector field on $D_+^2$ by sliding $v_+$ down each great circle through $(0,1,0)$ to the equator, keeping the angle between $v_+$ and the great circle constant. Let $w_+$ be the rotation in $T_{(0,1,0)}S^2$ of $v_+$ by $\pi/2$, and define a similar vector field on $D^2_+$ using this $w_+$. Then $v_+,w_+$ both give trivializations of $TS^2$ on $D_+$. For nonzero $v_-\in T_{(0,-1,0)}S^2$ in the tangent space of the south pole of $S^2$ we can define a vector field on $D_-^2$ by sliding $v_-$ up along each great circle through $(0,-1,0)$ to the equator. Rotating $v_-$ by $\pi/2$ in the tangent plane, we obtain a vector field $w_-$ on $D^2_-$, and now have trivializations of $TS^2$ on $D_-^2$ given by $v_-,w_-$. 
+	The tangent bundle $TS^2$ is nontrivial, which we show by constructing $TS^2$ via a ``clutching map.'' Denote the closed upper hemisphere of $S^2$ by $D_+^2$, and the  lower  by $D_-^2$. 
+	For nonzero $v_+\in T_{(0,1,0)}S^2$ in the tangent space of the north pole of $S^2$, we can define a vector field on $D_+^2$ by sliding $v_+$ down each great circle through $(0,1,0)$ to the equator, keeping the angle between $v_+$ and the great circle constant. Let $w_+$ be the rotation in $T_{(0,1,0)}S^2$ of $v_+$ by $\pi/2$, and define a similar vector field on $D^2_+$ using this $w_+$. Then $v_+,w_+$ both give trivializations of $TS^2$ on $D_+$. For nonzero $v_-\in T_{(0,-1,0)}S^2$ in the tangent space of the south pole of $S^2$ we can define a vector field on $D_-^2$ by sliding $v_-$ up along each great circle through $(0,-1,0)$ to the equator. Rotating $v_-$ by $\pi/2$ in the tangent plane, we obtain a vector field $w_-$ on $D^2_-$, and now have trivializations of $TS^2$ on $D_-^2$ given by $v_-,w_-$. 
 	
-	Now, extending $D_+^2,D_-^2$ and the corresponding vector fields $v_-,v_+,w_-,w_+$ by $\epsilon$-neighborhoods past the equator lets us consider these vector fields along the equatorial $S^1$. The tangent space $TS^2$ can then be recovered as a quotient of $D_+^2\times\R^2\sqcup D_-^2\times\R^2$ if we can figure out a way to identify the vector field points along the equator. The function that does this is the map $f:S^1\to\text{GL}_2(\R)$ defining the rotation needed to send the vectors $v_+,w_+$ to $v_-,w_-$. So in fact this map actually goes to $S^1$, since any rotation matrix gives a point on $S^1$. This $f$ is by definition a ``clutching function". Now, as we traverse $S^1$ and track the angle by which the pairs of vectors differ, we can see that the angle goes from 0 to $4\pi$. This tells us that the map $f$ as a map $S^1\to S^1$ has degree 2. From this we conclude that the tangent bundle $TS^2$ is nontrivial, since looking at the restriction of the transition map of the trivial bundle $S^2\times\R^2$ to the equatorial $S^1$ should be the identity map.
+	Now, extending $D_+^2,D_-^2$ and the corresponding vector fields $v_-,v_+,w_-,w_+$ by $\epsilon$-neighborhoods past the equator lets us consider these vector fields along the equatorial $S^1$. The tangent space $TS^2$ can then be recovered as a quotient of $D_+^2\times\R^2\sqcup D_-^2\times\R^2$ if we identify the vector field points along the equator by the map $f:S^1\to\text{GL}_2(\R)$ defining the rotation needed to send the vectors $v_+,w_+$ to $v_-,w_-$. So in fact this map actually goes to $S^1$, since any rotation matrix gives a point on $S^1$. This $f$ is by definition a ``clutching function". Now, as we traverse $S^1$ and track the angle by which the pairs of vectors differ, we can see that the angle goes from 0 to $4\pi$. This tells us that the map $f$ as a map $S^1\to S^1$ has degree 2. From this we conclude that the tangent bundle $TS^2$ is nontrivial, since looking at the restriction of the transition map of the trivial bundle $S^2\times\R^2$ to the equatorial $S^1$ should be the identity map.
 \end{example}
-Our definition of tangent space used the well-known derivative defined on Euclidean space. It is also useful to have a notion of derivative for smooth maps between abstract manifolds, which we define now.
+
+Our definition of tangent space used the well-known derivative defined on Euclidean space.  The tangent space is needed to 
+define the derivative for smooth maps between abstract manifolds, which we will use extensively.  Informally, it is the map between tangent
+bundles where the map on each tangent space  serves as the ``best linear approximation'' of a map at each point.
+
 \begin{definition}
-For  a smooth map $f\colon M\rightarrow N$ between manifolds (of dimensions $m$ and $n$, respectively, not necessarily embedded in some ambient Euclidean space), the \emph{derivative of $f$ at $x$} is a linear map $df_x\colon T_xM\rightarrow T_{f(x)}M$ which serves as the ``best linear approximation'' of $f$ in a neighborhood of $x$. This map is defined as follows: Suppose $f(x)=y$, and let $\phi\colon U\rightarrow M$ and $\psi\colon V\rightarrow N$ be local parameterizations of $x$ and $y$, respectively (where $U\subseteq \R^m$ and $V\subseteq \R^n$). We may assume without loss of generality $\phi(0)=x$ and $\psi(0)=y$. For sufficiently small $U$, we get the following commutative diagram
+Let $f$ be  a smooth map $f\colon M\rightarrow N$ between manifolds (of dimensions $m$ and $n$, 
+respectively), and suppose $f(x) = y$.  
+%linear map $df_x\colon T_xM\rightarrow T_{f(x)}M$ which in a neighborhood of $x$. This map is defined as follows: Suppose $f(x)=y$, and 
+Let $\phi\colon U\rightarrow M$ and $\psi\colon V\rightarrow N$ be local parameterizations of $x$ and $y$, respectively (where $U\subseteq \R^m$ and $V\subseteq \R^n$) with $\phi(0)=x$ and $\psi(0)=y$. For sufficiently small $U$, we get the following commutative diagram
 $$
 \begin{CD}
 M @>f>> N\\
@@ -254,9 +297,13 @@ T_xM @>df_x>> T_{f(x)}N\\
 \R^m @>>dh_0> \R^n
 \end{CD}
 $$
-Observe that $dh_0$ is the usual derivative between subsets of Euclidean space. Since $d\phi_0$ is a diffeomorphism, we write
+Observe that $dh_0$ is the usual derivative between subsets of Euclidean space. Since $d\phi_0$ is a diffeomorphism, we define
+the derivative at $x$ by 
 \[df_x=d\psi_0\circ dh_0\circ d\phi_0^{-1}\]
 \end{definition}
+
+We will be defining cochains through immersed manifolds.
+
 \begin{definition}
 For a smooth map of manifolds $f\colon M\rightarrow N$, we say that $f$ is an \emph{immersion} if for every $x\in M$ we have that $df_x\colon T_xM\rightarrow T_{f(x)}N$ is an injective map.
 \end{definition}
@@ -267,6 +314,92 @@ Let $f\colon M\rightarrow N$ be a proper injective immersion. Then $f$ maps $M$ 
 \begin{proof}
 	See Guillemin and Pollack p. 17.
 \end{proof}	
+
+
+
+\subsection{Manifolds with corners}
+
+(Adapted from treatment by Dominic Joyce in ``On manifolds with corners.'')
+
+We operate at the interface of smooth and simplicial topology, which requires considering simplices as manifolds with corners.
+Let $\R^+$ be the subset of non-negative real numbers, and let $\R^{k,\ell} = \R^k \times (\R^+)^\ell$.  A smooth map between
+ subspaces of Euclidean spaces is the restriction of such between some neighborhoods of those subspaces, in which case
+ the derivative exists and we can define diffeomorphism as usual.
+
+\begin{definition}
+A manifold with corners\index{manifold!with corners} is a paracompact Hausdorff space $M$ with (a maximal collection of) charts $\phi_\alpha : U_\alpha \to M$
+with $U_\alpha$ open in  $\R^{0,n}$
+such that the transition maps $\phi_\beta^{-1} \circ \phi_\alpha$ are diffeomorphisms between $\phi_\alpha^{-1} ({\rm Im} \phi_\beta)$
+and $\phi_\beta^{-1} ({\rm Im} \phi_\alpha)$.  
+\end{definition}
+
+An important non-example for the theory of manifolds with corners is the map $\R^{0,2} \to \R^{1,1}$ 
+which in polar coordinates multiplies the angle
+with the $x$-axis by two, which while being smooth is not a diffeomorphism at the origin.
+
+The tangent bundle can be defined in any of the ways in which one defines it for manifolds. 
+
+\begin{lemma}
+Every point $x$ in a manifold with corners $M$ 
+has a neighborhood diffeomorphic to (a neighborhood of $0$ in) 
+$\R^{k,\ell}$ for some unique $k + \ell = n$.  The number $\ell$
+is called the depth\index{depth of a point} of $x$.
+\end{lemma}
+
+For example, the depth $0$ points are also known as the interior of $M$.
+ 
+A key structure to consider for a manifold with corners is its partition into connected subspaces with fixed depth, which is sometimes
+called a stratification\index{stratification}.  In the case of polytopes such as the cube this is essentially the facet structure.   
+A delicate issue is how to take a
+``closure'' of such facets\index{stratification!facets} or strata\index{stratification!strata|see {facets}} for general manifolds with corners, for which we rely on the tangent bundle.
+
+\begin{definition}
+A codimension-$i$ facet subspace\index{stratification!facet subspace} of $T_0 \R^{k,\ell} \cong \R^{k+\ell}$ is a linear subspace in which a fixed nonempty 
+subset of cardinality $i$ of the 
+coordinates which correspond to coordinates in $(\R^+)^\ell$  are zero.
+\end{definition}
+
+Thus $T_0 R^{k,\ell}$ has $2^\ell - 1$ facet subspaces total, over all codimensions.
+
+\begin{definition}
+A facet subspace of $T_x M$ is the image of some facet subspace of $T_0 R^{k,\ell}$ under the derivative $D \phi$ of a chart $\phi$ about $x$.
+\end{definition}
+
+A facet subspace thus consists of vectors which are tangent to a stratum containing $x$ in its closure.  
+While there is a unique minimal one, given by the image of the stratum containing $x$ itself, we need to consider the full poset of such
+subspaces.
+ 
+
+\begin{definition}
+A boundary facet\index{stratification!boundary facet} of a manifold with corners $M$ is a maximal manifold with corners $F$ with an immersion 
+$\iota_F : F \to M$, injective on the interior of $F$, such that $D\iota_F$ maps $TF$ injectively to a subbundle of facet 
+subspaces of $TM$.  
+\end{definition}
+
+The facets are not disjoint, as we can see in the case we will use the most.
+
+\forclass{Write up this example, saying how many facets of various dimensions it has, and drawing a picture for $\Delta^2$, noting that the 
+boundary facets intersect.}
+
+\begin{example}
+Example $\Delta^n$
+\end{example}
+
+The only examples we need to consider are $M$ for which the facet immersions $\iota_F$ are embeddings, as happens for polytopes.
+Such $M$ are called manifolds with embedded corners\index{manifold!with embedded corners}.  
+The ``teardrop'' subspace of $\R^2$ (homeomorphic to a disk, with a single corner) is  a typical example of a manifold with corners
+which does not have embedded corners.
+
+Constructions such as products and (good) intersections of manifolds with corners are rich because of the interplay of the stratifications in 
+a manifold-with-corners structure on the result.  Consider, for example, a generic linear intersection between a solid cube and the 
+boundary of a tetrahedron.
+We will not take the opportunity to enjoy working through this, because the submanifolds-with-corners we need have dimension
+zero or one, and thus have at most boundaries.
+
+
+\subsection{transversality}
+
+Above we discussed immersions, for which the induced map on tangent bundles is injective.
 If $\dim M\geq \dim N$, then we can instead ask for the derivative of a smooth map $f:M\to N$ to be surjective. In this case, we have the following theorem.
 \begin{theorem}
 Let $f\colon M\rightarrow N$ be a smooth map between manifolds, and let $y\in N$. Suppose that for all $x\in f^{-1}(y)$ we have $df_x$ is surjective. Then $f^{-1}(y)$ is a submanifold of $M$.
@@ -281,8 +414,7 @@ Consider the smooth map $f\colon\R^{n+1}\rightarrow \R$ given by $(x_1,\dots ,x_
 \end{example}
 
 \begin{definition}
-Transversal intersection of submanifolds Let $V, W$ be submanifolds of a manifold $M$, i.e. theinclusions $i_V:V\rightarrow M$ and $i_W:W\rightarrow M$ are proper maps and both $(di_V)_p$ and $(di_W)_q$ are injective maps on tangent spaces, for all $p\in v$ and $q\in W$. Then we say that $V$ and $W$ $\emph{interesect transversally}$ if the maps $i_U$ and $i_V$ are transversal at all points of $V\cap W$. (In particular, any two disjoint submanifolds interesect transversally). \index{transversality!of submanifolds}.\index{transversality!of submanifolds}.
-
+Transversal intersection of submanifolds\index{transversality!of submanifolds}.
 \end{definition}
 \begin{figure}[H]
 	\begin{center}
@@ -315,148 +447,18 @@ Transversal intersection of submanifolds Let $V, W$ be submanifolds of a manifol
 If $M$ is a smooth manifold of dimension $m$ and $W\subseteq M$ is a smooth submanifold of dimension $k$, then the codimension\index{codimension} of $W$ in $M$ is the number $\codim W=m-k$.
 \end{definition}
 
-\begin{theorem}
+\begin{corollary}
 If submanifolds intersect transversally, then the intersection is a submanifold.  The codimension is the sum of their codimensions.
-\end{theorem}
+\end{corollary}
 
-We can now state a simplified version of the fundamental theorem of intersection theory\index{intersection theory!fundamental theorem of}.
+\section{Thom cochains}
 
-\begin{theorem}
-Let $M$ be a manifold and $W$ be a submanifold of codimension $d$ without boundary.  
-\begin{enumerate}
-\item There is a cohomology class $[\tau_{W}] \in H^{d}(M; \Z/2)$ represented by a cochain whose value on an embedded chain $\Delta^{d} \subset M$ which intersects $W$ transversally is the mod-two count of $\Delta^{d} \cap W$.
-%\item If $S$ is a submanifold whose boundary is $V \sqcup W$ then $[\tau_{V}] = [\tau_{W}]$.
-\item If $V$ and $W$ intersect transversally then $[\tau_{V}] \cup [\tau_{W}] = [\tau_{V \cap W}]$.
-\end{enumerate}
-\end{theorem}
-
-\subsection{Examples using the simplified version}
-\begin{example}
-$\R^{2} - 0$
-\end{example}
-\begin{example}
-$[\tau_M] = 1$.  $[\tau_{{\rm point}}]$.
-\end{example}
-\begin{example}
-$\R^{3}$ with the z-axis removed along with either a linked or unlinked $S^{1}$.
-\end{example}
-\begin{example}
-A two-holed torus
-\end{example}
-\begin{example}
-$\RP^{n}$ and application to no retraction.
-\end{example}
-
-\subsection{Comparison with other approaches to cochains}
-
-Cochains are transcendental data (a value on every chain).  But some representations are more finite.
-
-Focus on torus example.  Both simplicial and de Rham  generally assess ``tolls'' for chains.  Both can be made ``concentrated'' as one
-crosses a submanifold.  
-
-
-\section{Transversality and preimage cochains}
-
-(Adapted from treatment by Dominic Joyce in ``On manifolds with corners.'')
-
-We operate at the interface of smooth and simplicial topology, which requires considering simplices as manifolds with corners.
-Let $\R^+$ be the subset of non-negative real numbers, and let $\R^{k,\ell} = \R^k \times (\R^+)^\ell$.  A smooth map between
- subspaces of Euclidean spaces is the restriction of such between some neighborhoods of those subspaces, in which case
- the derivative exists and we can define diffeomorphism as usual.
-
-\begin{definition}
-A manifold with corners\index{manifold!with corners} is a paracompact Hausdorff space $M$ with (a maximal collection of) charts $\phi_\alpha : U_\alpha \to M$
-with $U_\alpha$ open in  $\R^{0,n}$
-such that the transition maps $\phi_\beta^{-1} \circ \phi_\alpha$ are diffeomorphisms between $\phi_\alpha^{-1} ({\rm Im} \phi_\beta)$
-and $\phi_\beta^{-1} ({\rm Im} \phi_\alpha)$.  
-\end{definition}
-
-An important non-example for the theory of manifolds with corners is the map $\R^{0,2} \to \R^{1,1}$ 
-which in polar coordinates multiplies the angle
-with the $x$-axis by two, which while being smooth is not a diffeomorphism at the origin.
-
-The tangent bundle can be defined in any of the ways in which one defines it for manifolds. 
-
-\begin{lemma}
-Every point $x$ in a manifold with corners $M$ 
-has a neighborhood diffeomorphic to (a neighborhood of $0$ in) 
-$\R^{k,\ell}$ for some unique $k + \ell = n$.  The number $\ell$
-is called the depth\index{depth of a point} of $x$.
-\end{lemma}
-
-For example, the depth $0$ points are also known as the interior of $M$.
- 
-A key structure to consider for a manifold with corners is its partition into connected subspaces with fixed depth, which is sometimes
-called a stratification\index{stratification}.  In the case of polytopes such as the cube this is essentially the facet structure.   A delicate issue is how to take a
-``closure'' of such facets\index{stratification!facets} or strata\index{stratification!strata|see {facets}} for general manifolds with corners, for which we rely on the tangent bundle.
-
-\begin{definition}
-A codimension-$i$ facet subspace\index{stratification!facet subspace} of $T_0 \R^{k,\ell} \cong \R^{k+\ell}$ is a linear subspace in which a fixed nonempty 
-subset of cardinality $i$ of the 
-coordinates which correspond to coordinates in $(\R^+)^\ell$  are zero.
-\end{definition}
-
-Thus $T_0 R^{k,\ell}$ has $2^\ell - 1$ facet subspaces total, over all codimensions.
-
-\begin{definition}
-A facet subspace of $T_x M$ is the image of some facet subspace of $T_0 R^{k,\ell}$ under the derivative $D \phi$ of a chart $\phi$ about $x$.
-\end{definition}
-
-A facet subspace thus consists of vectors which are tangent to a stratum containing $x$ in its closure.  
-While there is a unique minimal one, given by the image of the stratum containing $x$ itself, we need to consider the full poset of such
-subspaces.
- 
-
-\begin{definition}
-A boundary facet\index{stratification!boundary facet} of a manifold with corners $M$ is a maximal manifold with corners $F$ with an immersion 
-$\iota_F : F \to M$, injective on the interior of $F$, such that $D\iota_F$ maps $TF$ injectively to a subbundle of facet 
-subspaces of $TM$.  
-\end{definition}
-
-Example: $\Delta^n$
-
-The only examples we need to consider are $M$ for which the facet immersions $\iota_F$ are embeddings, as happens for polytopes.
-Such $M$ are called manifolds with embedded corners\index{manifold!with embedded corners}.  
-The ``teardrop'' subspace of $\R^2$ (homeomorphic to a disk, with a single corner) is  a typical example of a manifold with corners
-which does not have embedded corners.
-
-Constructions such as products and (good) intersections of manifolds with corners are rich because of the interplay of the stratifications in 
-a manifold-with-corners structure on the result.  Consider, for example, a generic linear intersection between a solid cube and the 
-boundary of a tetrahedron.
-We will not take the opportunity to enjoy working through this, because the submanifolds-with-corners we need have dimension
-zero or one, and thus have at most boundaries.
-
-
-Transversality more generally.
+We  define our main objects of study.
 
 \begin{definition}
 Let $M$ be a manifold and $f : W \to M$ an immersion. Then $C^{\pitchfork W}_{*}(M)$ is the subset of $C_{*}(M)$ generated by the chains whose image is transversal to $f$. More generally, if $S$ is a  finite set of immersed submanifolds of $M$ then $C^{\pitchfork S}_{*}$\index{$C_{\pitchfork S}^*$} is generated by the chains whose image is transversal to each $W \in S$.
 \end{definition}
 
-\begin{theorem}\label{T:qi}
-For any finite collection $S$ of submanifolds of $M$, the inclusion $C^{\pitchfork S}_{*}(M) \hookrightarrow C_{*}(M)$ admits a chain deformation retraction.
-\end{theorem}
-
-
-\begin{proof} We wish to construct a map $j:C_{*}(M) \rightarrow C^{\pitchfork S}_{*}(M)$ such that $j$ is the identity on $C^{\pitchfork S}_{*}(M)$ and 
-$i \circ j$ is chain homotopic to the identity on $C_{*}(M)$. Given $\sigma:\Delta^d \rightarrow M$, we can cover its image with a finite number of 
-open sets $\{U_i\}$ in $M$ diffeomorphic to open subsets of $\R^k$, and we can choose these so that on the overlap the transition from one 
-diffeomorphism to another is smooth. We proceed inductively: \\If $e^0_k \subset U_k$ is not transversal to $S$, then $e^0_k \in S$ and by 
-Sard's Theorem we may choose a path $\gamma_k$ in $U_k$ from $e^0_k$ to a point not in $S$. If $e^0_k \pitchfork S$, then $\gamma_k$ is the 
-constant map. Using the consistent cover of $\sigma$, we may extend this to a map $\bar{\sigma}:\Delta^d \rightarrow M$ such that $\bar{\sigma}$ 
-on the 0-cells is defined by the endpoints of the $\gamma_k$'s. This gives a map 
-$\left(\Delta^d \times \{0,1\} \right)\cup \left(\{e^0_k\} \times I \right)\rightarrow M$, and simplicial complexes have the homotopy extension property, 
-so can extend this to a homotopy $F: \Delta^d \times I \rightarrow M$. Then by Theorem ??, there exists a smooth homotopy $F'$ which 
-agrees with $F$ on the 0-cells and $\sigma'=\left.F'\right|_{\Delta^d \times \{1\}}$ is transversal to $S$.\\
-Now assume that we have a homotopy $\partial$G on the cells of dimension $<q$. If $e^q_k $ is not transversal to $S$, then we........  
-[[Use relative transversality
-extension.]]
-
-
-We define $j(\sigma) = \sigma'$ and since $\left.j\right|_{C^{\pitchfork S}_{*}(M)}=id$ and the two chains are always homotopic, $C^{\pitchfork S}_{*}(M) \hookrightarrow C_{*}(M)$ is a chain deformation retraction and their homology groups are isomorphic.
-\end{proof}
-
-We now define our main objects of study.
 \begin{definition}
 If $W \in S$ then $\tau_{W} \in C^{*}_{\pitchfork S}(M)$ is the cochain defined by $\tau_W (\sigma) = \# P,$  where $P$ is
 the  zero-manifold defined as the following pullback
@@ -467,14 +469,20 @@ P @>>> W\\
 \Delta^n @>\sigma>> M.
 \end{CD}
 $$
-
 The cardinality $\# P$ is to be taken as mod-two unless $W$  is co-oriented, that is, its normal bundle is oriented.  This occurs
-for example when $W$ and $M$ are both oriented.  Signs are then given by the question of agreement of the co-orientation of $P$, 
+for example when it and $M$ are both oriented.  Signs are then given by the question of agreement of the co-orientation of $P$, 
 which could be a local orientation in $\Delta^n$ at each point, with the standard orientation of $\Delta^n$ given by say the differences between vertices labeled by $1, \cdots, n$ and vertex $0$ (or the barycenter) serving as a basis.
 \end{definition}
 
 We call these Thom classes\index{Thom class}, because in the standard development they are (the pushforwards of)  Thom classes of the normal bundles.  But we will use 
-them to understand both pushforward and Thom classes, rather than the other way around.
+them to understand both pushforward and Thom classes, rather than the other way around.  To put these Thom classes to use, 
+we need that our cochains are 
+
+\begin{theorem}\label{T:qi}
+For any finite collection $S$ of submanifolds of $M$, the inclusion $C^{\pitchfork S}_{*}(M) \hookrightarrow C_{*}(M)$ admits a chain deformation retraction.
+\end{theorem}
+
+We prove this key statement, which lets us apply the theory, below.
 
 \begin{theorem}
 If $\partial V = W$ then $\delta \tau_{V} = \tau_{W} \in C^{*}_{\pitchfork \{V, W\}}$.  In particular, if $V$ has no boundary than $\tau_{V}$ is a cocycle.
@@ -545,6 +553,27 @@ More examples
 
 
 
+\begin{proof}[Proof of Theorem\ref{T:qi}] We wish to construct a map $j:C_{*}(M) \rightarrow C^{\pitchfork S}_{*}(M)$ such that $j$ is the identity on $C^{\pitchfork S}_{*}(M)$ and 
+$i \circ j$ is chain homotopic to the identity on $C_{*}(M)$. Given $\sigma:\Delta^d \rightarrow M$, we can cover its image with a finite number of 
+open sets $\{U_i\}$ in $M$ diffeomorphic to open subsets of $\R^k$, and we can choose these so that on the overlap the transition from one 
+diffeomorphism to another is smooth. We proceed inductively: \\If $e^0_k \subset U_k$ is not transversal to $S$, then $e^0_k \in S$ and by 
+Sard's Theorem we may choose a path $\gamma_k$ in $U_k$ from $e^0_k$ to a point not in $S$. If $e^0_k \pitchfork S$, then $\gamma_k$ is the 
+constant map. Using the consistent cover of $\sigma$, we may extend this to a map $\bar{\sigma}:\Delta^d \rightarrow M$ such that $\bar{\sigma}$ 
+on the 0-cells is defined by the endpoints of the $\gamma_k$'s. This gives a map 
+$\left(\Delta^d \times \{0,1\} \right)\cup \left(\{e^0_k\} \times I \right)\rightarrow M$, and simplicial complexes have the homotopy extension property, 
+so can extend this to a homotopy $F: \Delta^d \times I \rightarrow M$. Then by Theorem ??, there exists a smooth homotopy $F'$ which 
+agrees with $F$ on the 0-cells and $\sigma'=\left.F'\right|_{\Delta^d \times \{1\}}$ is transversal to $S$.\\
+Now assume that we have a homotopy $\partial$G on the cells of dimension $<q$. If $e^q_k $ is not transversal to $S$, then we........  
+[[Use  transversality extension along the lines of the Extension Theorem on page 72 of Guillemin and Pollack.]]
+
+\forclass{Exercise (with my considerable help if you need): fill this in!}
+
+
+We define $j(\sigma) = \sigma'$ and since $\left.j\right|_{C^{\pitchfork S}_{*}(M)}=id$ and the two chains are always homotopic, $C^{\pitchfork S}_{*}(M) \hookrightarrow C_{*}(M)$ is a chain deformation retraction and their homology groups are isomorphic.
+\end{proof}
+
+
+
 \section{Intersection and cup product}
 
 In this section we prove the following.
@@ -553,68 +582,9 @@ In this section we prove the following.
 If $V$ and $W$ intersect transversally, and the intersection is given the co-orientation... then $[\tau_{V}] \smile [\tau_W] = [\tau_{V \cap W}]$.
 \end{theorem}
 
-In this section we prove the following.
-
-\begin{theorem}
-If $V$ and $W$ intersect transversally, and the intersection is given the co-orientation... then $[\tau_{V}] \smile [\tau_W] = [\tau_{V \cap W}]$.
-\end{theorem}
-
-We must ponder some oriented intersection theory in order to get this right. The basic result we will be bootstrapping is that if $V$ and $W$ are complimentary vector subspaces of a vector space $M$ and we fix a decomposition
-\[
-V\oplus W = M
-\]
-(as opposed to $W\oplus V= M$), then an orientation of any two of the spaces in question will determine an orientation of the other. 
-
-Suppose that $M$ is an oriented manifold and that $W\subset M$ is an orientable submanifold (we assume that $W$ and $M$ do not have boundary). For $w\in W$, we define the normal space to $W$ in $M$ at $x$ to be 
-\[
-N_x(W; M) : = T_xM/T_xW.
-\]
-We have an isomorphism $N_x(W; M)\oplus T_xW\cong T_xM$ (note the order!), and can repace this isomorphism with an equality by choosing a compliment to $T_xW$ in $T_xM$ and identifying it with $N_x(W; M)$. By the linear algebra discussed above we see that a choice of orientation of $N_x(W; M)$ for all $x$ in $W$, which we refer to as a co-orientation of $W$ in $M$, determines an orientation of $W$ (and vice-versa). 
-
-Let $V$ be an oriented manifold (potentially with boundary) and 
-\[
-f: V\rightarrow M
-\]
-be a smooth map transverse to $W$ (including on the boundary). We know that $f^{-1}(W)$ is a submanifold and for $x\in f^{-1}(W)$
-\[
-T_xf^{-1}(W) = df_x^{-1}T_{f(x)}W.
-\]
-We claim there are decompositions
-\[
-N_x(f^{-1}(W); V)\oplus T_xf^{-1}(W)= T_xV
-\]
-and
-\[
-df_xN_x(f^{-1}(W); V) \oplus T_{f(x)}W = T_{f(x)}M,
-\]
-and that $df_x: N_x(f^{-1}(W); V)\rightarrow df_xN_x(f^{-1}(W); V)$ is an isomorphism. Since the question is local and $T_xf^{-1}(W) = df_x^{-1}T_{f(x)}W$, the claim follows from the following linear algebra: if $D: A\rightarrow B$ is a linear map and $C\subset B$ so that $DA+ C= B$, then $D: A/D^{-1}(C)\rightarrow B/C$ is an isomorphism. 
-
-Thus, using these direct sum decompositions, along with the fact that $df_x$ identifies normal spaces, we can use a co-orientation of $W$ in $M$ to produce a co-orientation of $f^{-1}(W)$ in $V$. 
-
-This is most interesting for us in the following situation. Suppose $V$ and $W$ are submanifolds of an oriented manifold $M$ of complementary codimension, $V$ oriented and $W$ co-oriented, which intersect transversally. Let $p \in V\cap W$, and define $\text{sign}_{V,W}(p) = \pm 1$ depending on whether the co-orientation of $\iota_V^{-1}(W)$ at $p$ (induced by $\iota_V$ and the co-orientation of $W$) agrees or disagrees with the orientation of $W$ at $p$.  If we assume further that $V\cap W$ is compact, then $V\cap W$ is a finite set of points. We define 
-\[
-\#V\cap W = \#\iota_V^{-1}(W) = \sum_{p\in V\cap W}\text{sign}_{V, W}(p).
-\]
-This intersection really does depend on the order! In fact we have the following relation
-\[
-\#V\cap W = (-1)^{\dim W\cdot \dim V} \#W\cap V.
-\]
-
-In order to argue that $C^{\ast}_{\pitchfork W}(M; \mathbb{Z})$ is well defined we again will appeal to the classification of one-manifolds. Also, independent of the language of homology and cohomology in order for oriented intersection theory to have any meaning at all, it must be that $\#V\cap W$ does not change if $V$ or $W$ are smoothly deformed in $M$, this again will come down to the classification of one-manifolds. 
-
-Recall that our convention fo inducing orientation on the boundary is that if $M$ is oriented, $p\in \partial M$, and $n$ is an outward normal vector in $T_pM$, then the direct sum decomposition 
-\[
-\mathbb{R}n \oplus T_p\partial M = T_pM
-\]
-determines the orientation of $\partial M$ (in class we were calling this the "first-out" convention, and it seems most suited to discussions involving $\Delta^n$'s as well as agreeing with Guillemin and Pollack).
-
-From this convention, it follows that the boundary components of $X\times I$: $X\times \lbrace 0\rbrace$ and $X\times \lbrace 1\rbrace$ have the opposite orientations. If $M$ is a compact oriented one manifold with boundary, then $M$ is a disjoint union of $S^1$'s and $I$'s and by the previous statement we see that the sum of the orientation numbers at the boundary points of $M$ are zero. 
-
-This is enough to establish the following: If $V_t$, $t\in I$, and $W$ are submanifolds of an oriented manifold $M$ of complementary codimension, $V_t$ oriented and $W$ co-oriented, which intersect transversally (for all $t\in I$) then $\#V_t\cap W= V\cap W$ for all $t\in I$. 
-
 Recall that the cup product is essentially induced by the diagonal map $X \overset{\Delta}{\to} X \times X$.  One standard
 approach to the cohomology of a product $X \times Y$ is developed through the external cup product, namely $C^*(X) \otimes C^*(Y)$
-maps to $C^*(X \times Y)$ by sending $\alpha  \otimes \beta$ to $p^* \alpha \smile q^*\beta$, where $p$ is the projection from 
+maps to $C^*(X \times Y)$ by sending $\alpha  \otimes \beta$ to $p^* \alpha \cup q^*\beta$, where $p$ is the projection from 
 $X \times Y$ to $X$ and $q$ is the projection to $Y$.  This map is an isomorphism with field coefficients or when 
 one of $X$ and $Y$ has torsion-free cohomology -- see Theorem~3.16 of Hatcher's book **, which establishes this when $X$ and
 $Y$ are CW-complexes.
@@ -624,45 +594,7 @@ The external cup product sends $[\tau_V] \otimes [\tau_W]$ to $[\tau_{V \times W
 \end{proposition}
 
 \begin{proof}[Proof of the Fundamental Theorem, based on Proposition~\ref{externalcup}]
-
-Suppose that $V\pitchfork W$ and suppose we have $(x,x)\in\Delta(X)\cap V\times W$, i.e. that $x\in V\cap W$. Recall that $T_{(x,x)}M\times M\cong T_xM\oplus T_xM$ and suppose that, under this identification, we have $(\alpha,\beta)\in T_{(x,x)}M\times M$. Since $V\pitchfork W$, we may write $(\alpha,\beta)=(v_1+w_1,v_2,w_2)$ for some $v_i\in T_xV$ and $w_i\in T_xW$ but, then we have\begin{align*}
-(\alpha,\beta)=(v_2+w_1,v_2+w_1)+(v_1-v_2,w_2-w_1)
-\end{align*}and we have that $(v_2+w_1,v_2+w_1)\in\mathrm{im}\,\mathrm{d}\Delta_x$, since $\mathrm{d}:T_xM\to T_xM\oplus T_xM$ is again the diagonal map, and $(v_1-v_2,w_2-w_1)\in T_xV\oplus T_xW\cong T_{(x,x)}V\times W$ so we have that $\Delta\pitchfork V\times W$. Now consider the compositions $M\stackrel{\Delta}{\to}M\times M\stackrel{p_1,p_2}{\longrightarrow}M$, where $p_i$ is the projection onto the $i^\text{th}$ factor of $M$, and note that $\mathrm{d}(p_i)_x:T_xM\oplus T_xM\to T_xM$ is itself the projection map onto the $i^\text{th}$ factor of $T_xM$ so we automatically have $p_1\pitchfork V$ and $p_2\pitchfork W$. By our above remarks, we have that $p_1^*[\tau_V]=\left[\tau_{p_1^{-1}(V)}\right]=[\tau_{V\times M}]$ and $p_2^*[\tau_W]=\left[\tau_{p_2^{-1}(W)}\right]=[\tau_{M\times W}]$ and $\Delta\pitchfork V\times W$ so we obtain\begin{align*}
-[\tau_V]\smile[\tau_W]&=\Delta^*(p_1^*[\tau_V]\smile p_2^*[\tau_W])\\&=\Delta^*([\tau_{V\times M}]\smile[\tau_{M\times W}])\\&=\Delta^*[\tau_{V\times W}]\\&=\left[\tau_{\Delta^{-1}(V\times W)}\right]\\&=[\tau_{V\cap W}],
-\end{align*}as desired, by Proposition~\ref{pullback} and Proposition~\ref{externalcup}.
-
-
-{\bf Or...}
-If $V \pitchfork W$ then $\Delta \pitchfork V \times W \subset X \times X$. This is local (note that $T_{(x,x)}\Delta(X) = \Delta(T_xX)$) so follows from linear algebra considerations. If $V$ and $W$ are subspaces of a vector space $X$ so that $V+ W= X$, then $\dim X = \dim V+ \dim W - \dim V\cap W$ and therefore, 
-\[
-\dim V\times W + \dim \Delta - \dim \Delta\cap (V\times W) = \dim V + \dim W + \dim X - \dim V\cap W= 2\dim X= \dim X\times X
-\]
-and it follows that $V\times W\pitchfork \Delta$.   
-
-Consider the composition 
-\[
-H^{\ast}(X)\otimes H^{\ast}(X)\xrightarrow{\times} H^{\ast}(X\times X)\xrightarrow{\Delta^*}H^{\ast}(X)
-\]
-which we are referring to as the external cup product (on homology). Under this map we have two perspectives on the image of $[\tau_V]\otimes[\tau_W]$:
-\[
-[\tau_V]\otimes[\tau_W]\mapsto \Delta^{\ast}(p^{\ast}[\tau_V]\smile q^{\ast}[\tau_W]) = \Delta^{\ast}(p^{\ast}[\tau_V])\smile\Delta^{\ast}(q^{\ast}[\tau_W]) = [\tau_V]\smile[\tau_W]
-\]
-and
-\[
-[\tau_V]\otimes[\tau_W]\mapsto \Delta^{\ast}(p^{\ast}[\tau_V]\smile q^{\ast}[\tau_W]) = \Delta^{\ast}([\tau_{p^{-1}(V)}]\smile [\tau_{q^{-1}(W)}]) = \Delta^{\ast}([\tau_{V\times X}]\smile[\tau_{X\times W}]).
-\]
-
-We will work hard in the remainder of this section to verify that 
-\[
-[\tau_{V\times X}]\smile[\tau_{X\times W}]= [\tau_{V\times W}].
-\]
-Once this is done, it will follow that
-\[
-[\tau_V]\smile [\tau_W] = \Delta^{\ast}([\tau_{V\times X}]\smile[\tau_{X\times W}])= \Delta^{\ast}(\tau_{V\times W}) = [\tau_{\Delta^{-1}(V\times W)}] =[\tau_{V\cap W}]
-\]
-(the second to last equality makes sense because $\Delta\pitchfork (V\times W)$, and the last equality follows from the set theory equation $\Delta\cap(V\times W) = V\cap W$). 
-
-
+If $V \pitchfork W$ then $\Delta \pitchfork V \times W \subset X \times X$.  Apply Proposition~\ref{pullback}.
 \end{proof}
 
 
@@ -702,75 +634,11 @@ Recall K\"unneth theorem that  $C_*(X) \otimes C_*(Y) \to C_*(X \times Y)$ given
 isomorphism on homology.  
 
 Then show that $p^* \tau_V \cup q^* \tau_W$ and $\tau_{V \times W}$ agree on this subcomplex, which is has an immediate
-geometric proof.
+geometric proof.  \forclass{This proof was given on Friday May 4 - use your notes to fill this in.  You'll need to define more terms than
+I used in class (e.g. name the chain given by subdividing $\sigma \times \mu : \Delta^i \times \Delta^j$).}
 \end{proof}
 
-\section{\v{C}ech cohomology and Poincar\'{e} duality}
-Here, we summarize the definition of \v{C}ech cohomology, with a few preliminaries from differential and algebraic geometry. This will allow us to establish Alexander --- and hence Poincar\'{e} --- duality \textit{at the cochain level} for Thom cohomology.
-
-\begin{definition}
-	A \textup{Riemannian manifold} is a pair $(M,g)$ consisting of a smooth manifold $M$ and a smooth symmetric $(0,2)$-\textup{tensor} $g$ on $M$, which is to say a smooth family of inner products $g_x(\cdot,\cdot)$ on $T_xM$. Here, ``smooth'' means that the real-valued function $x\mapsto g_x(X_x,Y_x)$ is smooth for any pair of smooth vector fields $X$ and $Y$ on $M$.
-\end{definition}
-\begin{definition}
-	A \textup{connection} on a smooth vector bundle $\pi:E\to B$ is a real-linear map $\nabla:\Gamma(E)\to\Gamma(E\otimes T^*B)$ --- where $\Gamma(E)$ denotes the space of sections of $\pi$, i.e. smooth maps $\sigma:B\to E$ such that $\pi\circ\sigma=\id_B$ --- such that if $f\in C^\infty(B)$ and $\sigma\in\Gamma(E)$, we have the Leibniz rule $\nabla(\sigma f)=(\nabla\sigma)f+\sigma\otimes df$. If $X$ is a vector field on $B$, we may define the \textup{covariant derivative along $X$} with respect to a connection $\nabla$ on $\pi:E\to B$ by $\nabla_X\sigma=(\nabla\sigma)(X)$. In particular, $\nabla_X$ is real-linear in both $\sigma$ and $X$ and satisfies $\nabla_{fX}=f\nabla_X$ and the Leibniz law $\nabla_X(f\sigma)=f\nabla_X\sigma+X(f)\sigma$ for all $f\in C^\infty(B)$ and $\sigma\in\Gamma(E)$. The \textup{Levi-Civita connection} on a Riemannian manifold $(M,g)$ is the unique \textup{Riemannian} and \textup{torsion-free} connection on $TM\to M$. That is to say that \begin{align*}
-	\nabla_Xg(Y,Z)=g(\nabla_XY,Z)+g(Y,\nabla_XZ)\hspace{1in}\textup{(Riemannian)}
-	\end{align*}and\begin{align*}
-	\nabla_XY-\nabla_YX=[X,Y]\hspace{1.9in}\textup{(torsion-free)}
-	\end{align*}for all smooth vector fields $X,Y,$ and $Z$ on $M$.
-\end{definition}
-\begin{definition}
-	Given a Riemannian manifold $(M,g)$ and a point $x\in M$, the \textup{exponential map} $\exp_x:T_xM\to M$ is defined by $\exp_x(\nu)=\gamma_\nu(1)$, where $\gamma_\nu$ is the unique geodesic beginning at $x$ in the direction of $\nu$, i.e. the unique solution to the initial value problem\begin{align*}
-	&\nabla_{\dot{\gamma}}\dot{\gamma}=0,\,\,\gamma(0)=x,\,\,\dot{\gamma}(0)=\nu,
-	\end{align*}where $\nabla$ is the Levi-Civita connection of $g$ and $\dot{\gamma}$ denotes the derivative of $\gamma$ --- which is to say the velocity vector field along $\gamma$. This is a second order ordinary differential equation with initial conditions on $\gamma$ and $\dot{\gamma}$ and, hence, by the fundamental theorem of ordinary differential equations, has a unique solution.
-\end{definition}
-\begin{remark}
-	Geodesics in Riemannian manifolds are a direct generalization of straight lines in flat Euclidean space. Indeed, if one chooses the Euclidean metric on $\R^n$ and $v$ is a vector in $\R^n$, extended to the constant vector field $X$, given by $X(p)=v$, then $\nabla_{X}$ is precisely directional differentiation of vector fields in the direction of $v$ and one may verify by direct computation that solutions to the equation $\nabla_{\dot{\gamma}}\dot{\gamma}=0$ with $\dot{\gamma}(0)=v$ are precisely the unit-speed straight lines in $\R^n$ whose images are translations of $\textup{span}\{v\}$. Unlike Euclidean lines, however, while geodesics connecting any two distinct points always exist on any metrically complete Riemannian manifold --- this is one part of the celebrated Hopf-Rinow theorem --- they need not be unique: for example on the round 2-sphere, there are uncountably many geodesics connecting the north and south poles. Moreover, this example demonstrates that geodesics may even be periodic!
-\end{remark}
-\begin{definition}
-	Let $X$ be a topological space. An open cover $\mathfrak{U}=\{U_\alpha\}$ of $X$ is called a \textup{good cover} if every nonempty finite intersection $U_{\alpha_1}\cap\cdots\cap U_{\alpha_r}$ is contractible.
-\end{definition}
-\begin{theorem}
-	Every smooth manifold $M$ has a good cover. Moreover, if $M$ is compact, then $M$ admits a finite good cover.
-\end{theorem}
-\begin{proof}
-	Fix a Riemannian metric $g$ on $M$. Then every point $x\in M$ has a geodesically convex neighborhood $B_x$ which is diffeomorphic to an open ball in $\R^n$ under the map $\exp_x^{-1}:B_x\to T_xM$. Note that any finite intersection of geodesically convex neighborhoods is again geodesically convex and diffeomorphic to a finite intersection of open balls under the exponential map. Any cover by geodesically convex neighborhoods is then a good cover since any finite intersection of balls is contractible.
-\end{proof}
-\begin{definition}
-	A \textup{presheaf} $\mathscr{F}$ on a topological space $X$ with values in a category $\mathscr{C}$ is a contravariant functor $\mathscr{F}:\mathscr{O}\to\mathscr{C}$, where $\mathscr{O}$ denotes the poset category of open subsets of $X$. In other words, $\mathscr{F}$ assigns to each open subset $U$ of $X$ an object $\mathscr{F}(U)$ of $\mathscr{C}$, called the space of sections of $\mathscr{F}$ over $U$, together with \textup{restriction maps} $\res_V^U:\mathscr{F}(U)\to\mathscr{F}(V)$ whenever $V\subseteq U$. As a special case, if objects of $\mathscr{C}$ are sets and we fix an object $C$ of $\mathscr{C}$, the \textup{constant presheaf} on $X$ is the presheaf $\mathscr{F}$ which assigns to an open set $U$ the set of locally constant functions $U\to C$ and to an inclusion $V\subseteq U$, the restriction map $f\mapsto f|_V$.
-\end{definition}
-\begin{remark}
-	The preffix \textup{pre-} in \textup{presheaf} suggests the existence of a notion of a \textup{sheaf} and, indeed, this is the case: a sheaf is a presheaf satisfying the following two conditions. If $U\subseteq X$ is open and $\{U_i\}$ is an open cover of $U$ and we have $\sigma,\tau\in\mathscr{F}(U)$ such that $\sigma|_{U_i}=\tau|_{U_i}$ for all $i$; this is called \textup{locality}. Moreover, if we are given $\sigma_i\in\mathscr{F}(U_i)$ for all $i$ such that $\sigma_i|_{U_i\cap U_j}=\sigma_j|_{U_i\cap U_j}$ for all $i$ and $j$, then there exists $\sigma\in\mathscr{F}(U)$ such that $\sigma|_{U_i}=\sigma_i$ for all $i$; this is called \textup{gluing}.
-\end{remark}
-\begin{examples*}
-	One encounters numerous examples of presheaves in the wild and, indeed, these are frequently honest sheaves. For example, given an arbitrary topological space $X$, the assignment $U\mapsto C(U,\R)$ together with the usual restriction maps form a sheaf on $X$ with values in the category of commutative rings. If $\pi:E\to B$ is a vector bundle, then the assignment $U\mapsto\Gamma\left(E|_{U}\right)$ which assigns to $U\subseteq B$ open the space of local sections of $\pi$ over $U$, again with the usual restriction maps, forms a sheaf. A slightly more exotic example is the \textup{skyscraper sheaf} at a point $x\in X$: given an abelian group $A$ and a point $x\in X$, $\mathrm{sky}_{x,A}$ assigns to $U$ the group $A$ if $x\in U$ and $0$ otherwise.
-\end{examples*}
-\begin{definition}
-	Let $X$ be a topological space and $\mathfrak{U}=\{U_\alpha\}_{\alpha\in A}$ an open cover. Define the $p^\textup{th}$ \v{C}ech cochain group $\check{C}{\hspace{1pt}}^p(\mathfrak{U},\mathscr{F})$ with values in an abelian group-valued presheaf $\mathscr{F}:\mathscr{O}\to\mathrm{Ab}$ by taking\begin{align*}
-	\check{C}{\hspace{1pt}}^p(\mathfrak{U},\mathscr{F})=\prod_{\alpha_0<\cdots<\alpha_p}\mathscr{F}(U_{\alpha_0}\cap\cdots\cap U_{\alpha_p}).
-	\end{align*}Given $i$, we have inclusion maps $$\partial_j:U_{\alpha_0}\cap\cdots\cap U_{\alpha_p}\to U_{\alpha_0}\cap\cdots\cap\widehat{U}_{\alpha_j}\cap\cdots\cap U_{\alpha_p}$$ inducing restriction homomorphisms $$\res_i:=\mathscr{F}(\partial_i):\mathscr{F}(U_{\alpha_0}\cap\cdots\cap\widehat{U}_{\alpha_j}\cap\cdots\cap U_{\alpha_p})\to\mathscr{F}(U_{\alpha_0}\cap\cdots\cap U_{\alpha_p})$$ for all $\alpha_0<\alpha_1<\cdots<\alpha_p$. Define $\delta:\check{C}{\hspace{1pt}}^p(\mathfrak{U},\mathscr{F})\to\check{C}{\hspace{1pt}}^{p+1}(\mathfrak{U},\mathscr{F})$by\begin{align*}
-	\delta=\sum_{i=0}^{p+1}(-1)^i\res_i.
-	\end{align*}Then $\delta^2=0$ and the homology of the cochain complex $(\check{C}{\hspace{1pt}}^*(\mathfrak{U},\mathscr{F}),\delta)$ is called the \textup{\v{C}ech cohomology} of the cover $\mathfrak{U}$ with values in $\mathscr{F}$ and is denoted by $\check{H}{\hspace{1pt}}^*(\mathfrak{U},\mathscr{F})$.
-\end{definition}
-\begin{theorem}
-	If $\mathfrak{U}$ is a good cover of $X$, then $H^*(X)\cong\check{H}{\hspace{1pt}}^*(\mathfrak{U},\Z)$, where here, by abuse of notation, $\Z$ denotes the constant presheaf valued in the abelian group $\Z$.
-\end{theorem}
-\begin{corollary}
-	If $\mathfrak{U}$ and $\mathfrak{V}$ are good covers, then $\check{H}{\hspace{1pt}}^*(\mathfrak{U},\Z)\cong \check{H}{\hspace{1pt}}^*(\mathfrak{V},\Z)$.
-\end{corollary}
-Among all well-behaved cohomology theories, \v{C}ech cohomology commonly enjoys a particularly special r\^{o}le as an intermediary in proving that two cohomology rings are isomorphic since the same \textup{generalized Mayer-Vietoris argument} used to show that $H^*(X)\cong\check{H}{\hspace{1pt}}^*(\mathfrak{U},\Z)$ can be employed more generally to show that a cohomology theory is isomorphic to \v{C}ech cohomology, provided that it satisfies certain properties. This argument is the content of the proof of the following theorem.
-\begin{theorem}[Bott-Weil]
-	Fix a topological space $X$ and let $\mathscr{O}$ be the poset category of open subsets of $X$ under inclusion. Denote by $\Ch$ the category of chain complexes of abelian groups and suppose that $F:\mathscr{O}\to\Ch$ is a functor such that\begin{flushleft}
-		\textup{(1)} $F$ satisfies the Mayer-Vietoris property: given $A,B\in\mathrm{ob}\mathscr{O}$, there is a short exact sequence of (co)chain complexes\begin{align*}
-		0\to F^*(A\cup B)\to F^*(A)\oplus F^*(B)\to F^*(A\cap B)\to 0.
-		\end{align*}
-		\textup{(2)} If $U\in\mathrm{ob}\mathscr{O}$ is contractible, then\begin{align*}
-		H_i(F(U))\cong\begin{cases}
-		\Z\textup{\hspace{0.3cm}if $i=0$}\\
-		0\textup{\hspace{0.375cm}else.}
-		\end{cases}
-		\end{align*}If, in addition, $X$ has cofinal good covers, then $H_*(F(X))\cong\check{H}^*(\mathfrak{U},\Z)$ provided that $\mathfrak{U}$ is a good cover.
-	\end{flushleft}
-\end{theorem}
+\section{Orientations and signs}
 
 \section{Examples}
 
@@ -801,49 +669,10 @@ The value of a Thom class $[\tau_W]$ on  a fundamental class of a submanifold is
 Use naturality of evaluating cohomology on homology, and then apply Proposition~\ref{top_cohomology}
 \end{proof}
 
-\begin{example}
-	$\R^{3}$ with the z-axis removed along with either \textup{(a)} a linked or \textup{(b)} an unlinked $S^{1}$.
-	
-	\begin{proof}[Case \textup{(a)}]
-		Note that $M=\R^3-\{x=y=0\}-\{x^2+y^2=1,z=0\}$ deformation retracts onto a 2-torus in $\R^3$ so $H_*(M)=\Z[\mathrm{pt}_0]\oplus\Z[\mu_1]\oplus\Z[\lambda_1]\oplus\Z[T_2]$, where subscripts denote degrees, so we should expect to find two nontrivial chains in degree 1 and one nontrivial chain in degree 2.
-		\begin{proof}[Chains]\renewcommand{\qedsymbol}{}
-			In degree 1, the two chains are\begin{figure}[H]
-				\begin{pspicture*}(-4,-0.5)(3.5,3.5)
-				\psellipse(-3,1)(1,0.5)
-				\psellipse[linecolor=red!40!violet!90](-3,2)(0.5,0.25)
-				\psline[linecolor=white,linewidth=2pt](-3,3)(-3,1.9)
-				\psline(-3,3)(-3,1.8)
-				\psline[linecolor=white,linewidth=2pt](-3,1.7)(-3,0.55)
-				\psline(-3,1.7)(-3,0.55)
-				\psline(-3,0.45)(-3,-3)
-				\rput(-2.25,2){$\lambda_1$}
-
-				\psellipse[linecolor=blue!40](0.65,0.75)(0.25,0.5)
-
-				\pspolygon*[linecolor=white,fillcolor=white](0.65,0)(1,0)(1,1.5)(0.65,1.5)
-				\psellipse[linecolor=white,linewidth=3pt](0,1)(1,0.55)
-				\psellipse(0,1)(1,0.5)
-				\psline[linecolor=white,linewidth=2pt](0,3)(0,0.55)
-				\psline(0,3)(0,0.55)
-				\psline(0,0.45)(0,-3)
-				\psellipse[linecolor=white,linewidth=3pt](0.65,0.75)(0.275,0.5)
-				\psellipse[linecolor=blue!40](0.65,0.75)(0.25,0.5)
-				\psline[linecolor=white,linewidth=3pt](0.5,0.579)(0.36,0.546)
-				\psline(0.5,0.579)(0.36,0.546)
-				\rput(0.75,0){$\mu_1$}
-				\end{pspicture*}
-			\end{figure}
-		\end{proof}
-		\begin{proof}[Cochains]\renewcommand{\qedsymbol}{}
-			
-		\end{proof}
-	\end{proof}
-\end{example}
 
 \subsection{Projective spaces}\index{projective space}
 
 \subsection{Grassmannians}\index{Grassmanian}
-
 \begin{definition}
 	Let $V$ be a real vector space and $k\geq 1$ an integer. The \textit{Grassmannian of real $k$-planes in $V$} is the set\begin{align*}
 	\Gr(k,V)=\{W\subseteq V:\text{$W$ is a linear subspace of $V$ and $\dim W=k$}\}.
@@ -863,193 +692,13 @@ Use naturality of evaluating cohomology on homology, and then apply Proposition~
 	For all $k\geq 1$ and all $n\geq 0$, $\Gr(k,n)$ and $\Gr^\C(k,n)$ are smooth manifolds.
 \end{proposition}
 \begin{proof}
-	Let $W$ be a $k$ plane in $\mathbb{R}^n$, and denote the corresponding point in $\Gr(k, n)$ by $\langle W\rangle$. Choose a complimentary $n-k$ plane to $W$ in $\mathbb{R}^n$, say $X$. Then the collection of $k$-planes in $\mathbb{R}^n$ which intersect $X$ exactly at the origin is an open subset of $\Gr(k, n)$ containing $\langle W\rangle$. We denote this open set $U_X$. Let $(w_1, ..., w_k)$ be a basis for $W$ and let $(x_{k+1}, ..., x_n)$ be a basis for $X$, it follows that $(w_1, ..., w_k, x_{k+1}, ..., x_n)$ is a basis for $\mathbb{R}^n = W\oplus X$. 
-	
-	If $U$ is another $k$-plane transverse to $X$, then the affine subspace $w_i + U$ is also transverse to $X$ for $i= 1, ..., k$, so the two affine subspaces $V$ and $w_i + X$ intersect in exactly one point. This determines a linear map $\varphi_V: W\rightarrow X$ via $\varphi_V(w_i) = \pi_X(V\cap (w_i+ X))$ (in coordinates, if $w_i + X$ intersects $V$ in $w_i + \sum_{i=k+1}^na_ix_i$, then $\varphi_V(w_i) = \sum_{i=k+1}^na_iw_i$). Furthermore, we have that 
-	\[
-	V = \lbrace(w, \varphi_V(w)) : w\in W\rbrace = \text{graph}(\varphi_V)\subset W\oplus X.
-	\]
-It is easily seen that this determines a bijection, and in fact a homeomorphism 
-\[
-U_X\cong \text{Hom}_{\mathbb{R}}(W, X).
-\]	
-
-Furthermore, if $Y$ is another $n-k$ plane complementary to $W$ in $\mathbb{R}^n$, then we can choose a basis $(y_{k+1}, ..., y_n)$ of $Y$ so $(w_1, ..., w_k, y_{k+1}, ..., y_n)$ is a basis for $\mathbb{R}^n= W\oplus Y$.  Let $g$ be the invertible linear transformation from $X$ to $Y$, carrying the chosen bases to each other. If $V$ is a $k$ plane in $U_X\cap U_Y$, then $V$ is the graph of some linear transformation $\varphi: W\rightarrow X$,  and it is also the graph of $g\circ \varphi : W\rightarrow Y$. Thus, the transition function 
-\[
-\text{Hom}_{\mathbb{R}}(W, X)\rightarrow \text{Hom}_{\mathbb{R}}(W, Y)
-\]
-is $\varphi\mapsto g\circ \varphi$, which is a linear map and therefore is $C^{\infty}$. 
+	Fill this in.
 \end{proof}
 \begin{remark}
 	In fact, $\Gr^\C(k,n)$ is a complex manifold of (complex) dimension $(n-k)k$, which is to say that $\Gr^\C(k,n)$ admits a smooth atlas of charts $(U_\alpha,\varphi_\alpha)$ such that the transition functions $\varphi_{\alpha\beta}=\left.\varphi_\beta\circ\varphi_{\alpha}^{-1}\right|_{\Omega_{\alpha\beta}}$, where $\Omega_{\alpha\beta}=\varphi_\alpha(U_\alpha\cap U_\beta)$, are holomorphic in each variable as maps $\Omega_{\alpha\beta}\to\C^{(n-k)k}$.
 \end{remark}
 
-To determine the homology of $\Gr(2, 4)$ we will begin by putting a $CW$ structure on the space. The method we use will generalize widely, to not just other Grassmannians, but to many different homogeneous spaces of the general linear group. 
-
-Fix complete flag $V_{\ast}$ in $\mathbb{R}^4$, that is choose subspaces $V_i$ of $\mathbb{R}^4$ so that 
-\[
-0 \subset V_1\subset V_2\subset V_3\subset V_4.
-\]
-and $\dim V_i = i$. For an arbitrary $2$-plane $W\subset \mathbb{R}^4$ we can consider the vector of non-negative integers $(\dim W\cap V_i)$. From linear algebra, we know that the $0$-th component of the vector must be zero, the $4$-th component must be $2$, and the difference between the $i+1$-st and $i$-th components is $0$ or $1$. Thus, in our case there are $6$ possible vectors describing the intersection of $W$ with the flag $V_{\ast}$ (for notational simplicity, we replace the vector in $\mathbb{Z}^5$ with a vector in $\mathbb{Z}^3$ by removing the $0$-th and $4-th$ component whcih as we noted above are always $0$ and $2$ respectively):
-\[
-(1, 2, 2), (1, 1, 2), (1, 1, 1), (0, 1, 2), (0, 1, 1), \text{and} \ (0, 0, 1).
-\]
-
-To one of these vectors $\sigma$, we associate a subspace of $\Gr(2, 4)$ 
-\[
-\Omega_{\sigma}(V_{\ast}) = \lbrace W\in \Gr(2, 4) \ | \ (\dim W\cap V_i) = \sigma\rbrace.
-\]
-It is clear that different dimension vectors $\sigma$ give rise to disjoint sets $\Omega_{\sigma}$, and that each $2$-plane in $\mathbb{R}^4$ is contained in some $\Omega_{\sigma}$. Furthermore, we claim that $\Omega_{\sigma}$ is an open subset of $\Gr(2, 4)$ homeomorphic to $\mathbb{R}^{d(\sigma)}$, where $d(\sigma) = 7- \sum_{i=0}^4\sigma_i = 5- (\sigma_1+ \sigma_2+ \sigma_3)$. We verify this in an example, which should easily be seen to generalize. 
-
-Fix a basis $(v_1, v_2, v_3, v_4)$ which "respects" the flag $(V_{\ast})$, i.e. $\mathbb{R}(v_1) = V_1$, $\mathbb{R}(v_1) \oplus \mathbb{R}(v_2) = V_2$ etc. If $W$ is a $2$-plane satisfying the interesection condition $(1, 1, 1)$ with $(V_{\ast})$, then upon choosing a basis for $W$, we can represent the inclusion map $W\rightarrow \mathbb{R}^4$ by a $4\times 2$ matrix of the form
-\[
-\begin{bmatrix}
-    1 & \ast \\
-    0 & \ast \\
-    0 & \ast \\
-    0 & 1 
-\end{bmatrix}.
-\]
-Since we can choose any basis in $W$, this matrix only represents $W$ up to elementary row operations. So we can use the $1$ in the first column to cancel any term which may appear to the right of it. Thus, there are $a, b\in \mathbb{R}^2$ so that $W$ is the column space of the matrix
-\[
-\begin{bmatrix}
-    1 & 0 \\
-    0 & a \\
-    0 & b \\
-    0 & 1 
-\end{bmatrix}.
-\]
-Thus, for any $\langle W\rangle \in \Omega_{(1, 1, 1)}(V_{\ast})$ there is a point $(a, b)\in \mathbb{R}^2$, and since the only element of $GL_2(\mathbb{R})$ which (acting on the right) stabilizes the matrix above is the identity, this means that the assignment $\langle W\rangle\mapsto (a,b)$ is a bijection $\Omega_{(1,1,1)}\cong \mathbb{R}^2$. In fact, this gives a diffeomorphism
-\[
-\Omega_{(1,1,1)}(V_{\ast})\cong \mathbb{R}^2. 
-\] 
-
-This description will also aid us in verifying our next claim, which is that 
-\[
-\overline{\Omega_{\sigma}(V_{\ast})} =\lbrace \langle W\rangle \ | \ \dim W\cap V_i \ge \sigma_i\rbrace = \bigcup_{\tau \ge \sigma}\Omega_{\tau}(V_{\ast})
-\] 
-(here $\tau \ge \sigma$ if and only if $\tau_i \ge \sigma_i$ for all $i$). 
-
-Again, we feel that an example will illustrate well enough what to do in general. We parameterize $\Omega_{(1, 1, 2)}(V_{\ast})$ by $\mathbb{R}$ via
-\[
-a\mapsto \text{span}\begin{bmatrix}
-    1 & 0 \\
-    0 & a \\
-    0 & 1 \\
-    0 & 0
-\end{bmatrix}.
-\]
-For all $t\in \mathbb{R}^{\times}$, we have
-\[
-\text{span}\begin{bmatrix}
-    1 & 0 \\
-    0 & t \\
-    0 & 1 \\
-    0 & 0
-\end{bmatrix} = \text{span}\begin{bmatrix}
-    1 & 0 \\
-    0 & t/t \\
-    0 & 1/t \\
-    0 & 0
-\end{bmatrix} = \text{span}\begin{bmatrix}
-    1 & 0 \\
-    0 & 1 \\
-    0 & 1/t \\
-    0 & 0
-\end{bmatrix}.
-\]
-and as $t\to \infty$ we see that the planes parameterized by $\mathbb{R}^{\times}$ (all of which are in $\Omega_{(1, 2, 2)}(V_{\ast}))$ converge to the point $\langle V_2\rangle$, as
-\[
-\text{span}\begin{bmatrix}
-    1 & 0 \\
-    0 & 1 \\
-    0 & 1/t \\
-    0 & 0
-\end{bmatrix} \to \text{span}\begin{bmatrix}
-    1 & 0 \\
-    0 & 1 \\
-    0 & 0 \\
-    0 & 0
-\end{bmatrix} \in \Omega_{(1, 2, 2)}(V_{\ast}) = \lbrace \langle V_2 \rangle \rbrace. 
-\]
-
-...Need to find a quick and easy argument that the attaching maps are all even degree, to get that these classes freely generate $H_{\ast}(\Gr(2, \mathbb{R}^4)$. That this is true for $H_{\ast}(\Gr(2, \mathbb{C}^4)$ is trivial. 
-
-...In general $\overline{\Omega_{\sigma}}$ is singular, but I think that the singularities occur away from where they intersect $\overline{\Omega_{\tau}^{\ast}}$. Can we use this to get around doing something hard?
-
-
-We now have homology generators represented by the fundamental classes $[\overline{\Omega}_{\sigma}(V_{\ast})]$, and to get dual cohomology generators, realized as Thom cochains, we must find six compact submanifolds which are transverse to the $\overline{\Omega}_{\sigma}$'s. It is not difficult to have a feeling for what these ought to be. First, we will say that two complete flags of $V$: $(V_{\ast})$ and $(W_{\ast})$ are transverse if for all $i= 0, ..., n$
-\[
-V_i + V_{n- i} = V
-\]
-Then, we take a "transverse" flag $(W_{\ast})\pitchfork (V_{\ast})$ and use $\lbrace \overline{\Omega}_{\sigma}\rbrace$. It will take some effort to determine the tangent space of a particular $\overline{\Omega}_{\sigma}(V_{\ast})$ and then verify transversality in honest, but let us take this as given for now and play around with some computations.
-
-To compute the pairing, we will use the standard flag $\mathbb{R}^0\subset \mathbb{R}^1\subset...\subset\mathbb{R}^4$ and for a transverse flag we will use the standard opposite
-\[
-\mathbb{R}^1\subset \mathbb{R}\cdot e_4\subset \mathbb{R}\cdot (e_4, e_3)\subset \mathbb{R}\cdot (e_4, e_3, e_2)\subset \mathbb{R}^4.
-\]
-Then to simplify notation we will write simply $\Omega_{\sigma}$ for the cell obtained from the standard flag and $\Omega_{\sigma}^*$ to denote the cell obtained from the opposite flag. We will also compute the pairing with $\mathbb{F}_2$ coefficients (this makes things much easier, and will be essentially the same computations as for the complex Grassmannian with $\mathbb{Z}$ coefficients). 
-
-In dimension/co-dimension zero, we have $\overline{\Omega}_{(1,2,2)}= \lbrace \langle \mathbb{R}^2\rangle \rbrace$ and $\overline{\Omega}_{(0,0,1)}^{\ast} = \Gr(2, 4)$ so clearly
-\[
-\# \overline{\Omega}_{(1, 2, 2)}\cap \overline{\Omega}_{(0,0,1)}^{\ast} =\# \lbrace \langle \mathbb{R}^2\rbrace = 1. 
-\]
-In dimension/co-dimension one, we have 
-\[
-\overline{\Omega}_{(1,1,2)} = \lbrace \langle W\rangle \ | \ \mathbb{R}^1\subset W\subset \mathbb{R}^3\rbrace
-\]
-and 
-\[
-\overline{\Omega}_{(0,1,1)}^{\ast}= \lbrace \langle W\rangle \ | \ W\cap \mathbb{R}\cdot (e_4, e_3)\ne 0\rbrace, 
-\]
-so 
-\[
-\# \overline{\Omega}_{(1,1,2)} \cap \overline{\Omega}_{(0,1,1)}^{\ast}= \# \lbrace \langle \mathbb{R}\cdot (e_1, e_3)\rangle \rbrace = 1. 
-\]
-It is not hard to see that $\overline{\Omega}_{(1, 1, 1)}$ is homeomorphic to $\mathbb{P}^1$. However, as we warned sometimes these subspaces are not actually submanifolds and we have here run into this already, although it is the only singular space we encounter for $\Gr(2, 4)$, the poincare polynomial for $\overline{\Omega}_{(0,0,1)}^{\ast}$ is $1+ t+ 2t^2+ t^3$ (which fails poincare duality so this space cannot be smooth). However, we will see that there is only one singular point, at $\langle \mathbb{R}\cdot(e_4, e_3)\rangle$ which is not the point of intersection in the computation above. 
-
-In dimension/co-dimension two, there are two cycles
-\[
-\overline{\Omega}_{(0,1,2)} = \lbrace \langle W\rangle \ | \ W\subset \mathbb{R}^3\rbrace
-\]
-and
-\[
-\overline{\Omega}_{(1, 1, 1)} = \lbrace \langle W \rangle \ | \ \mathbb{R}^1\subset W\rbrace
-\]
-(these are both $\mathbb{P}^2$'s) and the co-cycles are
-\[
-\overline{\Omega}_{(0,1,2)}^{\ast} = \lbrace \langle W \rangle \ | \ W\subset \mathbb{R}\cdot (e_4, e_3, e_2)\rbrace
-\]
-and
-\[
-\overline{\Omega}_{(1, 1, 1)}^{\ast} = \lbrace \langle W\rangle \ | \ \mathbb{R}\cdot e_4\subset W\rbrace. 
-\]
-Computing the intersection pairings we find
-\[
-\#\overline{\Omega}_{(0,1,2)}\cap \overline{\Omega}_{(0,1,2)}^{\ast} =\# \lbrace\langle \mathbb{R}(e_2, e_3)\rangle \rbrace = 1,
-\]
-\[
-\# \overline{\Omega}_{(0, 1, 2)}\cap \overline{\Omega}_{(1, 1, 1)}^{\ast} = 0, 
-\]
-\[
-\#\overline{\Omega}_{(1, 1, 1)}\cap \overline{\Omega}_{(0, 1, 2)}^{\ast} = 0,
-\]
-and
-\[
-\#\overline{\Omega}_{(1, 1, 1)}\cap \overline{\Omega}_{(1, 1, 1)}^{\ast} = \#\lbrace \mathbb{R}\cdot (e_1, e_4)\rbrace = 1.
-\]
-The remaining pairing calculations come from completely symmetric arguments (or duality if you wish), and we find that our pairing matrix is:
-\[
-\bordermatrix{&\tau_{\overline{\Omega}_{(0, 0, 1)}^{\ast}}&\tau_{\overline{\Omega}_{(0, 1, 1)}^{\ast}}&\tau_{\overline{\Omega}_{(0, 1, 2)}^{\ast}} &\tau_{\overline{\Omega}_{(1, 1, 1)}^{\ast}}&\tau_{\overline{\Omega}_{(1, 2, 2)}^{\ast}}&\tau_{\overline{\Omega}_{(0, 0, 1)}^{\ast}}\cr
-                \overline{\Omega}_{(1, 2, 2)}&1 &  0  & 0 & 0 & 0 & 0 \cr
-                \overline{\Omega}_{(1, 1, 2)}&0 &  1  & 0 & 0 & 0 & 0 \cr
-               \overline{\Omega}_{(0, 1, 2)}&0 &  0  & 1 & 0 & 0 & 0 \cr
-                \overline{\Omega}_{(1, 1, 1)}&0 &  0  & 0& 1 & 0 & 0 \cr
-                \overline{\Omega}_{(0, 1, 1)}&0 &  0  & 0 & 0 & 1 & 0 \cr
-                \overline{\Omega}_{(0, 0, 1)}&0 &  0  & 0 & 0 & 0 & 1 \cr}.
-\] 
-
-\subsection{Complements of submanifolds which are boundaries}
+\subsection{Complements of submanifolds}
 
 \subsection{Configuration spaces}\index{configuration space}
 
@@ -1057,10 +706,75 @@ The remaining pairing calculations come from completely symmetric arguments (or 
 
 \section{Looking forward: characteristic classes\index{characteristic class}, loop spaces\index{loop space}, and cobordism\index{cobordism}.}
 
-\nocite{*}
-\bibliographystyle{plain}
+
+\appendix
+\section{More on smooth manifolds}
+
+
+\begin{definition}
+	If a manifold $M$ is presented abstractly, rather than as a subset of $\R^n$, then a more natural --- though far 
+	less intuitive --- definition of the tangent space $T_xM$ is that it is the \textit{space of derivations at $x$}, 
+	which is to say the space of all linear maps $v:C^\infty(M)\to\R$ which satisfy\begin{align*}
+	v(fg)=f(x)v(g)+g(x)v(f)
+	\end{align*}for all $f,g\in C^\infty(M)$.
+\end{definition}
+\begin{example}
+	Suppose that $v\in\R^n$ and define $D_v:C^\infty(\R^n)\to C^\infty(\R^n)$ by $(D_vf)(x)=\left.\diff{}{t}f(x+tv)\right|_{t=0}$, then, given $x\in\R^n$, the map $\left.D_v\vphantom{\diff{}{x}}\right|_x:f\mapsto (D_vf)(x)$ is a derivation at $x$.
+\end{example}
+\begin{exercise}
+	Verify that $\left.D_v\vphantom{\diff{}{x}}\right|_x$ is a derivation at $x$ for all $x,v\in\R^n$.
+\end{exercise}
+%\begin{exercise}
+%	Show that any linear combination of derivations at $x$ is again a derivation at $x$.
+%\end{exercise}
+\begin{proposition}
+	If $M$ is a smooth $n$-manifold and $(U,\varphi)$ is a co\"{o}rdinate chart on $M$, then, for any $x\in U$, the derivations\begin{align*}
+	\left.\pdiff{}{x^i}\right|_x=\left(d\varphi_x\right)^{-1}\left(\left.\pdiff{}{x^i}\right|_{\varphi(x)}\right)
+	\end{align*}form a basis for $T_xM$, where $\left.\pdiff{}{x^i}\right|_{\varphi(x)}=\left.D_{e_i}\right|_{\varphi(x)}$ and $e_i=(0,\dots,1,\dots,0)$ is the $i^\text{th}$ standard unit basis vector for $\R^n$. Moreover, given $f\in C^\infty(U)$,\begin{align*}
+	\left.\pdiff{}{x^i}\right|_xf=\pdiff{\widehat{f}}{x^i}(\varphi(x)),
+	\end{align*}where $\widehat{f}=f\circ\varphi^{-1}$ is the co\"{o}rdinate representation of $f$ in $(U,\varphi)$.
+\end{proposition}
+\begin{proof}
+	Exercise.
+\end{proof}
+\begin{proposition}
+	If $M$ is a smooth $n$-manifold, the tangent bundle $TM$ admits the structure of a smooth $2n$-manifold with respect to which the canonical projection map $\pi:TM\to M$ is smooth.
+\end{proposition}
+\begin{proof}[Sketch]
+	Choose an atlas of charts $\{(U_\alpha,\varphi_\alpha)\}$ for $M$. Fixing a chart $(U_\alpha,\varphi_\alpha)$, say with co\"{o}rdinate functions $x^1,\dots,x^n$, we have that $\pi^{-1}(U_\alpha)=\{(x,v):x\in U_\alpha,v\in T_xM\}$. Define a map $\widetilde{\varphi}_\alpha:\pi^{-1}(U_\alpha)\to\R^{2n}$ by\begin{align*}
+	\widetilde{\varphi}_\alpha\left(\sum_{i}v^i\left.\pdiff{}{x^i}\right|_p\right)=\left(x^1(p),\dots,x^n(p),v^1,\dots,v^n\right).
+	\end{align*}Note that $\widetilde{\varphi}_\alpha$ is a bijection onto its image with inverse\begin{align*}
+	\widetilde{\varphi}^{-1}_\alpha\left(x^1,\dots,x^n,v^1,\dots,v^n\right)=\sum_{i}v^i\left.\pdiff{}{x^i}\right|_{\varphi^{-1}(x^1,\dots,x^n)}
+	\end{align*} and $\widetilde{\varphi}_\alpha(\pi^{-1}(U_\alpha))=\varphi_\alpha(U_\alpha)\times\R^n$ which is open since $(U_\alpha,\varphi_\alpha)$ is a chart. One may then show that if we are given two charts $(U_\alpha,\varphi_\alpha)$ and $(U_\beta,\varphi_\beta)$ with co\"{o}rdinate functions $\{x^i\}$ and $\{y^j\}$, respectively, then the transition function $\widetilde{\varphi}_{\alpha\beta}=\widetilde{\varphi}_\beta\circ\widetilde{\varphi}_\alpha:\varphi_\alpha(U\cap V)\times\R^n\to\varphi_\beta(U\cap V)\times\R^n$ is given by\begin{align*}
+	\widetilde{\varphi}_{\alpha\beta}\left(x^1,\dots,x^n,v^1,\dots,v^n\right)=\left(y^1(x),\dots,y^n(x),\sum_{i}v^i\pdiff{y^1}{x^i}(x),\dots,\sum_{i}v^i\pdiff{y^n}{x^i}(x)\right),
+	\end{align*}which is smooth. The collection $\{(\pi^{-1}(U_\alpha),\widetilde{\varphi}_\alpha)\}$ then gives a smooth atlas of charts for $TM$. Moreover, in a given chart $(\pi^{-1}(U_\alpha),\widetilde{\varphi}_\alpha)$ with co\"{o}rdinates $x=(x^1,\dots,x^n)$, the projection map $\pi$ is given by $\pi(x,v)=x$ which is clearly smooth.
+\end{proof}
+The tangent bundle of a manifold is an example of a more general class of smooth objects: (smooth) vector bundles.
+\begin{definition}
+	Let $B$ be a smooth manifold, then a \textit{rank $k$ (real) vector bundle over $B$} is a smooth manifold $E$ together with a smooth surjective map $\pi:E\to B$ such that\begin{flushleft}
+		\textup{(a)} For every $b\in B$, the \textup{fiber} $E_b=\pi^{-1}(\{b\})$ has the structure of a real $k$-dimensional vector space.\\
+		\textup{(b)} For every $b\in B$, there exists a neighborhood $U$ of $b$ together with a diffeomorphism $\phi:\pi^{-1}(U)\stackrel{\sim}{\to}U\times\R^k$, called a \textit{local trivialization of $E$ over $U$}, such that $p\circ\phi=\pi$, where $p:U\times\R^k\to U$ is the canonical projection map, and for each $u\in U$, the map $\left.\phi\right|_{E_u}:E_u\to\{u\}\times\R^k$ is a vector space isomorphism.
+	\end{flushleft}
+The space $E$ is called the \textit{total space} of the vector bundle, $B$ is called the \textit{base}, and $\pi$ is called the \textit{projection map}.
+\end{definition}
+\begin{definition}
+	Given smooth vector bundles $\pi:E\to B$ and $\rho:F\to C$, a bundle homomorphism between them is a pair $(f,\bar{f})$ consisting of smooth maps $f:B\to C$ and $\bar{f}:E\to F$ such that the diagram
+	$$
+	\begin{CD}
+	E @>\bar{f}>> F\\
+	@V\pi VV  @VV\rho V\\
+	B @>>f> C
+	\end{CD}
+	$$
+	commutes. If $f$ and $\bar{f}$ are diffeomorphisms, we say that $(f,\bar{f})$ is a bundle isomorphism.
+\end{definition}
+
+
+
+%\nocite{*}
+\bibliographystyle{alpha}
 \bibliography{bib}
-\printindex
+%\printindex
 \end{document}
 
  
