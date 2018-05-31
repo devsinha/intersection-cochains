@@ -8,6 +8,7 @@
 \usepackage{imakeidx} % Index
 \usepackage{todonotes} % Allows one to add both in-line and marginal notes as well as a list of 'to-dos' Example syntax: \todo[color=blue!25,inline]{Edit.}
 %this example produces an in-line to-do which says "Edit." and which is colored blue with 25% color saturation. Omitting 'inline' from the syntax produces a to-do in the margin. Warning: the default color is an awful shade of violently bright orange!
+\usepackage{mathrsfs} %Fancy calligraphic letters
 
 \newcommand{\Z}{{\mathbb{Z}}}
 
@@ -29,7 +30,7 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{example}[theorem]{Example}
 \newtheorem{exercise}[theorem]{Exercise}
-
+\newtheorem*{examples*}{Examples}
 
 \newcommand{\R}{\mathbb R}
 \newcommand{\I}{\mathbb I}
@@ -49,6 +50,9 @@
 \newcommand{\Gr}{\mathrm{Gr}}
 \newcommand{\pdiff}[2]{\frac{\partial #1}{\partial #2}}
 \newcommand{\diff}[2]{\frac{d #1}{d #2}}
+\newcommand{\Ch}{\mathrm{Ch}_\bullet}
+\newcommand{\res}{\mathrm{res}}
+\newcommand{\id}{\mathrm{id}}
 
 \makeindex
 \begin{document}
@@ -595,6 +599,73 @@ isomorphism on homology.
 Then show that $p^* \tau_V \cup q^* \tau_W$ and $\tau_{V \times W}$ agree on this subcomplex, which is has an immediate
 geometric proof.
 \end{proof}
+
+\section{\v{C}ech cohomology and Poincar\'{e} duality}
+Here, we summarize the definition of \v{C}ech cohomology, with a few preliminaries from differential and algebraic geometry. This will allow us to establish Alexander --- and hence Poincar\'{e} --- duality \textit{at the cochain level} for Thom cohomology.
+
+\begin{definition}
+	A \textup{Riemannian manifold} is a pair $(M,g)$ consisting of a smooth manifold $M$ and a smooth symmetric $(0,2)$-\textup{tensor} $g$ on $M$, which is to say a smooth family of inner products $g_x(\cdot,\cdot)$ on $T_xM$. Here, ``smooth'' means that the real-valued function $x\mapsto g_x(X_x,Y_x)$ is smooth for any pair of smooth vector fields $X$ and $Y$ on $M$.
+\end{definition}
+\begin{definition}
+	A \textup{connection} on a smooth vector bundle $\pi:E\to B$ is a real-linear map $\nabla:\Gamma(E)\to\Gamma(E\otimes T^*B)$ --- where $\Gamma(E)$ denotes the space of sections of $\pi$, i.e. smooth maps $\sigma:B\to E$ such that $\pi\circ\sigma=\id_B$ --- such that if $f\in C^\infty(B)$ and $\sigma\in\Gamma(E)$, we have the Leibniz rule $\nabla(\sigma f)=(\nabla\sigma)f+\sigma\otimes df$. If $X$ is a vector field on $B$, we may define the \textup{covariant derivative along $X$} with respect to a connection $\nabla$ on $\pi:E\to B$ by $\nabla_X\sigma=(\nabla\sigma)(X)$. In particular, $\nabla_X$ is real-linear in both $\sigma$ and $X$ and satisfies $\nabla_{fX}=f\nabla_X$ and the Leibniz law $\nabla_X(f\sigma)=f\nabla_X\sigma+X(f)\sigma$ for all $f\in C^\infty(B)$ and $\sigma\in\Gamma(E)$. The \textup{Levi-Civita connection} on a Riemannian manifold $(M,g)$ is the unique \textup{Riemannian} and \textup{torsion-free} connection on $TM\to M$. That is to say that \begin{align*}
+	\nabla_Xg(Y,Z)=g(\nabla_XY,Z)+g(Y,\nabla_XZ)\hspace{1in}\textup{(Riemannian)}
+	\end{align*}and\begin{align*}
+	\nabla_XY-\nabla_YX=[X,Y]\hspace{1.9in}\textup{(torsion-free)}
+	\end{align*}for all smooth vector fields $X,Y,$ and $Z$ on $M$.
+\end{definition}
+\begin{definition}
+	Given a Riemannian manifold $(M,g)$ and a point $x\in M$, the \textup{exponential map} $\exp_x:T_xM\to M$ is defined by $\exp_x(\nu)=\gamma_\nu(1)$, where $\gamma_\nu$ is the unique geodesic beginning at $x$ in the direction of $\nu$, i.e. the unique solution to the initial value problem\begin{align*}
+	&\nabla_{\dot{\gamma}}\dot{\gamma}=0,\,\,\gamma(0)=x,\,\,\dot{\gamma}(0)=\nu,
+	\end{align*}where $\nabla$ is the Levi-Civita connection of $g$ and $\dot{\gamma}$ denotes the derivative of $\gamma$ --- which is to say the velocity vector field along $\gamma$. This is a second order ordinary differential equation with initial conditions on $\gamma$ and $\dot{\gamma}$ and, hence, by the fundamental theorem of ordinary differential equations, has a unique solution.
+\end{definition}
+\begin{remark}
+	Geodesics in Riemannian manifolds are a direct generalization of straight lines in flat Euclidean space. Indeed, if one chooses the Euclidean metric on $\R^n$ and $v$ is a vector in $\R^n$, extended to the constant vector field $X$, given by $X(p)=v$, then $\nabla_{X}$ is precisely directional differentiation of vector fields in the direction of $v$ and one may verify by direct computation that solutions to the equation $\nabla_{\dot{\gamma}}\dot{\gamma}=0$ with $\dot{\gamma}(0)=v$ are precisely the unit-speed straight lines in $\R^n$ whose images are translations of $\textup{span}\{v\}$. Unlike Euclidean lines, however, while geodesics connecting any two distinct points always exist on any metrically complete Riemannian manifold --- this is one part of the celebrated Hopf-Rinow theorem --- they need not be unique: for example on the round 2-sphere, there are uncountably many geodesics connecting the north and south poles. Moreover, this example demonstrates that geodesics may even be periodic.!
+\end{remark}
+\begin{definition}
+	Let $X$ be a topological space. An open cover $\mathfrak{U}=\{U_\alpha\}$ of $X$ is called a \textup{good cover} if every nonempty finite intersection $U_{\alpha_1}\cap\cdots\cap U_{\alpha_r}$ is contractible.
+\end{definition}
+\begin{theorem}
+	Every smooth manifold $M$ has a good cover. Moreover, if $M$ is compact, then $M$ admits a finite good cover.
+\end{theorem}
+\begin{proof}
+	Fix a Riemannian metric $g$ on $M$. Then every point $x\in M$ has a geodesically convex neighborhood $B_x$ which is diffeomorphic to an open ball in $\R^n$ under the map $\exp_x^{-1}:B_x\to T_xM$. Note that any finite intersection of geodesically convex neighborhoods is again geodesically convex and diffeomorphic to a finite intersection of open balls under the exponential map. Any cover by geodesically convex neighborhoods is then a good cover since any finite intersection of balls is contractible.
+\end{proof}
+\begin{definition}
+	A \textup{presheaf} $\mathscr{F}$ on a topological space $X$ with values in a category $\mathscr{C}$ is a contravariant functor $\mathscr{F}:\mathscr{O}\to\mathscr{C}$, where $\mathscr{O}$ denotes the poset category of open subsets of $X$. In other words, $\mathscr{F}$ assigns to each open subset $U$ of $X$ an object $\mathscr{F}(U)$ of $\mathscr{C}$, called the space of sections of $\mathscr{F}$ over $U$, together with \textup{restriction maps} $\res_V^U:\mathscr{F}(U)\to\mathscr{F}(V)$ whenever $V\subseteq U$. As a special case, if objects of $\mathscr{C}$ are sets and we fix an object $C$ of $\mathscr{C}$, the \textup{constant presheaf} on $X$ is the presheaf $\mathscr{F}$ which assigns to an open set $U$ the set of locally constant functions $U\to C$ and to an inclusion $V\subseteq U$, the restriction map $f\mapsto f|_V$.
+\end{definition}
+\begin{remark}
+	The preffix \textup{pre-} in \textup{presheaf} suggests the existence of a notion of a \textup{sheaf} and, indeed, this is the case: a sheaf is a presheaf satisfying the following two conditions. If $U\subseteq X$ is open and $\{U_i\}$ is an open cover of $U$ and we have $\sigma,\tau\in\mathscr{F}(U)$ such that $\sigma|_{U_i}=\tau|_{U_i}$ for all $i$; this is called \textup{locality}. Moreover, if we are given $\sigma_i\in\mathscr{F}(U_i)$ for all $i$ such that $\sigma_i|_{U_i\cap U_j}=\sigma_j|_{U_i\cap U_j}$ for all $i$ and $j$, then there exists $\sigma\in\mathscr{F}(U)$ such that $\sigma|_{U_i}=\sigma_i$ for all $i$; this is called \textup{gluing}.
+\end{remark}
+\begin{examples*}
+	One encounters numerous examples of presheaves in the wild and, indeed, these are frequently honest sheaves. For example, given an arbitrary topological space $X$, the assignment $U\mapsto C(U,\R)$ together with the usual restriction maps form a sheaf on $X$ with values in the category of commutative rings. If $\pi:E\to B$ is a vector bundle, then the assignment $U\mapsto\Gamma\left(E|_{U}\right)$ which assigns to $U\subseteq B$ open the space of local sections of $\pi$ over $U$, again with the usual restriction maps, forms a sheaf. A slightly more exotic example is the \textup{skyscraper sheaf} at a point $x\in X$: given an abelian group $A$ and a point $x\in X$, $\mathrm{sky}_{x,A}$ assigns to $U$ the group $A$ if $x\in U$ and $0$ otherwise.
+\end{examples*}
+\begin{definition}
+	Let $X$ be a topological space and $\mathfrak{U}=\{U_\alpha\}_{\alpha\in A}$ an open cover. Define the $p^\textup{th}$ \v{C}ech cochain group $\check{C}{\hspace{1pt}}^p(\mathfrak{U},\mathscr{F})$ with values in an abelian group-valued presheaf $\mathscr{F}:\mathscr{O}\to\mathrm{Ab}$ by taking\begin{align*}
+	\check{C}{\hspace{1pt}}^p(\mathfrak{U},\mathscr{F})=\prod_{\alpha_0<\cdots<\alpha_p}\mathscr{F}(U_{\alpha_0}\cap\cdots\cap U_{\alpha_p}).
+	\end{align*}Given $i$, we have inclusion maps $$\partial_j:U_{\alpha_0}\cap\cdots\cap U_{\alpha_p}\to U_{\alpha_0}\cap\cdots\cap\widehat{U}_{\alpha_j}\cap\cdots\cap U_{\alpha_p}$$ inducing restriction homomorphisms $$\res_i:=\mathscr{F}(\partial_i):\mathscr{F}(U_{\alpha_0}\cap\cdots\cap\widehat{U}_{\alpha_j}\cap\cdots\cap U_{\alpha_p})\to\mathscr{F}(U_{\alpha_0}\cap\cdots\cap U_{\alpha_p})$$ for all $\alpha_0<\alpha_1<\cdots<\alpha_p$. Define $\delta:\check{C}{\hspace{1pt}}^p(\mathfrak{U},\mathscr{F})\to\check{C}{\hspace{1pt}}^{p+1}(\mathfrak{U},\mathscr{F})$by\begin{align*}
+	\delta=\sum_{i=0}^{p+1}(-1)^i\res_i.
+	\end{align*}Then $\delta^2=0$ and the homology of the cochain complex $(\check{C}{\hspace{1pt}}^*(\mathfrak{U},\mathscr{F}),\delta)$ is called the \textup{\v{C}ech cohomology} of the cover $\mathfrak{U}$ with values in $\mathscr{F}$ and is denoted by $\check{H}{\hspace{1pt}}^*(\mathfrak{U},\mathscr{F})$.
+\end{definition}
+\begin{theorem}
+	If $\mathfrak{U}$ is a good cover of $X$, then $H^*(X)\cong\check{H}{\hspace{1pt}}^*(\mathfrak{U},\Z)$, where here, by abuse of notation, $\Z$ denotes the constant presheaf valued in the abelian group $\Z$.
+\end{theorem}
+\begin{corollary}
+	If $\mathfrak{U}$ and $\mathfrak{V}$ are good covers, then $\check{H}{\hspace{1pt}}^*(\mathfrak{U},\Z)\cong \check{H}{\hspace{1pt}}^*(\mathfrak{V},\Z)$.
+\end{corollary}
+Among all well-behaved cohomology theories, \v{C}ech cohomology commonly enjoys a particularly special r\^{o}le as an intermediary in proving that two cohomology rings are isomorphic since the same \textup{generalized Mayer-Vietoris argument} used to show that $H^*(X)\cong\check{H}{\hspace{1pt}}^*(\mathfrak{U},\Z)$ can be employed more generally to show that a cohomology theory is isomorphic to \v{C}ech cohomology, provided that it satisfies certain properties. This argument is the content of the proof of the following theorem.
+\begin{theorem}[Bott-Weil]
+	Fix a topological space $X$ and let $\mathscr{O}$ be the poset category of open subsets of $X$ under inclusion. Denote by $\Ch$ the category of chain complexes of abelian groups and suppose that $F:\mathscr{O}\to\Ch$ is a functor such that\begin{flushleft}
+		\textup{(1)} $F$ satisfies the Mayer-Vietoris property: given $A,B\in\mathrm{ob}\mathscr{O}$, there is a short exact sequence of (co)chain complexes\begin{align*}
+		0\to F^*(A\cup B)\to F^*(A)\oplus F^*(B)\to F^*(A\cap B)\to 0.
+		\end{align*}
+		\textup{(2)} If $U\in\mathrm{ob}\mathscr{O}$ is contractible, then\begin{align*}
+		H_i(F(U))\cong\begin{cases}
+		\Z\textup{\hspace{0.3cm}if $i=0$}\\
+		0\textup{\hspace{0.375cm}else.}
+		\end{cases}
+		\end{align*}If, in addition, $X$ has cofinal good covers, then $H_*(F(X))\cong\check{H}^*(\mathfrak{U},\Z)$ provided that $\mathfrak{U}$ is a good cover.
+	\end{flushleft}
+\end{theorem}
 
 \section{Examples}
 
