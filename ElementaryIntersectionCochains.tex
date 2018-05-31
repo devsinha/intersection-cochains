@@ -6,6 +6,7 @@
 \usepackage{pstricks,pstricks-add}	% Make pretty pictures with PostScript
 \usepackage{float}	% Allows finer control over placement of figures than the default automatic placement style
 \usepackage{imakeidx} % Index
+
 \usepackage{todonotes} % Allows one to add both in-line and marginal notes as well as a list of 'to-dos' Example syntax: \todo[color=blue!25,inline]{Edit.}
 %this example produces an in-line to-do which says "Edit." and which is colored blue with 25% color saturation. Omitting 'inline' from the syntax produces a to-do in the margin. Warning: the default color is an awful shade of violently bright orange!
 \usepackage{mathrsfs} %Fancy calligraphic letters
@@ -45,6 +46,8 @@
 \newcommand{\injext}{{\rm InjExt}}
 \newcommand{\Hom}{{\rm Hom}}
 \newcommand{\RP}{\mathbb{R}\mathrm{P}}
+
+
 \newcommand{\CP}{\mathbb{C}\mathrm{P}}
 \newcommand{\codim}{{\rm codim}}
 \newcommand{\Gr}{\mathrm{Gr}}
@@ -108,6 +111,7 @@ can shed light on homotopy theory for limits and colimits of finite CW-complexes
 Before developing the background in differential topology needed, we illustrate the technique by using simplified definitions.
 
 \begin{definition}
+
 	A subset $M$ of Euclidean space $\R^n$ is called a (smooth) $k$-dimensional manifold if it is locally diffeomorphic to $\R^k$; that is, for every point in $M$ there is a neighborhood of that point which is diffeomorphic to $\R^k$.  
 \end{definition}
 
@@ -139,6 +143,7 @@ Establishing local diffeomorphisms which make a set $M\subset \R^n$ into a manif
 \end{example}
 
 \begin{definition}
+
 	A subset $N\subseteq M\subseteq \R^n$ is called a submanifold of $M$ if $N$ is also a manifold.
 \end{definition}
 
@@ -198,6 +203,7 @@ TM:=
 \end{proof}
 The tangent bundle of a manifold is an example of a more general class of smooth objects: (smooth) vector bundles.
 \begin{definition}
+
 	Let $B$ be a smooth manifold, then a \textit{rank $k$ (real) vector bundle over $B$} is a smooth manifold $E$ together with a smooth surjective map $\pi:E\to B$ such that\begin{flushleft}
 		\textup{(a)} For every $b\in B$, the \textup{fiber} $E_b=\pi^{-1}(\{b\})$ has the structure of a real $k$-dimensional vector space.\\
 		\textup{(b)} For every $b\in B$, there exists a neighborhood $U$ of $b$ together with a diffeomorphism $\phi:\pi^{-1}(U)\stackrel{\sim}{\to}U\times\R^k$, called a \textit{local trivialization of $E$ over $U$}, such that $p\circ\phi=\pi$, where $p:U\times\R^k\to U$ is the canonical projection map, and for each $u\in U$, the map $\left.\phi\right|_{E_u}:E_u\to\{u\}\times\R^k$ is a vector space isomorphism.
@@ -276,6 +282,7 @@ Consider the smooth map $f\colon\R^{n+1}\rightarrow \R$ given by $(x_1,\dots ,x_
 
 \begin{definition}
 Transversal intersection of submanifolds Let $V, W$ be submanifolds of a manifold $M$, i.e. theinclusions $i_V:V\rightarrow M$ and $i_W:W\rightarrow M$ are proper maps and both $(di_V)_p$ and $(di_W)_q$ are injective maps on tangent spaces, for all $p\in v$ and $q\in W$. Then we say that $V$ and $W$ $\emph{interesect transversally}$ if the maps $i_U$ and $i_V$ are transversal at all points of $V\cap W$. (In particular, any two disjoint submanifolds interesect transversally). \index{transversality!of submanifolds}.\index{transversality!of submanifolds}.
+
 \end{definition}
 \begin{figure}[H]
 	\begin{center}
@@ -460,6 +467,7 @@ P @>>> W\\
 \Delta^n @>\sigma>> M.
 \end{CD}
 $$
+
 The cardinality $\# P$ is to be taken as mod-two unless $W$  is co-oriented, that is, its normal bundle is oriented.  This occurs
 for example when $W$ and $M$ are both oriented.  Signs are then given by the question of agreement of the co-orientation of $P$, 
 which could be a local orientation in $\Delta^n$ at each point, with the standard orientation of $\Delta^n$ given by say the differences between vertices labeled by $1, \cdots, n$ and vertex $0$ (or the barycenter) serving as a basis.
@@ -835,6 +843,7 @@ Use naturality of evaluating cohomology on homology, and then apply Proposition~
 \subsection{Projective spaces}\index{projective space}
 
 \subsection{Grassmannians}\index{Grassmanian}
+
 \begin{definition}
 	Let $V$ be a real vector space and $k\geq 1$ an integer. The \textit{Grassmannian of real $k$-planes in $V$} is the set\begin{align*}
 	\Gr(k,V)=\{W\subseteq V:\text{$W$ is a linear subspace of $V$ and $\dim W=k$}\}.
